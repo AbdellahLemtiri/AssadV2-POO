@@ -109,7 +109,7 @@ function nav_item($href, $icon, $label, $current_page) {
 
             </nav>
         </div>
-
+<div></div>
         <div class="flex flex-col gap-4 border-t border-slate-100 dark:border-slate-800 pt-6">
             <div class="flex items-center justify-between bg-slate-50 dark:bg-slate-800/50 p-3 rounded-2xl">
                 <div class="flex items-center gap-3">
