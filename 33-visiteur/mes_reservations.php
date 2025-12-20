@@ -7,7 +7,7 @@ $_SESSION['logged_in'] = TRUE;
 $_SESSION['id_utilisateur'] = 3;
 $_SESSION['nom_utilisateur'] = "adam";
 
-include "../db_connect.php";
+include "../Fonctionalite_php/connect.php";
 if (
     isset($_SESSION['role_utilisateur'], $_SESSION['logged_in']) &&
     $_SESSION['role_utilisateur'] === "visiteur" &&

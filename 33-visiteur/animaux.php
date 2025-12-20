@@ -1,7 +1,7 @@
  <?php
     session_start();
     $_SESSION['role_utilisateur'] = "visiteur";
-    include "../db_connect.php";
+include "../Fonctionalite_php/connect.php";
 
     if (
         isset($_SESSION['role_utilisateur'], $_SESSION['logged_in'], $_SESSION['id_utilisateur'], $_SESSION['nom_utilisateur']) &&

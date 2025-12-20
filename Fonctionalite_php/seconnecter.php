@@ -1,6 +1,8 @@
 <?php
 session_start();
+
 require_once "connect.php";
+
 
 
 $email = '';
@@ -65,6 +67,6 @@ $user = $result->fetch_assoc();
         exit;
 
     } else {
-        die("Veuillez remplir tous les champs");
+        die("Veuillez remplir tous les champs !");
     }
 }

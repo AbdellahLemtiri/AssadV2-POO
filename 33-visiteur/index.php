@@ -2,7 +2,7 @@
 session_start();
 
 $_SESSION['role_utilisateur'] = "visiteur";
-include "../db_connect.php";
+include "../Fonctionalite_php/connect.php";
 
 if (
     isset($_SESSION['role_utilisateur'], $_SESSION['logged_in']) &&

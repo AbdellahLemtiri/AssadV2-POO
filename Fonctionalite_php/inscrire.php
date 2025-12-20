@@ -28,6 +28,8 @@ if (
 
     $stmt->close();
 } else {
+    
     header("Location: ../connexion.php?error=1");
     exit();
+
 }

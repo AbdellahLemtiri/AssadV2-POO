@@ -66,7 +66,7 @@
              </div>
          </div>
      </header>
-
+  <div></div>
      <main class="flex-1 w-full flex flex-col md:flex-row h-[calc(100vh-64px)] overflow-hidden">
 
          <div class="hidden lg:flex w-1/2 relative bg-surface-dark overflow-hidden flex-col justify-end p-12">

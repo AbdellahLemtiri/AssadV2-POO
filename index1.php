@@ -91,6 +91,7 @@
             </div>
         </div>
     </header>
+    <div></div>
     <main class="flex flex-col w-full">
         <!-- HeroSection -->
         <section class="relative w-full h-[85vh] min-h-[600px] flex items-end pb-16 px-4 md:px-20 bg-cover bg-center"
