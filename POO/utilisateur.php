@@ -6,6 +6,11 @@ class utilisateur
     protected string $nom_utilisateur;
     protected string $email;
     protected string $mot_passe;
+
+    public function setid($id){
+      $this->id_utilisateur=$id;
+    }
+    pub
     public function seconnecter(): string
     {
         $cl = new Connexion();
