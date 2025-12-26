@@ -10,15 +10,17 @@ class Connexion
     public function connect()
     {
         
-        try {
+        try 
+        {
             $conn = new PDO("mysql:host=$this->servername;dbname=$this->dbname", $this->username, $this->password);
             $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } 
-        catch (PDOException $e) {
+        catch (PDOException $e) 
+        {
             echo "Connection failed: " . $e->getMessage();
         }
 
         return $conn;
-        
+
     }
 }

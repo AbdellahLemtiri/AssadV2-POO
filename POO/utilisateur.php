@@ -72,7 +72,8 @@ class Utilisateur
     public function setMotPasse($mot_passe): bool
     {
         $regex = '/^[A-Za-z@&1-9!?]{5,20}$/'; 
-        if (preg_match($regex, $mot_passe)) {
+        if (preg_match($regex, $mot_passe))
+        {
             $this->mot_passe = $mot_passe;
             return true;
         }
@@ -96,19 +97,24 @@ class Utilisateur
         $stmt->bindParam(':email', $this->email);
         $stmt->execute();
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($user) {
+        if ($user) 
+        {
             $hashedPassword = $user['motpasse_hash'];
             if ($user["Approuver_utilisateur"]) {
-                if (password_verify($this->mot_passe, $hashedPassword)) {
+                if (password_verify($this->mot_passe, $hashedPassword)) 
+                    {
                     $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
                     $_SESSION['nom_utilisateur'] = $user['nom_utilisateur'];
                     $_SESSION['role_utilisateur'] = $user['role'];
-                    $_SESSION['logged_in'] = TRUE;
                     return $user["role"];
-                } else {
-                    return "passwordInvalid";
-                }
-            } else {
+                    } 
+                    else 
+                    {
+                        return "passwordInvalid";
+                    }
+            }
+            else
+            {
                 return "notApproved";
             }
         } else {

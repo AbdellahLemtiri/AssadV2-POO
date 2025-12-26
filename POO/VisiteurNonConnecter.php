@@ -10,7 +10,7 @@ class VisiteurNonConnecter extends utilisateur
 
         if($this->getRoleUtilisateur() === "guide")
         {
-     
+    
             $sql = "INSERT INTO `utilisateurs`(`nom_utilisateur`,`email`,`role`,`motpasse_hash`,`Approuver_utilisateur`) 
                     VALUES (:nom, :email, 'guide', :motPase, 0)";
         }
@@ -20,11 +20,13 @@ class VisiteurNonConnecter extends utilisateur
             $sql = "INSERT INTO `utilisateurs`(`nom_utilisateur`,`email`,`role`,`motpasse_hash`) 
                     VALUES (:nom, :email, 'visiteur', :motPase)";
         }
-        else {
+        else 
+        {
             return false;
         }
 
-        try {
+        try 
+        {
             $stmt = $conn->prepare($sql);
             $stmt->bindParam(':nom', $this->nom_utilisateur);
             $stmt->bindParam(':email', $this->email);
@@ -32,7 +34,8 @@ class VisiteurNonConnecter extends utilisateur
 
             return $stmt->execute();
         } 
-        catch (Exception $e) {
+        catch (Exception $e) 
+        {
             return false;
         }
     }
