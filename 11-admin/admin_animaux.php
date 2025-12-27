@@ -183,7 +183,10 @@ $habitats = habitat::getAllHabitats();
                                                 data-alimentation="<?= $animal->getTypeAlimentation() ?>"
                                                 data-pays="<?= $animal->getPaysOrigine() ?>"
                                                 data-image="<?= $animal->getImageUrl() ?>"
-                                                data-habitat="<?= $animal->getIdHabitat() ?>">
+                                                data-habitat="<?= $animal->getIdHabitat() ?>"
+                                                data-description="<?= htmlspecialchars($animal->getDescriptionCourte()) ?>"
+
+                                                >
                                                 <span class="material-symbols-outlined">edit</span>
                                             </button>
 
@@ -231,6 +234,12 @@ $habitats = habitat::getAllHabitats();
                             ?><option value="<?= $h->getIdHabitat() ?>"><?= $h->getNomHabitat() ?></option><?php endforeach; ?>
                         </select>
                     </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-bold mb-1">Description courte (Max 255 caractères)</label>
+                        <textarea name="description_courte" rows="2"
+                            class="w-full rounded-xl border-slate-200 dark:bg-slate-800"
+                            placeholder="Ex: Un lion majestueux originaire d'Afrique..."></textarea>
+                    </div>
                 </div>
                 <div class="p-6 bg-gray-50 dark:bg-slate-800/50 flex justify-end gap-3">
                     <button type="button" data-close-add class="px-4 py-2 font-bold">Annuler</button>
@@ -239,7 +248,7 @@ $habitats = habitat::getAllHabitats();
             </form>
         </div>
 
-        <div id="modal_edit_animal"  class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+        <div id="modal_edit_animal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
             <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-close-edit></div>
             <form method="POST" action="fx/editAnim.php" class="relative bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden">
                 <input type="hidden" name="action" value="edit">
@@ -276,6 +285,11 @@ $habitats = habitat::getAllHabitats();
                             <?php endforeach; ?>
                         </select>
                     </div>
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-sm font-bold mb-1">Description courte</label>
+                    <textarea name="description_courte" id="edit_description" rows="2"
+                        class="w-full rounded-xl border-slate-200 dark:bg-slate-800"></textarea>
                 </div>
                 <div class="p-6 bg-gray-50 dark:bg-slate-800/50 flex justify-end gap-3">
                     <button type="button" data-close-edit class="px-4 py-2 font-bold">Annuler</button>
