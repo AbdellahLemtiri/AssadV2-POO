@@ -1,0 +1,78 @@
+<?php
+require_once 'Utilisateur.php';
+require_once 'Reservation.php';
+class Visiteur extends Utilisateur
+{
+    private string $statut_utilisateur;
+    public function __construct()
+    {
+        return parent::__construct();
+    }
+
+
+    public function getStatutUtilisateur()
+    {
+        return $this->statut_utilisateur;
+    }
+    public function setStatutUtilisateur(int $statut_utilisateur)
+    {
+        if ($statut_utilisateur == 0 || $statut_utilisateur == 1) {
+            $this->statut_utilisateur = $statut_utilisateur;
+        }
+    }
+
+
+    public function __toString()
+    {
+        return parent::__toString()  . " statut :" . $this->getStatutUtilisateur();
+    }
+
+    public function  getVisteur(int $id_visiteur)
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM utilisateurs WHERE id_utilisateur = :id_visiteur AND role='visiteur'";
+        try 
+        {
+            $stmt = $conn->prepare($sql);
+        } catch (Exception $e) {
+            return false;
+        }
+        $stmt->bindParam(':id_visiteur', $id_visiteur);
+        if ($stmt->execute()) {
+            $visiteur = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (
+                !empty($visiteur) &&
+                $this->setIdUtilisateur($visiteur['id_utilisateur']) &&
+                $this->setNomUtilisateur($visiteur['nom_utilisateur']) &&
+                $this->setEmail($visiteur['email']) &&
+                $this->setStatutUtilisateur($visiteur['statut_utilisateur'])
+            )
+                return $this;
+        } else {
+            return false;
+        }
+    }
+    public function reserverVisite(int $idVisite, int $nombreParticipants): bool
+    {
+        $reservation = new Reservation();
+        $reservation->setIdVisiteur($this->getIdUtilisateur());
+        $reservation->setIdVisite($idVisite);
+        $reservation->setNombrePersonnes($nombreParticipants);
+        return $reservation->reserver();
+    }
+    
+    public function laisserCommentaire(int $idVisite, string $contenu, int $note): bool
+    {
+        $commentaire = new Commentaire();
+        $dateNow = new DateTime();
+        if (
+            $commentaire->setIdVisiteur($this->getIdUtilisateur()) &&
+            $commentaire->setIdVisite($idVisite) &&
+            $commentaire->setContenuCommentaire($contenu) &&
+            $commentaire->setNote($note) && $commentaire->ajouterCommentaire()
+        )
+            return true;
+        else
+            return false;
+    }
+}

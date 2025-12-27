@@ -1,0 +1,51 @@
+  <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
+                        <?php if (empty($animaux)): ?>
+                            <tr>
+                                <td colspan="5" class="text-center py-4">Aucun animal trouvé.</td>
+                            </tr>
+                        <?php else: ?>
+                            <?php foreach ($animaux as $animal): ?>
+                                <tr class="hover:bg-slate-50 transition-colors">
+                                    <td class="px-6 py-4 flex items-center gap-4">
+                                        <img src="<?= $animal->getImageUrl() ?>" class="h-12 w-12 rounded-lg object-cover" onerror="this.src='https://via.placeholder.com/100'">
+                                        <div>
+                                            <p class="font-bold"><?= $animal->getNomAnimal() ?></p>
+                                            <p class="text-xs text-slate-400">ID: #<?= $animal->getIdAnimal() ?></p>
+                                        </div>
+                                    </td>
+
+                                    <td class="px-6 py-4 italic text-slate-500">
+                                        <?= $animal->getEspeceAnimal() ?>
+                                    </td>
+
+                                    <td class="px-6 py-4">
+                                        <?= $animal->nom_habitat ?? 'Non défini' ?>
+                                    </td>
+
+                                    <td class="px-6 py-4">
+                                        <?= $animal->getTypeAlimentation() ?>
+                                    </td>
+
+                                    <td class="px-6 py-4 text-right">
+                                        <div class="flex justify-end gap-2">
+                                            <button class="p-2 text-blue-600"
+                                                data-open-edit
+                                                data-id="<?= $animal->getIdAnimal() ?>"
+                                                data-nom="<?= $animal->getNomAnimal() ?>"
+                                                data-espece="<?= $animal->getEspeceAnimal() ?>"
+                                                data-alimentation="<?= $animal->getTypeAlimentation() ?>"
+                                                data-pays="<?= $animal->getPaysOrigine() ?>"
+                                                data-image="<?= $animal->getImageUrl() ?>"
+                                                data-habitat="<?= $animal->getIdHabitat() ?>">
+                                                <span class="material-symbols-outlined">edit</span>
+                                            </button>
+
+                                            <a href="fx/delete.php?id=<?= $animal->getIdAnimal() ?>" class="p-2 text-red-500">
+                                                <span class="material-symbols-outlined">delete</span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </tbody>

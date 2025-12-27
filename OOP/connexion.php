@@ -5,7 +5,7 @@ class Connexion
     private $servername = "localhost";
     private $username = "root";
     private $password = "";
-    private $dbname = "assadv2_db";
+    private $dbname = "assad_v2_db";
 
     public function connect()
     {

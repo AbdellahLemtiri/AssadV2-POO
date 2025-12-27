@@ -1,4 +1,5 @@
 <?php
+require_once "connexion.php";
 class habitat
 {
     private int $id_habitat;
@@ -29,7 +30,7 @@ class habitat
     }
       public function setNomHabitat(string $nom_habitat)
     {
-        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+      $regix = "/^[\p{L}\s'-]{2,50}$/u";
         if (preg_match($regix, $nom_habitat)) {
             $this->nom_habitat = $nom_habitat;
             return true;
@@ -46,7 +47,7 @@ class habitat
     }
     public function setZoneZoo(string $zone_zoo)
     {
-        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+       $regix = "/^[\p{L}\s'-]{2,50}$/u";
         if (preg_match($regix, $zone_zoo)) {
             $this->zone_zoo = $zone_zoo;
             return true;
@@ -55,7 +56,7 @@ class habitat
     }
     public function setTypeClimat(string $type_climat)
     {
-        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+        $regix = "/^[\p{L}\s'-]{2,50}$/u";
         if (preg_match($regix, $type_climat)) {
             $this->type_climat = $type_climat;
             return true;
@@ -153,7 +154,21 @@ class habitat
             return false;
         }
     }
-
+public function getNbrAnimaux($id) : int|bool
+{
+    $conn = (new Connexion )->connect();
+$sql = "SELECT count(*) as nbr FROM habitats h  INNER JOIN animaux a on h.id_habitat = a.id_habitat  where h.id_habitat = :id ";
+try {
+   $stmt = $conn->prepare($sql);
+   $stmt-> bindParam(':id',$id,PDO::PARAM_INT);
+   $stmt->execute();
+   $nbr=$stmt->fetchColumn();
+   return $nbr;
+}
+catch(Exception $e){
+   return false;
+}
+}
     public static function getAllHabitats(): array|bool
     {
         $conn = (new Connexion())->connect();
@@ -183,3 +198,4 @@ class habitat
 
 
 }
+

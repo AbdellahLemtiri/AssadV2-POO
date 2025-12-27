@@ -1,5 +1,5 @@
 <?php
-require_once "POO/utilisateur.php";
+require_once "OOP/utilisateur.php";
 
 $user = new Utilisateur();
 

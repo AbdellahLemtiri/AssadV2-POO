@@ -276,7 +276,6 @@
              const loginForm = document.getElementById('loginForm');
              const registerForm = document.getElementById('registerForm');
 
-             // Liens rapides dans le texte
              const switchToRegisterLink = document.getElementById('switchToRegisterLink');
              const switchToLoginLink = document.getElementById('switchToLoginLink');
 
@@ -286,11 +285,11 @@
               * @param {HTMLElement} inactiveButton - Le bouton à désactiver.
               */
              function updateTabClasses(activeButton, inactiveButton) {
-                 // Classes pour l'état ACTIF
+          
                  activeButton.classList.remove('border-transparent', 'text-text-muted', 'hover:text-text-main', 'dark:hover:text-white', 'font-medium');
                  activeButton.classList.add('border-primary', 'text-text-main', 'dark:text-white', 'font-bold');
 
-                 // Classes pour l'état INACTIF
+                 
                  inactiveButton.classList.remove('border-primary', 'text-text-main', 'dark:text-white', 'font-bold');
                  inactiveButton.classList.add('border-transparent', 'text-text-muted', 'hover:text-text-main', 'dark:hover:text-white', 'font-medium');
              }

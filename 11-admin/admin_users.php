@@ -1,32 +1,50 @@
 <?php
-require_once "../Fonctionalite_php/auth_check.php";
-protect_page('admin'); 
-       $id_utilisateur =  ($_SESSION['id']) ;
-        $nom_utilisateur =  ($_SESSION['nom']);
-        $role_utilisateur =  ($_SESSION['role']);
-    
-require_once 'fx/connect.php';
+require_once '../OOP/admin.php';
+$admin = new Admin();
+$lesUtl = $admin->afficherToutUtilisatdeurs();
 
-$query = "SELECT id, nom, email, role, approuve FROM utilisateurs";
-$result = mysqli_query($connect, $query);
 
-if (isset($_GET['toggle_status'])) {
-    $user_id = $_GET['toggle_status'];
-    
-    $status_query = "SELECT approuve FROM utilisateurs WHERE id = $user_id";
-    $status_result = mysqli_query($connect, $status_query);
-    $user = mysqli_fetch_assoc($status_result);
+if (isset($_GET['id'])) {
+    $user_id = intval($_GET['id']);
+
+    if ($user_id > 0) {
+        $current_status = $admin->getStatusAprouve($user_id);
 
  
-    $new_status = ($user['approuve'] == 1) ? 0 : 1;
+        if ($current_status === 1) {
+          $res=  $admin->desactiverUtilisateur($user_id)
+            ;     header("Location: admin_users.php?hh$res");
+        exit();
+        } else {
+            $res= $admin->acitiverUtilisateur($user_id);
+              header("Location: admin_users.php?hh$res");
+              exit();
+        }
+        
+        
    
-    $update_query = "UPDATE utilisateurs SET approuve = $new_status WHERE id = $user_id";
-    mysqli_query($connect, $update_query);
+    }
+}
+// $query = "SELECT id, nom, email, role, approuve FROM utilisateurs";
+// $result = mysqli_query($connect, $query);
+
+// if (isset($_GET['toggle_status'])) {
+//     $user_id = $_GET['toggle_status'];
+    
+//     $status_query = "SELECT approuve FROM utilisateurs WHERE id = $user_id";
+//     $status_result = mysqli_query($connect, $status_query);
+//     $user = mysqli_fetch_assoc($status_result);
+
+ 
+//   
+   
+//     $update_query = "UPDATE utilisateurs SET approuve = $new_status WHERE id = $user_id";
+//     mysqli_query($connect, $update_query);
     
   
-    header("Location: admin_users.php");
-    exit;
-}
+//     header("Location: admin_users.php");
+//     exit;
+// }
 
 ?>
 
@@ -50,7 +68,7 @@ if (isset($_GET['toggle_status'])) {
         theme: {
             extend: {
                 colors: {
-                    primary: "#0d9488",          // Teal واعر مودرن
+                    primary: "#0d9488",          
                     "primary-dark": "#0f766e",
                     "primary-light": "#2dd4bf",
                     "background-light": "#f0fdfa",
@@ -61,7 +79,7 @@ if (isset($_GET['toggle_status'])) {
                     "text-dark": "#a7f3d0",
                     "text-secondary-light": "#0891b2",
                     "text-secondary-dark": "#5eead4",
-                    "accent": "#f59e0b"          // لمسة ذهبية
+                    "accent": "#f59e0b"          
                 },
                 fontFamily: {
                     sans: ["Plus Jakarta Sans", "sans-serif"]
@@ -201,25 +219,30 @@ function nav_item($href, $icon, $label, $current_page) {
             <th class="px-6 py-3 text-center text-sm font-medium">Actions</th>
         </tr>
     </thead>
+
     <tbody class="text-sm text-gray-700 dark:text-gray-300">
-        <?php while ($user = mysqli_fetch_assoc($result)): ?>
+        <?php if(!$lesUtl) : ?>
+            <p>auccun utilisateur pour le moment !</p>
+        <?php else : ?>
+        <?php foreach ($lesUtl as $user):  ?>
             <tr class="hover:bg-emerald-50 dark:hover:bg-slate-700 transition-colors duration-300">
-                <td class="px-6 py-4"><?= $user['nom'] ?> <span class="text-xs text-gray-500">(<?= $user['email'] ?>)</span></td>
+                <td class="px-6 py-4"><?= $user['nom_utilisateur'] ?> <span class="text-xs text-gray-500">(<?= $user['email'] ?>)</span></td>
                 <td class="px-6 py-4"><?= ucfirst($user['role']) ?></td>
                 <td class="px-6 py-4">
-                    <span class="text-xs <?= $user['approuve'] == 1 ? 'text-green-500' : 'text-red-500' ?>">
-                        <?= $user['approuve'] == 1 ? 'Actif' : 'Inactif' ?>
+                    <span class="text-xs <?= $user['statut_utilisateur'] == 1 ? 'text-green-500' : 'text-red-500' ?>">
+                        <?= $user['statut_utilisateur'] == 1 ? 'Actif' : 'Inactif' ?>
                     </span>
                 </td>
                 <td class="px-6 py-4 text-center">
-                    <a href="?toggle_status=<?= $user['id'] ?>" class="p-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition-all duration-300">
+                    <a  onclick="return confirm('tu vraiment activer/desactiver <?= $user['nom_utilisateur'] ?> ')" href="?id=<?= $user['id_utilisateur'] ?>" class="p-2 rounded-full bg-emerald-600 text-white hover:bg-emerald-700 transition-all duration-300">
                         <span class="material-symbols-outlined text-lg">
-                            <?= $user['approuve'] == 1 ? 'toggle_on' : 'toggle_off' ?>
+                            <?= $user['statut_utilisateur'] == 1 ? 'toggle_on' : 'toggle_off' ?>
                         </span>
                     </a>
                 </td>
             </tr>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
+        <?php endif; ?>
     </tbody>
 </table>
 

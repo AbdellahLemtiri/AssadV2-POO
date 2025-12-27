@@ -60,7 +60,7 @@ class Admin extends Utilisateur
     public function desactiverUtilisateur(int $id_utilisateur): bool
     {
         $conn = (new Connexion())->connect();
-        $sql = "UPDATE utilisateurs SET statut_utilisateur = 0 WHERE (role ='guide' or role ='visiteur') and id_utilisateur = :id_utilisateur";
+        $sql = "UPDATE utilisateurs SET statut_utilisateur = 0 WHERE id_utilisateur = :id_utilisateur";
         try
         {
             $stmt = $conn->prepare($sql);
@@ -91,7 +91,7 @@ class Admin extends Utilisateur
         }
         $stmt->bindParam(':id_utilisateur', $id_utilisateur);
         $stmt->execute();
-        $utilisateur = $stmt->fetch(pdo::FETCH_ASSOC);
+        $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
         if ($utilisateur) {
             $user = new Utilisateur();
             $user->setIdUtilisateur($utilisateur['id_utilisateur']);
@@ -103,7 +103,15 @@ class Admin extends Utilisateur
             return false;
         }
     }
-
+    public function getStatusAprouve(int $id):int 
+    {
+        $conn = (new Connexion)->connect();
+        $sql = "SELECT statut_utilisateur FROM utilisateurs where id_utilisateur = :id";
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id',$id,PDO::PARAM_INT);
+            $stmt->execute();
+           return $stmt->fetchColumn(); 
+    } 
     public function afficherToutUtilisatdeurs(): array|bool
     {
         $conn = (new Connexion())->connect();
@@ -117,7 +125,7 @@ class Admin extends Utilisateur
         }
         $stmt->execute();
         $utilisateurs = [];
-        $utilisateurs = $stmt->fetchAll(pdo::FETCH_ASSOC);
+        $utilisateurs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $utilisateurs;
     }
 
