@@ -154,7 +154,7 @@ $habitats = habitat::getAllHabitats();
                             <?php foreach ($animaux as $animal): ?>
                                 <tr class="hover:bg-slate-50 transition-colors">
                                     <td class="px-6 py-4 flex items-center gap-4">
-                                        <img src="<?= $animal->getImageUrl() ?>" class="h-12 w-12 rounded-lg object-cover" onerror="this.src='https://via.placeholder.com/100'">
+                                        <img src="<?= $animal->getImageUrl() ?>" alt="<?= $animal->getNomAnimal() ?>" class="h-12 w-12 rounded-lg object-cover" onerror="this.src='https://via.placeholder.com/100'">
                                         <div>
                                             <p class="font-bold"><?= $animal->getNomAnimal() ?></p>
                                             <p class="text-xs text-slate-400">ID: #<?= $animal->getIdAnimal() ?></p>
@@ -166,7 +166,7 @@ $habitats = habitat::getAllHabitats();
                                     </td>
 
                                     <td class="px-6 py-4">
-                                        <?= $animal->nom_habitat ?? 'Non défini' ?>
+                                        <?= $animal->getNomHabitat() ?>
                                     </td>
 
                                     <td class="px-6 py-4">
@@ -184,8 +184,7 @@ $habitats = habitat::getAllHabitats();
                                                 data-pays="<?= $animal->getPaysOrigine() ?>"
                                                 data-image="<?= $animal->getImageUrl() ?>"
                                                 data-habitat="<?= $animal->getIdHabitat() ?>"
-                                                data-description="<?= htmlspecialchars($animal->getDescriptionCourte()) ?>"
-
+                                                data-description="<?= $animal->getDescriptionAnimal() ?>"
                                                 >
                                                 <span class="material-symbols-outlined">edit</span>
                                             </button>
@@ -214,7 +213,12 @@ $habitats = habitat::getAllHabitats();
                 <div class="p-6 grid grid-cols-2 gap-4">
                     <div class="col-span-1"><label class="block text-sm font-bold mb-1">Nom *</label><input name="nom" required class="w-full rounded-xl border-slate-200 dark:bg-slate-800"></div>
                     <div class="col-span-1"><label class="block text-sm font-bold mb-1">Espèce</label><input name="espece" class="w-full rounded-xl border-slate-200 dark:bg-slate-800"></div>
-                    <div class="col-span-2"><label class="block text-sm font-bold mb-1">Image URL</label><input name="image" id="add_image" placeholder="https://..." class="w-full rounded-xl border-slate-200 dark:bg-slate-800"></div>
+                    <div class="col-span-1"><label class="block text-sm font-bold mb-1">Image URL</label><input name="image" id="add_image" placeholder="https://..." class="w-full rounded-xl border-slate-200 dark:bg-slate-800"></div>
+                    <div class="col-span-1">
+                        <label class="block text-sm font-bold mb-1">Pays d'origine</label>
+                        <input name="pays_origine" placeholder="Ex: Kenya"
+                            class="w-full rounded-xl border-slate-200 dark:bg-slate-800">
+                    </div>
                     <div class="col-span-1">
                         <label class="block text-sm font-bold mb-1">Alimentation</label>
                         <select name="alimentation" class="w-full rounded-xl border-slate-200 dark:bg-slate-800">
@@ -234,6 +238,7 @@ $habitats = habitat::getAllHabitats();
                             ?><option value="<?= $h->getIdHabitat() ?>"><?= $h->getNomHabitat() ?></option><?php endforeach; ?>
                         </select>
                     </div>
+
                     <div class="col-span-2">
                         <label class="block text-sm font-bold mb-1">Description courte (Max 255 caractères)</label>
                         <textarea name="description_courte" rows="2"
@@ -260,22 +265,26 @@ $habitats = habitat::getAllHabitats();
                 <div class="p-6 grid grid-cols-2 gap-4">
                     <div class="col-span-1"><label class="block text-sm font-bold mb-1">Nom *</label><input name="nom" id="edit_nom" required class="w-full rounded-xl border-slate-200 dark:bg-slate-800"></div>
                     <div class="col-span-1"><label class="block text-sm font-bold mb-1">Espèce</label><input name="espece" id="edit_espece" class="w-full rounded-xl border-slate-200 dark:bg-slate-800"></div>
-                    <div class="col-span-2">
+                    <div class="col-span-1">
                         <label class="block text-sm font-bold mb-1">Image URL</label>
                         <input name="image" id="edit_image" class="w-full rounded-xl border-slate-200 dark:bg-slate-800">
                         <img id="edit_preview" src="" class="mt-2 h-16 w-16 rounded-lg object-cover border">
                     </div>
                     <div class="col-span-1">
-                        <label class="block text-sm font-bold mb-1">Alimentation</label>
-                        <select name="alimentation" class="w-full rounded-xl border-slate-200 dark:bg-slate-800">
-                            <option value="" selected disabled>-- Choisir --</option>
-                            <option value="Carnivore">Carnivore</option>
-                            <option value="Herbivore">Herbivore</option>
-                            <option value="Omnivore">Omnivore</option>
-                            <option value="Piscivore">Piscivore</option>
-                            <option value="Insectivore">Insectivore</option>
-                        </select>
+                        <label class="block text-sm font-bold mb-1">Pays d'origine</label>
+                        <input name="pays_origine" id="edit_pays"
+                            class="w-full rounded-xl border-slate-200 dark:bg-slate-800">
                     </div>
+               <div class="col-span-1">
+        <label class="block text-sm font-bold mb-1">Alimentation</label>
+       <select name="alimentation" id="edit_alimentation" class="w-full rounded-xl border-slate-200 dark:bg-slate-800">
+        <option value="Carnivore">Carnivore</option>
+        <option value="Herbivore">Herbivore</option>
+        <option value="Omnivore">Omnivore</option>
+        <option value="Piscivore">Piscivore</option>
+        <option value="Insectivore">Insectivore</option>
+    </select>
+</div>
                     <div class="col-span-1">
                         <label class="block text-sm font-bold mb-1">Habitat</label>
                         <select name="id_habitat" id="edit_habitat" class="w-full rounded-xl border-slate-200 dark:bg-slate-800">
@@ -285,12 +294,13 @@ $habitats = habitat::getAllHabitats();
                             <?php endforeach; ?>
                         </select>
                     </div>
+                    <div class="col-span-2">
+                        <label class="block text-sm font-bold mb-1">Description courte</label>
+                        <textarea name="description_courte" id="edit_description" rows="2"
+                            class="w-full rounded-xl border-slate-200 dark:bg-slate-800"></textarea>
+                    </div>
                 </div>
-                <div class="col-span-2">
-                    <label class="block text-sm font-bold mb-1">Description courte</label>
-                    <textarea name="description_courte" id="edit_description" rows="2"
-                        class="w-full rounded-xl border-slate-200 dark:bg-slate-800"></textarea>
-                </div>
+
                 <div class="p-6 bg-gray-50 dark:bg-slate-800/50 flex justify-end gap-3">
                     <button type="button" data-close-edit class="px-4 py-2 font-bold">Annuler</button>
                     <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-xl font-bold shadow-lg">Mettre à jour</button>
@@ -318,6 +328,8 @@ $habitats = habitat::getAllHabitats();
                 document.getElementById('edit_image').value = btn.dataset.image;
                 document.getElementById('edit_habitat').value = btn.dataset.habitat;
                 document.getElementById('edit_preview').src = btn.dataset.image;
+                document.getElementById('edit_description').value = btn.dataset.description;
+                document.getElementById('edit_pays').value = btn.dataset.pays;
                 editModal.classList.remove('hidden');
             });
         });
