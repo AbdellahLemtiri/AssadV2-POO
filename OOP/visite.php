@@ -9,8 +9,8 @@ class visite
     private string $langue__visite = "";
     private int $capacite_max__visite = 0;
     private float $prix__visite = 0.0;
-    private int $statut__visite = 1; 
-    private int $id_guide = 1; 
+    private int $statut__visite = 1;
+    private int $id_guide = 1;
     private ?DateTime $dateheure_viste = null;
     private ?DateTime $duree__visite = null;
     public function __construct()
@@ -73,6 +73,7 @@ class visite
         }
         return false;
     }
+
 
     public function setDateheureVisite(string $dateheure_viste)
     {
@@ -212,14 +213,23 @@ class visite
         }
     }
 
-    public static function getVisites(): array
+    public static function getVisites(string $searchQuery = ""): array
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT * FROM visitesguidees";
+        if (!empty($searchQuery)) {
+            $sql .= " WHERE titre_visite LIKE :search OR langue__visite LIKE :search";
+        }
 
         try {
             $stmt = $conn->prepare($sql);
-            $stmt->execute();
+
+            if (!empty($searchQuery)) {
+                $stmt->execute(['search' => '%' . $searchQuery . '%']);
+            } else {
+                $stmt->execute();
+            }
+
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
             $visiteList = [];
@@ -242,7 +252,7 @@ class visite
             return [];
         }
     }
-      public function getVisite(int $id_visite): bool|self
+    public function getVisite(int $id_visite): bool|self
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT * FROM visitesguidees WHERE id_visite = :id";
@@ -275,22 +285,21 @@ class visite
     }
 
     public function getNameVisite(int $id_visite): string
-{
-    $conn = (new Connexion())->connect();
-    $sql = "SELECT titre_visite FROM visitesguidees WHERE id_visite = :id";
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT titre_visite FROM visitesguidees WHERE id_visite = :id";
 
-    try {
-        $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':id', $id_visite, PDO::PARAM_INT);
-        $stmt->execute();
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $id_visite, PDO::PARAM_INT);
+            $stmt->execute();
 
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        
-        return $row ? $row["titre_visite"] : "Visite inconnue";
-        
-    } catch (Exception $e) {
-        return "Erreur de chargement";
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+            return $row ? $row["titre_visite"] : "Visite inconnue";
+        } catch (Exception $e) {
+            return "Erreur de chargement";
+        }
     }
-}
 }

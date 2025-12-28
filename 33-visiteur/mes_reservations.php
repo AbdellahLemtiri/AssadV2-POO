@@ -1,11 +1,10 @@
 <?php
-
-
-       $id_utilisateur =  ($_SESSION['id']) ;
-        $nom_utilisateur =  ($_SESSION['nom']);
-        $role_utilisateur =  ($_SESSION['role']);
-
-
+require_once "../OOP/utilisateur.php";
+require_once  "../connexion/authinification.php";
+checkRole("visiteur");
+$id_utilisateur = $_SESSION['id_utilisateur'];
+$nom_utilisateur =  $_SESSION['nom_utilisateur'];
+$role_utilisateur =  $_SESSION['role_utilisateur'];
 ?>
 
 <!DOCTYPE html>

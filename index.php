@@ -11,41 +11,64 @@
      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
          rel="stylesheet" />
      <script id="tailwind-config">
-    tailwind.config = {
-        darkMode: "class",
-        theme: {
-            extend: {
-                colors: {
-                    primary: "#0d9488",
-                    "primary-dark": "#0f766e",
-                    "primary-light": "#2dd4bf",
-                    "background-light": "#f0fdfa",
-                    "background-dark": "#042f2e",
-                    "surface-light": "#ffffff",
-                    "surface-dark": "#134e4a",
-                    "text-light": "#164e63",
-                    "text-dark": "#a7f3d0",
-                    "text-secondary-light": "#0891b2",
-                    "text-secondary-dark": "#5eead4",
-                    "accent": "#f59e0b"       
-                },
-                fontFamily: {
-                    sans: ["Plus Jakarta Sans", "sans-serif"]
-                },
-                animation: {
-                    'fade-in': 'fadeIn 0.7s ease-out forwards',
-                    'slide-up': 'slideUp 0.8s ease-out forwards',
-                    'pulse-glow': 'pulseGlow 2s infinite'
-                },
-                keyframes: {
-                    fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
-                    slideUp: { '0%': { transform: 'translateY(60px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
-                    pulseGlow: { '0%, 100%': { boxShadow: '0 0 20px rgba(13,148,136,0.3)' }, '50%': { boxShadow: '0 0 40px rgba(13,148,136,0.6)' } }
-                }
-            }
-        }
-    }
-</script>
+         tailwind.config = {
+             darkMode: "class",
+             theme: {
+                 extend: {
+                     colors: {
+                         primary: "#0d9488",
+                         "primary-dark": "#0f766e",
+                         "primary-light": "#2dd4bf",
+                         "background-light": "#f0fdfa",
+                         "background-dark": "#042f2e",
+                         "surface-light": "#ffffff",
+                         "surface-dark": "#134e4a",
+                         "text-light": "#164e63",
+                         "text-dark": "#a7f3d0",
+                         "text-secondary-light": "#0891b2",
+                         "text-secondary-dark": "#5eead4",
+                         "accent": "#f59e0b"
+                     },
+                     fontFamily: {
+                         sans: ["Plus Jakarta Sans", "sans-serif"]
+                     },
+                     animation: {
+                         'fade-in': 'fadeIn 0.7s ease-out forwards',
+                         'slide-up': 'slideUp 0.8s ease-out forwards',
+                         'pulse-glow': 'pulseGlow 2s infinite'
+                     },
+                     keyframes: {
+                         fadeIn: {
+                             '0%': {
+                                 opacity: '0'
+                             },
+                             '100%': {
+                                 opacity: '1'
+                             }
+                         },
+                         slideUp: {
+                             '0%': {
+                                 transform: 'translateY(60px)',
+                                 opacity: '0'
+                             },
+                             '100%': {
+                                 transform: 'translateY(0)',
+                                 opacity: '1'
+                             }
+                         },
+                         pulseGlow: {
+                             '0%, 100%': {
+                                 boxShadow: '0 0 20px rgba(13,148,136,0.3)'
+                             },
+                             '50%': {
+                                 boxShadow: '0 0 40px rgba(13,148,136,0.6)'
+                             }
+                         }
+                     }
+                 }
+             }
+         }
+     </script>
      <style>
          body {
              font-family: "Plus Jakarta Sans", "Noto Sans", sans-serif;
@@ -66,7 +89,7 @@
              </div>
          </div>
      </header>
-  <div></div>
+     <div></div>
      <main class="flex-1 w-full flex flex-col md:flex-row h-[calc(100vh-64px)] overflow-hidden">
 
          <div class="hidden lg:flex w-1/2 relative bg-surface-dark overflow-hidden flex-col justify-end p-12">
@@ -127,55 +150,55 @@
                  </div>
 
                  <div id="loginForm" class="tab-content hidden">
-                <?php if(isset($_GET['error'])): ?>
-    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 text-sm">
-        <?php 
-            if($_GET['error'] == "login_failed") echo "Email ou mot de passe incorrect.";
-            if($_GET['error'] == "empty_fields") echo "Veuillez remplir tous les champs.";
-            if($_GET['error'] == "password_digits_only") echo "Le mot de passe doit contenir uniquement des chiffres.";
+                     <?php if (isset($_GET['error'])): ?>
+                         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4 text-sm">
+                             <?php
+                                if ($_GET['error'] == "login_failed") echo "Email ou mot de passe incorrect.";
+                                if ($_GET['error'] == "empty_fields") echo "Veuillez remplir tous les champs.";
+                                if ($_GET['error'] == "password_digits_only") echo "Le mot de passe doit contenir uniquement des chiffres.";
 
-        ?>
-    </div>
-<?php endif; ?>
+                                ?>
+                         </div>
+                     <?php endif; ?>
 
-<form method="POST" action="Fonctionalite_php/seconnecter.php" class="flex flex-col gap-5 mt-2">
-    <div class="flex flex-col gap-2">
+                     <form method="POST" action="connexion/connexion.php" class="flex flex-col gap-5 mt-2">
+                         <div class="flex flex-col gap-2">
 
-        <label class="text-sm font-bold text-text-main dark:text-white" for="email">Adresse e-mail</label>
-        <div class="relative">
-            <div class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">
-                <span class="material-symbols-outlined text-[20px]">mail</span>
-            </div>
-            <input class="w-full h-12 pl-10 pr-4 bg-white dark:bg-white/5 border border-[#e7dbcf] dark:border-white/10 rounded-lg text-sm text-text-main dark:text-white placeholder:text-text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                name="email" id="email" placeholder="nom@exemple.com" type="email" required />
-        </div>
-    </div>
+                             <label class="text-sm font-bold text-text-main dark:text-white" for="email">Adresse e-mail</label>
+                             <div class="relative">
+                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">
+                                     <span class="material-symbols-outlined text-[20px]">mail</span>
+                                 </div>
+                                 <input class="w-full h-12 pl-10 pr-4 bg-white dark:bg-white/5 border border-[#e7dbcf] dark:border-white/10 rounded-lg text-sm text-text-main dark:text-white placeholder:text-text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                                     name="email" id="email" placeholder="nom@exemple.com" type="email" required />
+                             </div>
+                         </div>
 
-    <div class="flex flex-col gap-2">
-        <div class="flex justify-between items-center">
-            <label class="text-sm font-bold text-text-main dark:text-white" for="password">Mot de passe</label>
-            <a class="text-xs font-semibold text-primary hover:underline" href="#">Oublié ?</a>
-        </div>
-        <div class="relative">
-            <div class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">
-                <span class="material-symbols-outlined text-[20px]">lock</span>
-            </div>
-            <input class="w-full h-12 pl-10 pr-10 bg-white dark:bg-white/5 border border-[#e7dbcf] dark:border-white/10 rounded-lg text-sm text-text-main dark:text-white placeholder:text-text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                id="password" name="password" placeholder="••••••••" type="password" required />
-            
-            <button class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-main dark:hover:text-white"
-                type="button" onclick="togglePassword()">
-                <span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility_off</span>
-            </button>
-        </div>
-    </div>
+                         <div class="flex flex-col gap-2">
+                             <div class="flex justify-between items-center">
+                                 <label class="text-sm font-bold text-text-main dark:text-white" for="password">Mot de passe</label>
+                                 <a class="text-xs font-semibold text-primary hover:underline" href="#">Oublié ?</a>
+                             </div>
+                             <div class="relative">
+                                 <div class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">
+                                     <span class="material-symbols-outlined text-[20px]">lock</span>
+                                 </div>
+                                 <input class="w-full h-12 pl-10 pr-10 bg-white dark:bg-white/5 border border-[#e7dbcf] dark:border-white/10 rounded-lg text-sm text-text-main dark:text-white placeholder:text-text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
+                                     id="password" name="password" placeholder="••••••••" type="password" required />
 
-    <button class="mt-2 w-full h-12 bg-primary hover:bg-[#d9720b] text-white dark:text-[#1b140d] font-bold rounded-lg shadow-lg shadow-primary/25 transition-all flex items-center justify-center gap-2 group"
-        type="submit">
-        <span>Se connecter</span>
-        <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
-    </button>
-</form>
+                                 <button class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-main dark:hover:text-white"
+                                     type="button" onclick="togglePassword()">
+                                     <span class="material-symbols-outlined text-[20px]" id="eye-icon">visibility_off</span>
+                                 </button>
+                             </div>
+                         </div>
+
+                         <button class="mt-2 w-full h-12 bg-primary hover:bg-[#d9720b] text-white dark:text-[#1b140d] font-bold rounded-lg shadow-lg shadow-primary/25 transition-all flex items-center justify-center gap-2 group"
+                             type="submit">
+                             <span>Se connecter</span>
+                             <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                         </button>
+                     </form>
                      <p class="text-center text-sm text-text-muted mt-4">
                          Pas encore de compte ?
                          <a class="font-bold text-primary hover:text-primary/80" href="#"
@@ -184,7 +207,7 @@
                  </div>
 
                  <div id="registerForm" class="tab-content">
-                     <form action="Fonctionalite_php/inscrire.php" method="POST" class="flex flex-col gap-5 mt-2">
+                     <form action="connexion/inscription.php" method="POST" class="flex flex-col gap-5 mt-2">
 
                          <div class="flex flex-col gap-2">
                              <label class="text-sm font-bold text-text-main dark:text-white" for="full-name">Nom </label>
@@ -226,12 +249,12 @@
                                  </div>
                                  <input
                                      class="w-full h-12 pl-10 pr-4 bg-white dark:bg-white/5 border border-[#e7dbcf] dark:border-white/10 rounded-lg text-sm text-text-main dark:text-white placeholder:text-text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                                     id="reg-email" name="reg-email" placeholder="nom@exemple.com" type="email" required />
+                                     id="reg-email" name="email" placeholder="nom@exemple.com" type="email" required />
                              </div>
                          </div>
 
                          <div class="flex flex-col gap-2">
-                             <label class="text-sm font-bold text-text-main dark:text-white" for="reg-password">Mot de
+                             <label class="text-sm font-bold text-text-main dark:text-white" for="password">Mot de
                                  passe</label>
                              <div class="relative">
                                  <div class="absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">
@@ -240,7 +263,7 @@
                                  </div>
                                  <input
                                      class="w-full h-12 pl-10 pr-10 bg-white dark:bg-white/5 border border-[#e7dbcf] dark:border-white/10 rounded-lg text-sm text-text-main dark:text-white placeholder:text-text-muted/70 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all"
-                                     id="reg-password" name="reg-password" placeholder="••••••••" type="password" required />
+                                     id="reg-password" name="password" placeholder="••••••••" type="password" required />
                                  <button
                                      class="absolute right-3 top-1/2 -translate-y-1/2 text-text-muted hover:text-text-main dark:hover:text-white"
                                      type="button">
@@ -285,11 +308,11 @@
               * @param {HTMLElement} inactiveButton - Le bouton à désactiver.
               */
              function updateTabClasses(activeButton, inactiveButton) {
-          
+
                  activeButton.classList.remove('border-transparent', 'text-text-muted', 'hover:text-text-main', 'dark:hover:text-white', 'font-medium');
                  activeButton.classList.add('border-primary', 'text-text-main', 'dark:text-white', 'font-bold');
 
-                 
+
                  inactiveButton.classList.remove('border-primary', 'text-text-main', 'dark:text-white', 'font-bold');
                  inactiveButton.classList.add('border-transparent', 'text-text-muted', 'hover:text-text-main', 'dark:hover:text-white', 'font-medium');
              }

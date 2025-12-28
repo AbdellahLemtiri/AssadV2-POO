@@ -2,6 +2,11 @@
 
 require_once "../OOP/visite.php";
 require_once "../OOP/etape.php";
+require_once  "../connexion/authinification.php";
+checkRole("guide");
+$id_utilisateur = $_SESSION['id_utilisateur'];
+$nom_utilisateur =  $_SESSION['nom_utilisateur'];
+$role_utilisateur =  $_SESSION['role_utilisateur'];
 ?>
 
 <!DOCTYPE html>
@@ -142,6 +147,7 @@ require_once "../OOP/etape.php";
                     <p class="text-text-sec-light dark:text-text-sec-dark text-xs truncate">Guide <?= $role_utilisateur ?></p>
                 </div>
             </div>
+
         </aside>
         <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-background-light dark:bg-background-dark">
             <div class="p-6 md:p-10 max-w-7xl mx-auto w-full flex flex-col gap-8">
@@ -355,67 +361,68 @@ require_once "../OOP/etape.php";
                         </button>
                     </div>
                 </form>
-             
-            </div>   <div id="addVisiteModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-                    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
 
-                        <div class="p-6 border-b flex justify-between items-center bg-blue-600 text-white">
-                            <h3 class="text-xl font-bold flex items-center gap-2">
-                                <span class="material-symbols-outlined">add_location_alt</span> Nouvelle Visite
-                            </h3>
-                            <button onclick="toggleAddModal(false)" class="hover:rotate-90 transition-transform">
-                                <span class="material-symbols-outlined">close</span>
-                            </button>
+            </div>
+            <div id="addVisiteModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+
+                    <div class="p-6 border-b flex justify-between items-center bg-blue-600 text-white">
+                        <h3 class="text-xl font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined">add_location_alt</span> Nouvelle Visite
+                        </h3>
+                        <button onclick="toggleAddModal(false)" class="hover:rotate-90 transition-transform">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+
+                    <form action="fx/add_visite.php" method="POST" class="p-8 overflow-y-auto flex-1">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-bold mb-2">Titre de la Visite</label>
+                                <input type="text" name="titre" required class="w-full px-4 py-3 rounded-xl border bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Langue</label>
+                                <select name="langue" class="w-full px-4 py-3 rounded-xl border bg-gray-50">
+                                    <option value="Français">Français</option>
+                                    <option value="Arabe">Arabe</option>
+                                    <option value="Anglais">Anglais</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Prix (DH)</label>
+                                <input type="number" name="prix" step="0.01" required class="w-full px-4 py-3 rounded-xl border bg-gray-50">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Date et Heure</label>
+                                <input type="datetime-local" name="date_heure" required class="w-full px-4 py-3 rounded-xl border bg-gray-50">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Capacité Max</label>
+                                <input type="number" name="capacite_max" required class="w-full px-4 py-3 rounded-xl border bg-gray-50">
+                            </div>
                         </div>
 
-                        <form action="fx/add_visite.php" method="POST" class="p-8 overflow-y-auto flex-1">
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-bold mb-2">Titre de la Visite</label>
-                                    <input type="text" name="titre" required class="w-full px-4 py-3 rounded-xl border bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold mb-2">Langue</label>
-                                    <select name="langue" class="w-full px-4 py-3 rounded-xl border bg-gray-50">
-                                        <option value="Français">Français</option>
-                                        <option value="Arabe">Arabe</option>
-                                        <option value="Anglais">Anglais</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold mb-2">Prix (DH)</label>
-                                    <input type="number" name="prix" step="0.01" required class="w-full px-4 py-3 rounded-xl border bg-gray-50">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold mb-2">Date et Heure</label>
-                                    <input type="datetime-local" name="date_heure" required class="w-full px-4 py-3 rounded-xl border bg-gray-50">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-bold mb-2">Capacité Max</label>
-                                    <input type="number" name="capacite_max" required class="w-full px-4 py-3 rounded-xl border bg-gray-50">
-                                </div>
+                        <div class="border-t pt-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h4 class="font-bold text-blue-600 flex items-center gap-2">
+                                    <span class="material-symbols-outlined">route</span> Étapes du parcours
+                                </h4>
+                                <button type="button" onclick="addNewEtapeInAdd()" class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg font-bold hover:bg-blue-100">+ Ajouter</button>
                             </div>
+                            <div id="add-etapes-container" class="space-y-4">
+                            </div>
+                        </div>
 
-                            <div class="border-t pt-6">
-                                <div class="flex justify-between items-center mb-4">
-                                    <h4 class="font-bold text-blue-600 flex items-center gap-2">
-                                        <span class="material-symbols-outlined">route</span> Étapes du parcours
-                                    </h4>
-                                    <button type="button" onclick="addNewEtapeInAdd()" class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg font-bold hover:bg-blue-100">+ Ajouter</button>
-                                </div>
-                                <div id="add-etapes-container" class="space-y-4">
-                                </div>
-                            </div>
-
-                            <div class="mt-8 pt-6 border-t flex justify-end gap-3">
-                                <button type="button" onclick="toggleAddModal(false)" class="px-6 py-3 font-bold text-gray-400">Annuler</button>
-                                <button type="submit" name="ajouter_visite" class="px-10 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all">
-                                    Enregistrer la Visite
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="mt-8 pt-6 border-t flex justify-end gap-3">
+                            <button type="button" onclick="toggleAddModal(false)" class="px-6 py-3 font-bold text-gray-400">Annuler</button>
+                            <button type="submit" name="ajouter_visite" class="px-10 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all">
+                                Enregistrer la Visite
+                            </button>
+                        </div>
+                    </form>
                 </div>
+            </div>
         </main>
     </div>
     <script>
@@ -479,23 +486,23 @@ require_once "../OOP/etape.php";
             document.getElementById('updateModal').classList.remove('flex');
         }
 
-   function toggleAddModal(show) {
-    const modal = document.getElementById('addVisiteModal');
-    if (show) {
-        modal.classList.remove('hidden');
-        // زيد مرحلة أولى أوتوماتيكيا فاش يفتح المودال
-        if (document.getElementById('add-etapes-container').innerHTML.trim() === "") {
-            addNewEtapeInAdd();
+        function toggleAddModal(show) {
+            const modal = document.getElementById('addVisiteModal');
+            if (show) {
+                modal.classList.remove('hidden');
+                // زيد مرحلة أولى أوتوماتيكيا فاش يفتح المودال
+                if (document.getElementById('add-etapes-container').innerHTML.trim() === "") {
+                    addNewEtapeInAdd();
+                }
+            } else {
+                modal.classList.add('hidden');
+            }
         }
-    } else {
-        modal.classList.add('hidden');
-    }
-}
 
-function addNewEtapeInAdd() {
-    const container = document.getElementById('add-etapes-container');
-    const count = container.children.length + 1;
-    const html = `
+        function addNewEtapeInAdd() {
+            const container = document.getElementById('add-etapes-container');
+            const count = container.children.length + 1;
+            const html = `
         <div class="p-4 border rounded-xl bg-gray-50 relative animate-fade-in">
             <button type="button" onclick="this.parentElement.remove()" class="absolute top-2 right-2 text-red-400 hover:text-red-600">
                 <span class="material-symbols-outlined text-sm">delete</span>
@@ -505,8 +512,8 @@ function addNewEtapeInAdd() {
             <textarea name="etape_desc[]" placeholder="Description..." class="w-full p-2 bg-white rounded-lg border text-sm h-16"></textarea>
         </div>
     `;
-    container.insertAdjacentHTML('beforeend', html);
-}
+            container.insertAdjacentHTML('beforeend', html);
+        }
     </script>
 </body>
 

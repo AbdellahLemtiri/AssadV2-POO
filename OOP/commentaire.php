@@ -88,38 +88,7 @@ class Commentaire
             "Visiteur ID: " . $this->id_visiteur . "\n" .
             "Visite ID: " . $this->id_visite . "\n";
     }
-    // public function getCommentaire(): array
-    // {
-    //     return [
-    //         'id_commentaire' => $this->id_commentaire,
-    //         'contenu_commentaire' => $this->contenu_commentaire,
-    //         'date_commentaire' => $this->date_commentaire->format('Y-m-d H:i:s'),
-    //         'note' => $this->note,
-    //         'id_visiteur' => $this->id_visiteur,
-    //         'id_visite' => $this->id_visite
-    //     ];
-    // }
-    // public function setCommentaire(array $data): void
-    // {
-    //     if (isset($data['id_commentaire'])) {
-    //         $this->setIdCommentaire($data['id_commentaire']);
-    //     }
-    //     if (isset($data['contenu_commentaire'])) {
-    //         $this->setContenuCommentaire($data['contenu_commentaire']);
-    //     }
-    //     if (isset($data['date_commentaire'])) {
-    //         $this->setDateCommentaire($data['date_commentaire']);
-    //     }
-    //     if (isset($data['note'])) {
-    //         $this->setNote($data['note']);
-    //     }
-    //     if (isset($data['id_visiteur'])) {
-    //         $this->setIdVisiteur($data['id_visiteur']);
-    //     }
-    //     if (isset($data['id_visite'])) {
-    //         $this->setIdVisite($data['id_visite']);
-    //     }
-    // }
+
     public function ajouterCommentaire(): bool
     {
         $conn = (new Connexion())->connect();
@@ -166,21 +135,18 @@ class Commentaire
             return false;
         }
     }
-    static function getAllCommentaires()
+    static function getAllCommentaires() : array
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT * FROM commentaires  ";
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
-            return false;
+            return  [];
         }
         if ($stmt->execute()) {
             $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $allCommantaire = [];
-            // if (
-            //     !empty($result)
-            // ) {
                 $commentaire = new Commentaire();
 
                 foreach ($resultats as $result) {
@@ -191,14 +157,14 @@ class Commentaire
                     $commentaire->setIdVisite($result['id_visite']);
                     $allCommantaire[] = $commentaire;
                 }
-        // }
+    
             return $allCommantaire;
         } else {
-            return false;
+            return [];
         }
     }
 }
 
 
 $comm = Commentaire::getAllCommentaires();
-print_r($comm);
+// print_r($comm);

@@ -4,7 +4,7 @@ require_once 'Connexion.php';
 class Animal
 {
 
-    private int $id_animal ;
+    private int $id_animal;
     private string $nom_animal = "";
     private string $espece_animal = "";
     private string $type_alimentation = "";
@@ -153,12 +153,36 @@ class Animal
             return false;
         }
     }
-    static function getAnimaux(): array
+    public static function getAnimaux($search = '', $id_habitat = '', $pays = ''): array
     {
         $conn = (new Connexion())->connect();
-        $sql = "SELECT a.*, h.nom_habitat FROM animaux a LEFT JOIN habitats h ON a.id_habitat = h.id_habitat";
+        $sql = "SELECT a.*, h.nom_habitat FROM animaux a LEFT JOIN habitats h ON a.id_habitat = h.id_habitat WHERE 1=1";
         try {
+           
+
+            if (!empty($search)) {
+                $sql .= " AND nom_animal LIKE :search";
+            }
+            if (!empty($id_habitat)) {
+                $sql .= " AND id_habitat = :id_habitat";
+            }
+            if (!empty($pays)) {
+                $sql .= " AND pays_origine = :pays";
+            }
+
             $stmt = $conn->prepare($sql);
+
+            if (!empty($search)) {
+                $searchParam = "%$search%";
+                $stmt->bindParam(':search', $searchParam);
+            }
+            if (!empty($id_habitat)) {
+                $stmt->bindParam(':id_habitat', $id_habitat);
+            }
+            if (!empty($pays)) {
+                $stmt->bindParam(':pays', $pays);
+            }
+
             $stmt->execute();
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -181,26 +205,41 @@ class Animal
             return [];
         }
     }
- public function ajouterAnimal(): bool
+    public function ajouterAnimal(): bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "INSERT INTO animaux (nom_animal, espece, alimentation_animal, pays_origine, description_animal, image_url, id_habitat) 
+            VALUES (:nom_animal, :espece_animal, :type_alimentation, :pays_origine, :description_animal, :image_url, :id_habitat)";
+
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':nom_animal', $this->nom_animal);
+            $stmt->bindParam(':espece_animal', $this->espece_animal);
+            $stmt->bindParam(':type_alimentation', $this->type_alimentation);
+            $stmt->bindParam(':pays_origine', $this->pays_origine);
+            $stmt->bindParam(':description_animal', $this->description_animal);
+            $stmt->bindParam(':image_url', $this->image_url);
+            $stmt->bindParam(':id_habitat', $this->id_habitat);
+
+            return $stmt->execute();
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+ 
+    public function getNumbreAnimaux(): int 
 {
     $conn = (new Connexion())->connect();
-    $sql = "INSERT INTO animaux (nom_animal, espece, alimentation_animal, pays_origine, description_animal, image_url, id_habitat) 
-            VALUES (:nom_animal, :espece_animal, :type_alimentation, :pays_origine, :description_animal, :image_url, :id_habitat)";
-    
+    $sql = "SELECT count(*) as nbr FROM animaux";
     try {
         $stmt = $conn->prepare($sql);
-        $stmt->bindParam(':nom_animal', $this->nom_animal);
-        $stmt->bindParam(':espece_animal', $this->espece_animal);
-        $stmt->bindParam(':type_alimentation', $this->type_alimentation);
-        $stmt->bindParam(':pays_origine', $this->pays_origine);
-        $stmt->bindParam(':description_animal', $this->description_animal);
-        $stmt->bindParam(':image_url', $this->image_url);
-        $stmt->bindParam(':id_habitat', $this->id_habitat);
-
-        return $stmt->execute();
-    } 
-    catch (Exception $e) {
-        return false;
+        $stmt->execute();
+        $resultat = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        return  $resultat['nbr'] ;
+    } catch (Exception $e) {
+        return 0;
     }
 }
 }

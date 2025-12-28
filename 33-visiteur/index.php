@@ -1,5 +1,10 @@
 <?php
-
+require_once "../OOP/utilisateur.php";
+require_once  "../connexion/authinification.php";
+checkRole("visiteur");
+$id_utilisateur = $_SESSION['id_utilisateur'];
+$nom_utilisateur =  $_SESSION['nom_utilisateur'];
+$role_utilisateur =  $_SESSION['role_utilisateur'];
 ?> 
 
 <!DOCTYPE html>
@@ -21,7 +26,7 @@
         theme: {
             extend: {
                 colors: {
-                    primary: "#0d9488",          // Teal واعر مودرن
+                    primary: "#0d9488",         
                     "primary-dark": "#0f766e",
                     "primary-light": "#2dd4bf",
                     "background-light": "#f0fdfa",
@@ -32,7 +37,7 @@
                     "text-dark": "#a7f3d0",
                     "text-secondary-light": "#0891b2",
                     "text-secondary-dark": "#5eead4",
-                    "accent": "#f59e0b"          // لمسة ذهبية
+                    "accent": "#f59e0b"        
                 },
                 fontFamily: {
                     sans: ["Plus Jakarta Sans", "sans-serif"]
@@ -123,26 +128,8 @@
             <h2 class="text-3xl font-extrabold text-[#1b140d] mb-4 text-center">Nos Résidents Populaires</h2>
             <p class="text-center text-gray-500 mb-8">Cliquez pour voir les fiches détaillées de nos espèces emblématiques.</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <?php foreach ($array_animaux as $animal) : ?>
-                    <div class="bg-white rounded-xl overflow-hidden shadow-lg group flex items-center border border-[#f3ede7]">
-                        <img src="<?= $animal['image_url']?>" alt="<?= $animal['nom_animal'] ?>"
-                            class="w-32 h-32 object-cover shrink-0 group-hover:scale-105 transition-transform duration-300" />
-                        <div class="p-4 flex-grow">
-                            <h3 class="text-xl font-bold text-[#1b140d]"><?= $animal['nom_animal']?></h3>
-                            <p class="text-gray-500 text-sm mb-3">Découvrez son habitat et son statut de conservation.</p>
-                            <a href="animaux.php" class="text-primary text-sm font-bold hover:underline">
-                                Voir la fiche complète &rarr;
-                            </a>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
             <div class="text-center mt-8">
-                <a href="animaux.php" class="inline-flex items-center justify-center gap-2 px-6 py-3 border border-[#e5e5e5] hover:border-primary text-[#1b140d] hover:text-primary font-bold rounded-xl transition-all bg-white hover:bg-orange-50">
-                    Voir la liste complète (<?= count($array_animaux) * 4 ?> animaux)
-                    <span class="material-symbols-outlined">arrow_forward</span>
-                </a>
+               
             </div>
         </section>
 

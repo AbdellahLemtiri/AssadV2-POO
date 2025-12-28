@@ -70,9 +70,7 @@ class Utilisateur
 }
     public function setMotPasse($mot_passe): bool
     {
-        $regex = '/^[A-Za-z@&1-9!?]{5,20}$/'; 
-        if (preg_match($regex, $mot_passe))
-        {
+        if(filter_var($mot_passe, FILTER_VALIDATE_EMAIL)){
             $this->mot_passe = $mot_passe;
             return true;
         }
@@ -99,7 +97,7 @@ class Utilisateur
         if ($user) 
         {
             $hashedPassword = $user['motpasse_hash'];
-            if ($user["Approuver_utilisateur"]) {
+            if ($user["Approuver_utilisateur"]&&$user['statut_utilisateur']) {
                 if (password_verify($this->mot_passe, $hashedPassword)) 
                     {
                     $_SESSION['id_utilisateur'] = $user['id_utilisateur'];
@@ -116,6 +114,7 @@ class Utilisateur
             {
                 return "notApproved";
             }
+        
         } else {
             return "userNotFound";
         }

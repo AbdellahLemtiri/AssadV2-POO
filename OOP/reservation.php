@@ -175,4 +175,19 @@ class Reservation extends Utilisateur
             return [];
         }
     }
+    public function getNumbreVisiteur($id_visite)
+    {
+        $conn = (new Connexion)->connect();
+        $sql = "SELECT SUM(nb_personnes) as total FROM reservations WHERE id_visite = :id";
+        try {
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':id',$id_visite);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'] ? (int)$result['total'] : 0;
+    } catch (Exception $e) {
+        return 0;
+    }
 }
+    }
+

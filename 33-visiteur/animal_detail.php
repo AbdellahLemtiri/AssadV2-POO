@@ -1,12 +1,14 @@
 <?php
 require_once "../Fonctionalite_php/connect.php";
 
-
+require_once  "../connexion/authinification.php";
+checkRole("visiteur");
+$id_utilisateur = $_SESSION['id_utilisateur'];
+$nom_utilisateur =  $_SESSION['nom_utilisateur'];
+$role_utilisateur =  $_SESSION['role_utilisateur'];
 
 if (isset($_GET['id']) && !empty($_GET['id'])) {
     $id = intval($_GET['id']);
-
-  
     $sql = "SELECT  a.*, h.nom as habnom, h.type_climat, h.zone_zoo, h.description as description_habitat 
             FROM animaux a 
             LEFT JOIN habitats h ON a.id_habitat = h.id

@@ -1,5 +1,11 @@
 <?php
 require_once '../OOP/admin.php';
+require_once  "../connexion/authinification.php";
+checkRole("admin");
+$id_utilisateur = $_SESSION['id_utilisateur'];
+$nom_utilisateur =  $_SESSION['nom_utilisateur'];
+$role_utilisateur =  $_SESSION['role_utilisateur'];
+
 $admin = new Admin();
 $lesUtl = $admin->afficherToutUtilisatdeurs();
 

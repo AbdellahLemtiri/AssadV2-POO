@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -22,7 +24,7 @@
         </h1>
 
         <p class="text-gray-600 mb-8 leading-relaxed text-lg">
-            Merci de nous avoir rejoint ! Votre profil de <strong>Guide</strong> est en cours de validation par notre administration.
+            Merci de nous avoir rejoint ! Votre profil de <strong></strong> est en cours de validation par notre administration.
         </p>
 
         <div class="bg-blue-50/50 rounded-2xl p-5 mb-10 flex items-start gap-4 text-left border border-blue-100">
@@ -33,7 +35,7 @@
         </div>
 
         <div class="space-y-4">
-            <a href="../logout.php" 
+            <a href="../index.php" 
                class="w-full py-4 bg-[#1b140d] text-white font-bold rounded-2xl hover:bg-black transition-all flex items-center justify-center gap-3 shadow-lg shadow-black/10">
                 <span class="material-symbols-outlined">logout</span>
                 Se déconnecter
