@@ -182,4 +182,25 @@ class Animal
             return [];
         }
     }
+ public function ajouterAnimal(): bool
+{
+    $conn = (new Connexion())->connect();
+    $sql = "INSERT INTO animaux (nom_animal, espece, alimentation_animal, pays_origine, description_animal, image_url, id_habitat) 
+            VALUES (:nom_animal, :espece_animal, :type_alimentation, :pays_origine, :description_animal, :image_url, :id_habitat)";
+    
+    try {
+        $stmt = $conn->prepare($sql);
+        $stmt->bindParam(':nom_animal', $this->nom_animal);
+        $stmt->bindParam(':espece_animal', $this->espece_animal);
+        $stmt->bindParam(':type_alimentation', $this->type_alimentation);
+        $stmt->bindParam(':pays_origine', $this->pays_origine);
+        $stmt->bindParam(':description_animal', $this->description_animal);
+        $stmt->bindParam(':image_url', $this->image_url);
+        $stmt->bindParam(':id_habitat', $this->id_habitat);
+
+        return $stmt->execute();
+    } catch (Exception $e) {
+        return false;
+    }
+}
 }

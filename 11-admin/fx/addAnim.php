@@ -1,5 +1,6 @@
+<?php
 require_once "../../OOP/animaux.php";
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'edit') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add') {
     
     $id_animal    = (int)$_POST['animal_id'];
     $nom          =    ($_POST['nom']);
@@ -18,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $obj->setTypeAlimentation($alimentation);
     $obj->setIdHabitat($id_habitat);
     $obj->setPaysOrigine($pays);
- if($obj->modifierAnimal($id_animal)) {
+ if($obj->) {
         header("Location: ../admin_animaux.php?msg=success");
      exit();   
     } else {
