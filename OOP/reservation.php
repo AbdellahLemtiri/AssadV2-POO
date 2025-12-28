@@ -36,11 +36,13 @@ class Reservation extends Utilisateur
         return $this->id_visite;
     }
 
-    public function setNombrePersonnes(int $nombre_personnes)
+    public function setNombrePersonnes(int $nombre_personnes): bool
     {
         if ($nombre_personnes >= 0) {
             $this->nombre_personnes = $nombre_personnes;
+            return true;
         }
+        return false;
     }
     public function setIdVisiteur(int $id_visiteur)
     {
@@ -55,11 +57,13 @@ class Reservation extends Utilisateur
             $this->id_visite = $id_visite;
         }
     }
-    public function setIdReservation(int $id_reservation)
+    public function setIdReservation(int $id_reservation): bool
     {
         if ($id_reservation > 0) {
             $this->id_reservation = $id_reservation;
+            return true;
         }
+        return false;
     }
     public function setDateReservation(string $date_reservation)
     {
@@ -110,47 +114,64 @@ class Reservation extends Utilisateur
             return false;
         }
     }
-   public static function getAllResrvation(): array
-{
-    $conn = (new Connexion())->connect();
-    $sql = "SELECT r.*, u.nom_utilisateur FROM reservations r 
-            INNER JOIN utilisateurs u ON u.id_utilisateur = r.id_utilisateur";
-    
-    try {
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        $allRervation = [];
-        if ($resultats) {
+
+    public static function getAllResrvation(): array
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT r.*, u.nom_utilisateur FROM reservations r 
+                INNER JOIN utilisateurs u ON u.id_utilisateur = r.id_utilisateur";
+
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $allRervation = [];
             foreach ($resultats as $resultat) {
                 $reservation = new Reservation();
-                
-                // تنعمروا البيانات بلا شرط حيت الـ Setters مكرجعوش true
+
                 $reservation->setIdReservation($resultat["id_reservations"]);
                 $reservation->setNombrePersonnes($resultat["nb_personnes"]);
                 $reservation->setIdVisiteur($resultat["id_utilisateur"]);
                 $reservation->setIdVisite($resultat["id_visite"]);
                 $reservation->setDateReservation($resultat["date_reservation"]);
-                
-                // بما أن Reservation كيريث من Utilisateur، هاد الدالة خاص تكون في Utilisateur
-                if (method_exists($reservation, 'setNomUtilisateur')) {
-                    $reservation->setNomUtilisateur($resultat['nom_utilisateur']);
-                }
+                $reservation->setNomUtilisateur($resultat['nom_utilisateur']);
 
                 $allRervation[] = $reservation;
             }
+            return $allRervation;
+        } catch (Exception $e) {
+            return [];
         }
-        return $allRervation;
-    } catch (Exception $e) {
-        return [];
     }
-}
+    public function getallUtlisateurVisite(int $idVisite): array
 
-public function getallUtlisateurvisite($idvisite) : array 
-{
-    $conn = (new Connexion)->connect();
-    $sql = 
-}
+    {
 
+        $conn = (new Connexion)->connect();
+        $sql = "SELECT r.nb_personnes,u.id_utilisateur, u.nom_utilisateur
+            FROM reservations r
+            INNER JOIN utilisateurs u ON r.id_utilisateur = u.id_utilisateur
+            WHERE r.id_visite = :id";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $idVisite, PDO::PARAM_INT);
+            $stmt->execute();
+            $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $reser = [];
+
+            foreach ($resultats as $res) {
+                $obj = new Reservation();
+                $obj->setNombrePersonnes($res['nb_personnes']);
+                $obj->setIdUtilisateur($res['id_utilisateur']);
+                $obj->setNomUtilisateur($res['nom_utilisateur']);
+                $reser[] = $obj;
+            }
+
+            return $reser;
+        } catch (Exception $e) {
+
+            return [];
+        }
+    }
 }
