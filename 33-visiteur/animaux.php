@@ -1,48 +1,3 @@
- <?php
-
-require_once "../Fonctionalite_php/auth_check.php";
-protect_page('visiteur'); 
-       $id_utilisateur =  ($_SESSION['id']) ;
-        $nom_utilisateur =  ($_SESSION['nom']);
-        $role_utilisateur =  ($_SESSION['role']);
-
-include "../Fonctionalite_php/connect.php";
-$animaux = [];
-
-$search = $_POST['search'] ?? '';
-$id_habitat = $_POST['id_habitat'] ?? '';
-$pays = $_POST['pays'] ?? '';
-
-$sql = "
-SELECT a.*, h.nom as nom_habitat
-FROM animaux a
-LEFT JOIN habitats h ON a.id_habitat = h.id
-WHERE 1=1
-";
-
-if (!empty($search)) {
-    $search = $connect->real_escape_string($search);
-    $sql .= " AND a.nom LIKE '%$search%'";
-}
-
-if (!empty($id_habitat)) {
-    $id_habitat = (int)$id_habitat;
-    $sql .= " AND a.id_habitat = $id_habitat";
-}
-
-if (!empty($pays)) {
-    $pays = $connect->real_escape_string($pays);
-    $sql .= " AND a.pays_origine = '$pays'";
-}
-
-$sql .= " ORDER BY (a.nom = 'Asaad') DESC, a.nom";
-
-$res = $connect->query($sql);
-if ($res) {
-    $animaux = $res->fetch_all(MYSQLI_ASSOC);
-}
-
-?>
 
 
  <!DOCTYPE html>
@@ -204,7 +159,7 @@ if ($res) {
   <div class="bg-white/80 backdrop-blur-xl shadow-sm border border-[#f3ede7] rounded-xl p-4 mb-8">
     <div class="flex flex-col md:flex-row gap-4 justify-between items-center">
 
-      <!-- 🔍 Search -->
+      
       <div class="w-full md:w-1/3 relative group">
         <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <span class="material-symbols-outlined text-gray-400 group-focus-within:text-primary transition-colors">
@@ -228,20 +183,8 @@ if ($res) {
 
   <option value="">tout</option>
 
-  <?php
-    $sql2 = "SELECT id, nom FROM habitats ORDER BY nom";
-    $res = $connect->query($sql2);
+      <option value="<?= 'id' ?>"><?= 'nom' ?></option>
 
-    $habitat = [];
-    if ($res) {
-      $habitat = $res->fetch_all(MYSQLI_ASSOC);
-    }
-
-    foreach ($habitat as $hab):
-
-  ?>
-      <option value="<?= $hab['id'] ?>"><?=  $hab['nom'] ?></option>
-  <?php endforeach; ?>
 
 </select>
 
@@ -313,38 +256,37 @@ if ($res) {
                          </a>
                      </div>
                  </div> -->
-                <?php if(count($animaux) == 0){
-                    echo "<div>aucun animaux </div>";
-                } ?>
+                <?php 
+                require_once "../OOP/animaux.php";
+                $animaux = Animal::getAnimaux();
+                 ?>
                  <?php foreach ($animaux as $anm): ?>
                      <div class="group flex flex-col bg-white rounded-2xl border border-[#f3ede7] overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                          <a href="animal_detail.php?id=2" class="h-48 overflow-hidden relative">
                              <img alt="Éléphant d'Afrique"
                                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                 src="<?= $anm['image'] ?>" />
-                             <div class="absolute top-3 right-3 bg-white/90 backdrop-blur-sm p-1.5 rounded-full shadow-sm text-gray-500">
-                                 <span class="material-symbols-outlined text-[18px]">favorite</span>
-                             </div>
+                                 src="<?= $anm->getImageUrl()?>" />
+                             
                          </a>
                          <div class="p-4 flex flex-col flex-grow">
                              <div class="flex items-start justify-between mb-2">
                                  <div>
-                                     <h3 class="text-lg font-bold text-[#1b140d]"><?= $anm['nom'] ?></h3>
-                                     <p class="text-xs text-gray-500 italic"><?= $anm['espece'] ?></p>
+                                     <h3 class="text-lg font-bold text-[#1b140d]"><?= $anm->getNomAnimal() ?></h3>
+                                     <p class="text-xs text-gray-500 italic"><?= $anm->getEspeceAnimal() ?></p>
                                  </div>
                              </div>
                              <div class="flex flex-wrap gap-2 mt-2">
                                  <span class="inline-flex items-center px-2 py-1 rounded bg-[#f8f7f6] text-xs font-medium text-gray-600">
-                                     <?= $anm['nom_habitat'] ?>
+                                     <?= $anm->getNomHabitat() ?>
                                  </span>
                                  <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium status-badge-danger">
-                                     <?= $anm['alimentation'] ?>
+                                     <?= $anm->getTypeAlimentation()?>
                                  </span>
                              </div>
                              <div class="mt-auto pt-4 flex items-center justify-between border-t border-gray-100">
                                  <div class="flex items-center gap-1.5 text-xs font-medium text-gray-600">
                                      <span class="material-symbols-outlined text-[16px] text-gray-400">location_on</span>
-                                     <?= $anm['pays_origine'] ?>
+                                     <?= $anm->getPaysOrigine() ?>
                                  </div>
                                  <a href="animal_detail.php?id=2" class="text-primary text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
                                      Détails

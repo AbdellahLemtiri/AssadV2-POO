@@ -1,8 +1,6 @@
 <?php
 require_once "../Fonctionalite_php/connect.php";
 
-require_once "../Fonctionalite_php/auth_check.php";
-protect_page('visiteur'); 
 
 
 if (isset($_GET['id']) && !empty($_GET['id'])) {

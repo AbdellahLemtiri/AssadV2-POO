@@ -1,11 +1,6 @@
  <?php
 
 //  v.statut = 'ouverte'
-require_once "../Fonctionalite_php/auth_check.php";
-protect_page('visiteur'); 
-       $id_utilisateur =  ($_SESSION['id']) ;
-        $nom_utilisateur =  ($_SESSION['nom']);
-        $role_utilisateur =  ($_SESSION['role']);
 
 include "../Fonctionalite_php/connect.php";
 $sql_guides = "SELECT id, nom FROM utilisateurs WHERE role = 'guide' AND approuve = 1";

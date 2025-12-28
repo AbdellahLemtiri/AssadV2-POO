@@ -149,7 +149,7 @@ class Reservation extends Utilisateur
     {
 
         $conn = (new Connexion)->connect();
-        $sql = "SELECT r.nb_personnes,u.id_utilisateur, u.nom_utilisateur
+        $sql = "SELECT r.nb_personnes,u.id_utilisateur, u.nom_utilisateur,u.email
             FROM reservations r
             INNER JOIN utilisateurs u ON r.id_utilisateur = u.id_utilisateur
             WHERE r.id_visite = :id";
@@ -165,6 +165,7 @@ class Reservation extends Utilisateur
                 $obj->setNombrePersonnes($res['nb_personnes']);
                 $obj->setIdUtilisateur($res['id_utilisateur']);
                 $obj->setNomUtilisateur($res['nom_utilisateur']);
+                $obj->setEmail($res['email']);
                 $reser[] = $obj;
             }
 

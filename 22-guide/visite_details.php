@@ -3,7 +3,7 @@
 
 require_once "../Fonctionalite_php/connect.php";
 require_once "../OOP/visite.php";
-
+require_once "../OOP/reservation.php";
 if (isset($_GET['id'])) {
     $id = (int) $_GET['id'];
     $obj = new visite();
@@ -219,74 +219,89 @@ if (isset($_GET['id'])) {
 
                         </div>
 
-                        <div class="bg-surface-light dark:bg-surface-dark rounded-2xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden">
+                      <div class="bg-surface-light dark:bg-surface-dark rounded-2xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden">
                             <div class="p-5 bg-slate-50 dark:bg-black/10 border-b border-border-light dark:border-border-dark flex justify-between items-center">
                                 <h3 class="font-bold flex items-center gap-2">
                                     <span class="material-symbols-outlined text-primary">group</span>
                                     Liste des Participants
                                 </h3>
                             </div>
+
                             <div class="overflow-x-auto">
                                 <table class="w-full text-left">
                                     <thead>
                                         <tr class="text-[11px] uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark border-b border-border-light dark:border-border-dark">
                                             <th class="px-6 py-4 font-bold">Visiteur</th>
                                             <th class="px-6 py-4 font-bold text-center">Places</th>
+                                            <?php
+                                            $resManager = new Reservation();
+                                            $les_utl = $resManager->getallUtlisateurVisite($visite->getIdVisite());
+                                            if (!is_array($les_utl)) {
+                                                $les_utl = [];
+                                            }
+                                            ?>
 
+                                            <?php if (!empty($les_utl)): ?>
+                                                <?php foreach ($les_utl as $utl): ?>
+                                        <tr class="hover:bg-primary/5 transition-colors">
+                                            <td class="px-6 py-4">
+                                                <div class="text-sm font-bold"><?= $utl->getNomUtilisateur() ?></div>
+                                                <div class="text-xs opacity-60"></div><?= $utl->getEmail() ?>
+                                            </td>
+                                            <td class="px-6 py-4 text-center">
+                                                <span class="bg-primary/10 text-primary px-2 py-1 rounded-md text-xs font-bold"><?= $utl->getNombrePersonnes() ?></span>
+                                            </td>
+                                            <td class="px-6 py-4 text-right">
+
+                                            </td>
                                         </tr>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <tr>
+                                        <td colspan="3" class="text-center p-4">Aucun participant pour cette visite.</td>
+                                    </tr>
+                                <?php endif; ?>
+                                </tr>
                                     </thead>
                                     <tbody class="divide-y divide-border-light dark:divide-border-dark">
 
-                                  
-                                        <?php foreach ($les_utl as $utl): ?>
-                                            <tr class="hover:bg-primary/5 transition-colors">
-                                                <td class="px-6 py-4">
-                                                    <div class="text-sm font-bold"><?= $utl['nom'] ?></div>
-                                                    <div class="text-xs opacity-60"><?= $utl['email'] ?></div>
-                                                </td>
-                                                <td class="px-6 py-4 text-center">
-                                                    <span class="bg-primary/10 text-primary px-2 py-1 rounded-md text-xs font-bold"><?= $utl['nb_personnes'] ?></span>
-                                                </td>
-                                                <td class="px-6 py-4 text-right">
-
-                                                </td>
-                                            </tr>
-                                        <?php endforeach; ?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                                    <tbody class="divide-y divide-border-light dark:divide-border-dark">
 
-                        <div class="bg-surface-light dark:bg-surface-dark rounded-2xl border border-border-light dark:border-border-dark p-6">
-                            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
-                                <span class="material-symbols-outlined text-primary">format_list_numbered</span>
-                                Étapes de la Visite
-                            </h3>
-                            <?php
-                            require_once "../OOP/etape.php";
-                            $les_etapes = (new Etape())->getEtapesByViste($visite->getIdVisite());
 
-                            ?>
-                            <?php foreach ($les_etapes as $etp) : ?>
-                                <div class="space-y-4 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
-                                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
-                                        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-100 dark:bg-surface-dark text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
-                                            <?= $etp->getOrdreEtape() ?>
+                                        <div class="bg-surface-light dark:bg-surface-dark rounded-2xl border border-border-light dark:border-border-dark p-6">
+                                            <h3 class="text-lg font-bold mb-4 flex items-center gap-2">
+                                                <span class="material-symbols-outlined text-primary">format_list_numbered</span>
+                                                Étapes de la Visite
+                                            </h3>
+                                            <?php
+                                            require_once "../OOP/etape.php";
+                                            $les_etapes = (new Etape())->getEtapesByViste($visite->getIdVisite());
+
+                                            ?>
+                                            <?php foreach ($les_etapes as $etp) : ?>
+                                                <div class="space-y-4 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
+                                                    <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                                                        <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-100 dark:bg-surface-dark text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
+                                                            <?= $etp->getOrdreEtape() ?>
+                                                        </div>
+                                                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-surface-dark shadow-sm">
+                                                            <div class="font-bold text-primary"><?= $etp->getTitreEtape() ?></div>
+                                                            <div class="text-xs opacity-70"><?= $etp->getDescriptionEtape() ?></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
                                         </div>
-                                        <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-surface-dark shadow-sm">
-                                            <div class="font-bold text-primary"><?= $etp->getTitreEtape() ?></div>
-                                            <div class="text-xs opacity-70"><?= $etp->getDescriptionEtape() ?></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
+
+                            </div>
                         </div>
 
-                    </div>
-                </div>
 
-              
-            </div>
+                    </div>
         </main>
     </div>
 

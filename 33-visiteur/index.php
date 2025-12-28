@@ -1,11 +1,5 @@
 <?php
 
-require_once "../Fonctionalite_php/auth_check.php";
-protect_page('visiteur'); 
-       $id_utilisateur = htmlspecialchars($_SESSION['id']) ;
-        $nom_utilisateur = htmlspecialchars($_SESSION['nom']);
-        $role_utilisateur = htmlspecialchars($_SESSION['role']);
-
 ?> 
 
 <!DOCTYPE html>

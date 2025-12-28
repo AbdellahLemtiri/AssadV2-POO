@@ -1,9 +1,4 @@
 <?php
-require_once "../Fonctionalite_php/auth_check.php";
-protect_page('visiteur'); 
-       $id_utilisateur =  ($_SESSION['id']) ;
-        $nom_utilisateur =  ($_SESSION['nom']);
-        $role_utilisateur =  ($_SESSION['role']);
 
 require_once "../Fonctionalite_php/connect.php";
 

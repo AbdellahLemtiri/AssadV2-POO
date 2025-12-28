@@ -60,15 +60,14 @@ class Utilisateur
         }
         return false;
     }
-    public function setEmail($email): bool
-    {
-        $regex = '/^[a-zA-Z0-9]{3,20}@[a-zA-Z]{2,8}\.[a-zA-Z]{2,5}$/';
-        if (preg_match($regex, $email)) {
-            $this->email = $email;
-            return true;
-        }
-        return false;
+  public function setEmail($email): bool
+{
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $this->email = $email;
+        return true;
     }
+    return false;
+}
     public function setMotPasse($mot_passe): bool
     {
         $regex = '/^[A-Za-z@&1-9!?]{5,20}$/'; 
