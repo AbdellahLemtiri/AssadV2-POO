@@ -12,19 +12,18 @@ if (isset($_GET['id'])) {
         $res = $connect->query($sql);
         if ($res && $res->num_rows > 0) {
             $visite = $res->fetch_assoc();
-       
-$sql_etapes = "SELECT * FROM etapes_visite WHERE id_visite = $id ORDER BY ordre_etape ASC";
-$res_etapes = $connect->query($sql_etapes);
-$etapes = [];
-if ($res_etapes) {
-    while($row = $res_etapes->fetch_assoc()) {
-        $etapes[] = $row;
-    }
-}
+
+            $sql_etapes = "SELECT * FROM etapes_visite WHERE id_visite = $id ORDER BY ordre_etape ASC";
+            $res_etapes = $connect->query($sql_etapes);
+            $etapes = [];
+            if ($res_etapes) {
+                while ($row = $res_etapes->fetch_assoc()) {
+                    $etapes[] = $row;
+                }
+            }
         } else {
             die("Visite introuvable !");
         }
-
     } else {
         echo ("ID manquant !");
     }
@@ -38,7 +37,7 @@ if ($res_etapes) {
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Éditer : <?= htmlspecialchars($tour['title']) ?> - ASSAD</title>
+    <title>Éditer : <?= ($tour['title']) ?> - ASSAD</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
@@ -51,7 +50,7 @@ if ($res_etapes) {
             theme: {
                 extend: {
                     colors: {
-                        primary: "#0d9488", // Teal واعر مودرن
+                        primary: "#0d9488",
                         "primary-dark": "#0f766e",
                         "primary-light": "#2dd4bf",
                         "background-light": "#f0fdfa",
@@ -62,7 +61,7 @@ if ($res_etapes) {
                         "text-dark": "#a7f3d0",
                         "text-secondary-light": "#0891b2",
                         "text-secondary-dark": "#5eead4",
-                        "accent": "#f59e0b" // لمسة ذهبية
+                        "accent": "#f59e0b"
                     },
                     fontFamily: {
                         sans: ["Plus Jakarta Sans", "sans-serif"]
@@ -156,7 +155,7 @@ if ($res_etapes) {
                 <div class="bg-center bg-cover rounded-full h-10 w-10 border-2 border-primary" data-alt="Portrait du guide" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB6SweDCChTHrnzUi3ijD-HqKt7FximPeaVPRuHptoZB3gCiNIREev191XH6lCU2g9dWO-0nb19loXauXqO29KxIYeVB8L_qXV7j_z9ew9PCkxmtTGzyhArcCoyjioHHD9oWPKFoA4SKfrqRSRlWptyCfastPtNkgSlFizXCwA60Izfk-CrC13bruBTAOjH610XOUvFB1RnfkoM-IeFW7fkvzAujenUwRWp02gjgWiOhb4zpbuGErPegntLM0188b1Dkbt6DnzndgR5");'></div>
                 <div class="flex flex-col overflow-hidden">
                     <p class="text-sm font-bold truncate"><?= $nom_utilisateur ?></p>
-                    <p class="text-text-sec-light dark:text-text-sec-dark text-xs truncate">Guide <?= htmlspecialchars($role_utilisateur) ?></p>
+                    <p class="text-text-sec-light dark:text-text-sec-dark text-xs truncate">Guide <?= ($role_utilisateur) ?></p>
                 </div>
             </div>
         </aside>
@@ -172,102 +171,55 @@ if ($res_etapes) {
 
 
 
-                <form method="POST" action="modifiervisite.php" enctype="multipart/form-data"
-                    class="flex flex-col gap-8 bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-xl p-6 md:p-8 max-w-4xl mx-auto mt-10">
+                <form method="POST" action="fx/process_update.php" enctype="multipart/form-data" class="flex flex-col gap-8 ...">
 
-                    <input type="hidden" name="id" value="<?= $visite['id'] ?>">
+                    <input type="hidden" name="id" value="<?= $visiteObj->getIdVisite() ?>">
 
                     <div class="flex flex-col gap-5">
-                        <h3 class="text-2xl font-bold text-blue-600 border-b border-gray-100 dark:border-gray-700 pb-2 flex items-center gap-2">
+                        <h3 class="text-2xl font-bold text-blue-600 ...">
                             <span class="material-symbols-outlined">edit_note</span>
                             Détails de la Modification
                         </h3>
 
                         <div>
-                            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Titre de la Visite <span class="text-red-500">*</span></label>
-                            <input type="text" name="titre" value="<?= htmlspecialchars($visite['titre']) ?>" required
-                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-transparent"
-                                placeholder="Ex: Safari Lions">
+                            <label class="block ...">Titre de la Visite <span class="text-red-500">*</span></label>
+                            <input type="text" name="titre" value="<?= ($visiteObj->getTitreVisite()) ?>" required class="...">
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Statut de la Visite <span class="text-red-500">*</span></label>
-                                <select name="statut" class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-transparent">
-                                    <option value="ouverte" <?= $visite['statut'] == 'ouverte' ? 'selected' : '' ?>>Ouverte</option>
-                                    <option value="annulee" <?= $visite['statut'] == 'annulee' ? 'selected' : '' ?>>Annulée</option>
-                                    <option value="terminee" <?= $visite['statut'] == 'terminee' ? 'selected' : '' ?>>Terminée</option>
+                                <label class="block ...">Statut <span class="text-red-500">*</span></label>
+                                <select name="statut" class="...">
+                                    <option value="1" <?= $visiteObj->getStatutVisite() == 1 ? 'selected' : '' ?>>Ouverte</option>
+                                    <option value="0" <?= $visiteObj->getStatutVisite() == 0 ? 'selected' : '' ?>>Annulée</option>
+                                    <option value="2" <?= $visiteObj->getStatutVisite() == 2 ? 'selected' : '' ?>>Terminée</option>
                                 </select>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Prix (DH) <span class="text-red-500">*</span></label>
-                                <input type="number" step="0.01" name="prix" value="<?= $visite['prix'] ?>" required
-                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-transparent">
+                                <label class="block ...">Prix (DH) <span class="text-red-500">*</span></label>
+                                <input type="number" step="0.01" name="prix" value="<?= $visiteObj->getPrixVisite() ?>" required class="...">
                             </div>
                         </div>
                     </div>
 
                     <div class="flex flex-col gap-5">
-                        <h3 class="text-2xl font-bold text-blue-600 border-b border-gray-100 dark:border-gray-700 pb-2 flex items-center gap-2">
-                            <span class="material-symbols-outlined">schedule</span>
-                            Planning et Logistique
-                        </h3>
-
+                        <h3 class="text-2xl ...">Planning</h3>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="md:col-span-2">
-                                <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Date et Heure <span class="text-red-500">*</span></label>
+                                <label class="block ...">Date et Heure</label>
                                 <input type="datetime-local" name="date_heure"
-                                    value="<?= date('Y-m-d\TH:i', strtotime($visite['date_heure'])) ?>" required
-                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-transparent">
+                                    value="<?= $visiteObj->getDateheureViste()->format('Y-m-d\TH:i') ?>" required class="...">
                             </div>
                             <div>
-                                <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Durée (min)</label>
-                                <input type="number" name="duree" value="<?= $visite['duree'] ?>"
-                                    class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-transparent">
+                                <label class="block ...">Durée</label>
+                                <input type="number" name="duree" value="<?= $visiteObj->getDureeVisite()->format('i') ?>" class="...">
                             </div>
                         </div>
-
-                        <div>
-                            <label class="block text-sm font-medium mb-1 text-gray-700 dark:text-gray-300">Capacité Maximale <span class="text-red-500">*</span></label>
-                            <input type="number" name="capacite_max" value="<?= $visite['capacite_max'] ?>" required
-                                class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-transparent">
-                        </div>
                     </div>
-<div class="flex flex-col gap-5 mt-6">
-    <h3 class="text-2xl font-bold text-blue-600 border-b pb-2 flex items-center gap-2">
-        <span class="material-symbols-outlined">route</span>
-        Modifier les Étapes du Parcours
-    </h3>
-    
-    <div id="etapes-container" class="flex flex-col gap-4">
-        <?php foreach ($etapes as $index => $etape): ?>
-        <div class="etape-item p-4 border rounded-xl bg-gray-50 dark:bg-gray-700/30 flex flex-col gap-3">
-            <div class="flex justify-between items-center">
-                <span class="font-bold text-sm text-blue-600">Étape <?= $index + 1 ?></span>
-                <input type="hidden" name="etape_id[]" value="<?= $etape['id_etape'] ?>">
-            </div>
-            <input type="text" name="etape_titre[]" value="<?= htmlspecialchars($etape['titre_etape']) ?>" class="w-full px-4 py-2 border rounded-lg bg-transparent">
-            <textarea name="etape_desc[]" class="w-full px-4 py-2 border rounded-lg bg-transparent"><?= htmlspecialchars($etape['description_etape']) ?></textarea>
-        </div>
-        <?php endforeach; ?>
-    </div>
 
-    <button type="button" onclick="ajouterEtape()" class="flex items-center justify-center gap-2 py-2 border-2 border-dashed border-blue-500 text-blue-600 rounded-xl hover:bg-blue-50 transition">
-        <span class="material-symbols-outlined">add</span>
-        Ajouter 
-    </button>
-</div>
-
-
-                    <div class="flex justify-end gap-4 pt-6 border-t border-gray-100 dark:border-gray-700">
-                        <a href="mes_visites.php" class="px-6 py-2 border border-gray-300 dark:border-gray-600 rounded-lg font-bold text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition flex items-center gap-2">
-                            <span class="material-symbols-outlined text-[20px]">cancel</span>
-                            Annuler
-                        </a>
-                        <button type="submit" name="update_visite"
-                            class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-bold shadow-lg shadow-blue-200 dark:shadow-none transition-transform hover:scale-105">
-                            <span class="material-symbols-outlined text-[20px]">save</span>
-                            Mettre à jour
+                    <div class="flex justify-end gap-4 ...">
+                        <button type="submit" name="update_visite" class="bg-blue-600 ...">
+                            <span class="material-symbols-outlined">save</span> Mettre à jour
                         </button>
                     </div>
                 </form>
@@ -276,10 +228,10 @@ if ($res_etapes) {
         </main>
     </div>
     <script>
-function ajouterEtape() {
-    const container = document.getElementById('etapes-container');
-    const count = container.querySelectorAll('.etape-item').length + 1;
-    const html = `
+        function ajouterEtape() {
+            const container = document.getElementById('etapes-container');
+            const count = container.querySelectorAll('.etape-item').length + 1;
+            const html = `
         <div class="etape-item p-4 border rounded-xl bg-blue-50/30 flex flex-col gap-3 animate-slide-up">
             <div class="flex justify-between items-center">
                 <span class="font-bold text-sm text-blue-600">Nouvelle Étape</span>
@@ -289,9 +241,9 @@ function ajouterEtape() {
             <input type="text" name="etape_titre[]" placeholder="Titre" class="w-full px-4 py-2 border rounded-lg bg-transparent">
             <textarea name="etape_desc[]" placeholder="Description" class="w-full px-4 py-2 border rounded-lg bg-transparent"></textarea>
         </div>`;
-    container.insertAdjacentHTML('beforeend', html);
-}
-</script>
+            container.insertAdjacentHTML('beforeend', html);
+        }
+    </script>
 </body>
 
 </html>

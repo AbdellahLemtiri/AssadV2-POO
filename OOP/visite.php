@@ -1,10 +1,10 @@
 <?php
 require_once "connexion.php";
-class visite {
+class visite
+{
 
     private int $id_visite;
     private string $titre_visite;
-    private string $description_visite;
     private DateTime $dateheure_viste;
     private string $langue__visite;
     private DateTime $duree__visite;
@@ -14,7 +14,7 @@ class visite {
     private int $id_guide;
 
     public function __construct() {}
-    
+
     public function getIdVisite(): int
     {
         return $this->id_visite;
@@ -23,10 +23,7 @@ class visite {
     {
         return $this->titre_visite;
     }
-    public function getDescriptionVisite(): string
-    {
-        return $this->description_visite;
-    }
+
     public function getDateheureViste(): DateTime
     {
         return $this->dateheure_viste;
@@ -73,14 +70,7 @@ class visite {
         }
         return false;
     }
-    public function setDescriptionVisite(string $description_visite): bool
-    {
-        if (strlen($description_visite) >= 10 && strlen($description_visite) <= 500) {
-            $this->description_visite = $description_visite;
-            return true;
-        }
-        return false;
-    }
+  
     public function setDateheureVisite(string $dateheure_viste)
     {
         if (strtotime($dateheure_viste) !== false) {
@@ -108,7 +98,7 @@ class visite {
     }
     public function setCapaciteMaxVisite(int $capacite_max__visite): bool
     {
-      
+
         if ($capacite_max__visite > 0) {
             $this->capacite_max__visite = $capacite_max__visite;
             return true;
@@ -133,8 +123,7 @@ class visite {
     }
     public function setIdGuide(int $id_guide)
     {
-        if ($id_guide > 0) 
-        {
+        if ($id_guide > 0) {
             $this->id_guide = $id_guide;
             return true;
         }
@@ -143,22 +132,20 @@ class visite {
 
     public function __toString()
     {
-        return " id_visite :" . $this->id_visite . " titre_visite :" . $this->titre_visite . " description_visite :" . $this->description_visite . " dateheure_viste :" . $this->dateheure_viste->format('Y-m-d H:i:s') . " langue__visite :" . $this->langue__visite . " duree__visite :" . $this->duree__visite->format('H:i:s') . " capacite_max__visite :" . $this->capacite_max__visite . " prix__visite :" . $this->prix__visite . " statut__visite :" . $this->statut__visite . " id_guide :" . $this->id_guide;
+        return " id_visite :" . $this->id_visite . " titre_visite :" . $this->titre_visite . " dateheure_viste :" . $this->dateheure_viste->format('Y-m-d H:i:s') . " langue__visite :" . $this->langue__visite . " duree__visite :" . $this->duree__visite->format('H:i:s') . " capacite_max__visite :" . $this->capacite_max__visite . " prix__visite :" . $this->prix__visite . " statut__visite :" . $this->statut__visite . " id_guide :" . $this->id_guide;
     }
 
     public   function ajouterVisite()
     {
         $conn = (new Connexion())->connect();
-        $sql = "INSERT INTO visitesguidees ( titre_visite, description_visite, dateheure_viste, langue__visite, duree__visite, capacite_max__visite, prix__visite, statut__visite, id_guide) VALUES ( :titre_visite, :description_visite, :dateheure_viste, :langue__visite, :duree__visite, :capacite_max__visite, :prix__visite, :statut__visite, :id_guide)";
-        try 
-        {
+        $sql = "INSERT INTO visitesguidees ( titre_visite, dateheure_viste, langue__visite, duree__visite, capacite_max__visite, prix__visite, statut__visite, id_guide) VALUES ( :titre_visite, :dateheure_viste, :langue__visite, :duree__visite, :capacite_max__visite, :prix__visite, :statut__visite, :id_guide)";
+        try {
             $stmt = $conn->prepare($sql);
-        } 
-        catch (Exception $e) {
+        } catch (Exception $e) {
             return $e->getMessage();
         }
         $stmt->bindParam(':titre_visite', $this->titre_visite);
-        $stmt->bindParam(':description_visite', $this->description_visite);
+       
         $stmt->bindValue(':dateheure_viste', $this->dateheure_viste->format('Y-m-d H:i:s'), PDO::PARAM_STR);
         $stmt->bindParam(':langue__visite', $this->langue__visite);
         $stmt->bindValue(':duree__visite', $this->duree__visite->format('H:i:s'));
@@ -194,7 +181,7 @@ class visite {
     public function  modifierVisite(): bool
     {
         $conn = (new Connexion())->connect();
-        $sql = "UPDATE visitesguidees SET titre_visite = :titre_visite, description_visite = :description_visite, dateheure_viste = :dateheure_viste, langue__visite = :langue__visite, duree__visite = :duree__visite, capacite_max__visite = :capacite_max__visite, prix__visite = :prix__visite, statut__visite = :statut__visite, id_guide = :id_guide WHERE id_visite = :id_visite";
+        $sql = "UPDATE visitesguidees SET titre_visite = :titre_visite,  dateheure_viste = :dateheure_viste, langue__visite = :langue__visite, duree__visite = :duree__visite, capacite_max__visite = :capacite_max__visite, prix__visite = :prix__visite, statut__visite = :statut__visite, id_guide = :id_guide WHERE id_visite = :id_visite";
         try {
             $stmt = $conn->prepare($sql);
         } catch (Exception $e) {
@@ -202,7 +189,7 @@ class visite {
         }
         $stmt->bindParam(':id_visite', $this->id_visite);
         $stmt->bindParam(':titre_visite', $this->titre_visite);
-        $stmt->bindParam(':description_visite', $this->description_visite);
+   
         $stmt->bindValue(':dateheure_viste', $this->dateheure_viste->format('Y-m-d H:i:s'), PDO::PARAM_STR);
         $stmt->bindParam(':langue__visite', $this->langue__visite);
         $stmt->bindValue(':duree__visite', $this->duree__visite->format('H:i:s'));
@@ -217,37 +204,34 @@ class visite {
         }
     }
 
-   public static function getVisites(): array 
-{
-    $conn = (new Connexion())->connect();
-    $sql = "SELECT * FROM visitesguidees";
-    
-    try {
-        $stmt = $conn->prepare($sql);
-        $stmt->execute();
-        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public static function getVisites(): array
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM visitesguidees";
 
-        $visiteList = [];
-        foreach ($results as $row) {
-            $visite = new self();            
-            $visite->setIdVisite($row['id_visite']);
-            $visite->setTitreVisite($row['titre_visite']);
-            $visite->setDescriptionVisite($row['description_visite']);                   
-            $visite->setDateheureVisite($row['dateheure_viste']);
-            $visite->setLangueVisite($row['langue__visite']);
-            $visite->setDureeVisite($row['duree__visite']);           
-            $visite->setCapaciteMaxVisite($row['capacite_max__visite']);
-            $visite->setPrixVisite($row['prix__visite']);
-            $visite->setStatutVisite($row['statut__visite']);
-            $visite->setIdGuide($row['id_guide']);
-            
-            $visiteList[] = $visite;
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute();
+            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            $visiteList = [];
+            foreach ($results as $row) {
+                $visite = new self();
+                $visite->setIdVisite($row['id_visite']);
+                $visite->setTitreVisite($row['titre_visite']);
+                $visite->setDateheureVisite($row['dateheure_viste']);
+                $visite->setLangueVisite($row['langue__visite']);
+                $visite->setDureeVisite($row['duree__visite']);
+                $visite->setCapaciteMaxVisite($row['capacite_max__visite']);
+                $visite->setPrixVisite($row['prix__visite']);
+                $visite->setStatutVisite($row['statut__visite']);
+                $visite->setIdGuide($row['id_guide']);
+
+                $visiteList[] = $visite;
+            }
+            return $visiteList;
+        } catch (Exception $e) {
+            return [];
         }
-        return $visiteList;
-    } catch (Exception $e) {
-        return [];
     }
 }
-}
-
-

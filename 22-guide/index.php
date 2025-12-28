@@ -1,24 +1,7 @@
-
 <?php
 
-require_once "../Fonctionalite_php/connect.php";
-
-$les_visite = [];
-
-
-$sql = "SELECT vg.*, vg.id as idvg, SUM(res.nb_personnes) as total_reserved 
-        FROM visites_guidees vg 
-        LEFT JOIN reservations res ON res.id_visite = vg.id 
-        GROUP BY vg.id 
-        ORDER BY vg.date_heure ASC";
-$res = $connect->query($sql);
-
-if ($res) {
-    $les_visite = $res->fetch_all(MYSQLI_ASSOC);
-}
-
-
-
+require_once "../OOP/visite.php";
+require_once "../OOP/etape.php";
 ?>
 
 <!DOCTYPE html>
@@ -189,109 +172,252 @@ if ($res) {
                     </div>
 
                     <div class="grid grid-cols-1 gap-6">
-                        <?php foreach ($les_visite as $visite) : ?>
-                            <?php echo $visite['id']; ?>
-                            <div class="group flex flex-col lg:flex-row gap-6 p-5 rounded-3xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:shadow-xl hover:border-primary/30 transition-all duration-300 relative overflow-hidden">
-                                <?php
-                                if ($visite['statut'] === "ouverte"): ?>
-                                    <div class="h-56 lg:h-48 lg:w-64 rounded-2xl bg-slate-200 dark:bg-slate-800 bg-cover bg-center shrink-0 relative overflow-hidden">
-                                        <div class="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500 text-white text-[11px] font-black uppercase tracking-wider rounded-lg shadow-lg">
-                                            <span class="material-symbols-outlined text-[14px]">check_circle</span>
-                                            OUVERTE
-                                        </div>
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                    </div>
-                                <?php endif; ?>
-                                <?php if ($visite['statut'] === "annulee"): ?>
-                                    <div class="h-56 lg:h-48 lg:w-64 rounded-2xl bg-red-100 dark:bg-red-900/20 shrink-0 relative overflow-hidden flex items-center justify-center border border-red-200">
-                                        <div class="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-[11px] font-black uppercase tracking-wider rounded-lg shadow-lg">
-                                            <span class="material-symbols-outlined text-[14px]">cancel</span>
-                                            <?=  ($visite['statut']) ?>
-                                        </div>
+                        <?php
 
-                                        <span class="material-symbols-outlined text-red-300 text-5xl opacity-50">block</span>
+                        $les_visites = Visite::getVisites();
 
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                    </div>
-                                <?php endif; ?>
-                                <?php if ($visite['statut'] === "terminee"): ?>
-                                    <div class="h-56 lg:h-48 lg:w-64 rounded-2xl bg-emerald-500 dark:bg-red-900/20 shrink-0 relative overflow-hidden flex items-center justify-center border border-red-200">
-                                        <div class="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-[11px] font-black uppercase tracking-wider rounded-lg shadow-lg">
-                                            <span class="material-symbols-outlined text-[14px]">cancel</span>
-                                            <?=  ($visite['statut']) ?>
-                                        </div>
+                        if (count($les_visites) > 0) :
+                            foreach ($les_visites as $visite) :
 
-                                        <span class="material-symbols-outlined text-red-300 text-5xl opacity-50">block</span>
+                                $statut = $visite->getStatutVisite();
+                        ?>
+                                <div class="group flex flex-col lg:flex-row gap-6 p-5 rounded-3xl bg-surface-light dark:bg-surface-dark border border-border-light dark:border-border-dark shadow-sm hover:shadow-xl transition-all duration-300 relative overflow-hidden">
 
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                                    </div>
-                                <?php endif; ?>
-
-
-
-                                <div class="flex flex-col justify-between flex-1 py-1">
-                                    <div>
-                                        <div class="flex justify-between items-start">
-                                            <h4 class="text-2xl font-extrabold text-text-light dark:text-text-dark group-hover:text-primary transition-colors leading-tight">
-
-                                            </h4>
-                                            <span class="text-lg font-black text-primary"><?= $visite['prix'] ?></span>
-                                        </div>
-
-                                        <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-4 text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark">
-                                            <div class="flex items-center gap-2">
-                                                <span class="material-symbols-outlined text-primary/70 text-[20px]">calendar_today</span>
-                                                <span><?= $visite['date_heure'] ?></span>
-                                            </div>
-                                            <div class="flex items-center gap-2 border-l border-border-light dark:border-border-dark pl-6">
-                                                <span class="material-symbols-outlined text-primary/70 text-[20px]">schedule</span>
-                                                <span><?= $visite['duree'] ?></span>
-                                            </div>
-                                            <div class="flex items-center gap-2 border-l border-border-light dark:border-border-dark pl-6">
-                                                <span class="material-symbols-outlined text-primary/70 text-[20px]">group</span>
-                                                <span><?= ($visite['total_reserved'] ?: 0) . "/" . $visite['capacite_max'] ?></span>
+                                    <?php if ($statut == 1): ?>
+                                        <div class="h-56 lg:h-48 lg:w-64 rounded-2xl bg-slate-200 dark:bg-slate-800 bg-cover bg-center shrink-0 relative overflow-hidden">
+                                            <div class="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1.5 bg-emerald-500 text-white text-[11px] font-black uppercase rounded-lg shadow-lg">
+                                                <span class="material-symbols-outlined text-[14px]">check_circle</span> OUVERTE
                                             </div>
                                         </div>
-                                    </div>
+                                    <?php endif; ?>
 
-                                    <div class="flex flex-wrap items-center justify-between gap-4 mt-6 pt-4 border-t border-border-light dark:border-border-dark/50">
-                                        <div class="flex gap-2">
-                                            <a href="visite_details.php?id=<?= $visite['idvg'] ?>" class="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark shadow-lg shadow-primary/20 transition-all">
-                                                <span class="material-symbols-outlined text-[18px]">visibility</span>
-                                               details de la visite
+                                    <?php if ($statut == 0): ?>
+                                        <div class="h-56 lg:h-48 lg:w-64 rounded-2xl bg-red-100 dark:bg-red-900/20 shrink-0 relative overflow-hidden flex items-center justify-center border border-red-200">
+                                            <div class="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1.5 bg-red-600 text-white text-[11px] font-black uppercase rounded-lg shadow-lg">
+                                                <span class="material-symbols-outlined text-[14px]">cancel</span> ANNULÉE
+                                            </div>
+                                            <span class="material-symbols-outlined text-red-300 text-5xl opacity-50">block</span>
+                                        </div>
+                                    <?php endif; ?>
+
+                                    <div class="flex flex-col justify-between flex-1 py-1">
+                                        <div>
+                                            <div class="flex justify-between items-start">
+                                                <h4 class="text-2xl font-extrabold text-text-light dark:text-text-dark group-hover:text-primary transition-colors">
+                                                    <?= htmlspecialchars($visite->getTitreVisite()) ?>
+                                                </h4>
+                                                <span class="text-lg font-black text-primary"><?= number_format($visite->getPrixVisite(), 2) ?> DH</span>
+                                            </div>
+
+                                            <div class="flex flex-wrap items-center gap-x-6 gap-y-2 mt-4 text-sm font-medium text-slate-500">
+                                                <div class="flex items-center gap-2">
+                                                    <span class="material-symbols-outlined text-primary/70 text-[20px]">calendar_today</span>
+                                                    <span><?= $visite->getDateheureViste()->format('d/m/Y H:i') ?></span>
+                                                </div>
+                                                <div class="flex items-center gap-2 border-l pl-6">
+                                                    <span class="material-symbols-outlined text-primary/70 text-[20px]">schedule</span>
+                                                    <span><?= $visite->getDureeVisite()->format('H:i') ?></span>
+                                                </div>
+                                                <div class="flex items-center gap-2 border-l pl-6">
+                                                    <span class="material-symbols-outlined text-primary/70 text-[20px]">group</span>
+                                                    <span><?= $visite->getCapaciteMaxVisite() ?> Pers. max</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex flex-wrap items-center justify-between gap-4 mt-6 pt-4 border-t border-border-light">
+                                            <div class="flex gap-2">
+                                                <a href="visite_details.php?id=<?= $visite->getIdVisite() ?>" class="flex items-center gap-2 px-6 py-2.5 rounded-xl bg-primary text-white text-xs font-bold hover:bg-primary-dark shadow-lg transition-all">
+                                                    <span class="material-symbols-outlined text-[18px]">visibility</span> Détails
+                                                </a>
+                                                <?php
+                                           
+                                                $etapesObj = Etape::getEtapesByViste($visite->getIdVisite());
+
+                                              
+                                                $etapesFormatted = [];
+                                                if ($etapesObj) {
+                                                    foreach ($etapesObj as $e) {
+                                                        $etapesFormatted[] = [
+                                                            'id_etape' => $e->getIdEtape(),
+                                                            'titre_etape' => $e->getTitreEtape(),
+                                                            'description_etape' => $e->getDescriptionEtape()
+                                                        ];
+                                                    }
+                                                }
+
+                                                
+                                                $etapesJson = htmlspecialchars(json_encode($etapesFormatted), ENT_QUOTES, 'UTF-8');
+                                                ?>
+
+                                                <button
+                                                    onclick="openEditModal(this)"
+                                                    data-id="<?= $visite->getIdVisite() ?>"
+                                                    data-titre="<?= htmlspecialchars($visite->getTitreVisite()) ?>"
+                                                    data-prix="<?= $visite->getPrixVisite() ?>"
+                                                    data-statut="<?= $visite->getStatutVisite() ?>"
+                                                    data-date="<?= $visite->getDateheureViste()->format('Y-m-d\TH:i') ?>"
+                                                    data-duree="<?= $visite->getDureeVisite()->format('i') ?>"
+                                                    data-capacite="<?= $visite->getCapaciteMaxVisite() ?>"
+                                                    data-etapes='<?= $etapesJson ?>'
+                                                    class="flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-bold hover:bg-slate-100 transition-colors">
+                                                    <span class="material-symbols-outlined text-[18px]">edit</span> Modifier
+                                                </button>
+                                            </div>
+
+                                            <a href="fx/delete.php?id=<?= $visite->getIdVisite() ?>" onclick="return confirm('Voulez-vous supprimer cette visite ?')" class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-red-500 hover:bg-red-50 text-xs font-bold transition-colors">
+                                                <span class="material-symbols-outlined text-[18px]">delete_sweep</span> Supprimer
                                             </a>
-                                            <a href="fx/modifier.php?id=<?= $visite['idvg'] ?>" class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-border-light dark:border-border-dark text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
-                                                <span class="material-symbols-outlined text-[18px]">edit</span>
-                                                Modifier
-                                            </a>
                                         </div>
-
-                                        <a  href="fx/delet.php?id=<?=  $visite['idvg'] ?>" return confirm() class="flex items-center gap-2 px-4 py-2.5 rounded-xl text-red-500 hover:bg-red-50 dark:hover:bg-red-900/10 text-xs font-bold transition-colors">
-                                            <span class="material-symbols-outlined text-[18px]">delete_sweep</span>
-                                            Supprimer
-                                </a>
                                     </div>
                                 </div>
-                                <?php if (count($les_visite) === 0) : ?>
-                                    <div class="flex flex-col items-center justify-center p-20 bg-surface-light dark:bg-surface-dark rounded-[2rem] border-2 border-dashed border-border-light dark:border-border-dark mt-4">
-                                        <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6">
-                                            <span class="material-symbols-outlined text-primary text-5xl">explore_off</span>
-                                        </div>
-                                        <h4 class="text-2xl font-bold mb-2">Aucune visite pour le moment</h4>
-                                        <p class="text-text-secondary-light dark:text-text-secondary-dark text-center max-w-sm mb-8">Vous n'avez pas encore créé de visites guidées. Commencez par en créer une nouvelle !</p>
-                                        <button class="text-primary font-bold hover:underline flex items-center gap-2">
-                                            Créer votre première session <span class="material-symbols-outlined">arrow_forward</span>
-                                        </button>
-                                    </div>
-                                <?php endif; ?>
+                            <?php endforeach; ?>
+
+                        <?php else: ?>
+                            <div class="flex flex-col items-center justify-center p-20 bg-white rounded-[2rem] border-2 border-dashed border-slate-200 mt-4">
+                                <div class="w-24 h-24 bg-primary/10 rounded-full flex items-center justify-center mb-6">
+                                    <span class="material-symbols-outlined text-primary text-5xl">explore_off</span>
+                                </div>
+                                <h4 class="text-2xl font-bold mb-2">Aucune visite pour le moment</h4>
+                                <p class="text-slate-500 text-center max-w-sm mb-8">Vous n'avez pas encore créé de visites guidées.</p>
+                                <button onclick="openAddModal()" class="text-primary font-bold hover:underline flex items-center gap-2">
+                                    Créer votre première session <span class="material-symbols-outlined">arrow_forward</span>
+                                </button>
                             </div>
-                        <?php endforeach; ?>
+                        <?php endif; ?>
                     </div>
 
                 </div>
+
+            </div>
+            <div id="updateModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm items-center justify-center z-50 p-4">
+                <form method="POST" action="fx/update.php" class="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+
+                    <div class="p-6 border-b flex justify-between items-center bg-blue-600 text-white rounded-t-2xl">
+                        <h3 class="text-xl font-bold flex items-center gap-2">
+                            <span class="material-symbols-outlined">edit_square</span> Modifier la Visite
+                        </h3>
+                        <button type="button" onclick="closeModal()" class="hover:rotate-90 transition-transform">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+
+                    <div class="p-8 flex flex-col gap-8">
+                        <input type="hidden" name="id" id="edit_id">
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-bold mb-2">Titre de la Visite</label>
+                                <input type="text" name="titre" id="edit_titre" class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Statut</label>
+                                <select name="statut" id="edit_statut" class="w-full px-4 py-3 border rounded-xl bg-gray-50">
+                                    <option value="1">Ouverte</option>
+                                    <option value="0">Annulée</option>
+                                    <option value="2">Terminée</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Prix (DH)</label>
+                                <input type="number" step="0.01" name="prix" id="edit_prix" class="w-full px-4 py-3 border rounded-xl bg-gray-50">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-bold mb-2">Date et Heure</label>
+                                <input type="datetime-local" name="date_heure" id="edit_date" class="w-full px-4 py-3 border rounded-xl bg-gray-50">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-bold mb-2">Capacité Max</label>
+                                <input type="number" name="capacite_max" id="edit_capacite" class="w-full px-4 py-3 border rounded-xl bg-gray-50">
+                            </div>
+                        </div>
+
+                        <div class="border-t pt-6">
+                            <h4 class="text-lg font-bold text-blue-600 mb-4 flex items-center gap-2">
+                                <span class="material-symbols-outlined">route</span> Étapes du parcours
+                            </h4>
+                            <div id="edit-etapes-container" class="flex flex-col gap-4 mb-4">
+                            </div>
+                            <button type="button" onclick="ajouterEtapeRow()" class="w-full py-3 border-2 border-dashed border-blue-400 text-blue-600 rounded-xl font-bold hover:bg-blue-50 transition">
+                                + Ajouter une étape
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="p-6 border-t bg-gray-50 flex justify-end gap-3 rounded-b-2xl">
+                        <button type="button" onclick="closeModal()" class="px-8 py-3 font-bold text-gray-500">Annuler</button>
+                        <button type="submit" name="update_visite" class="px-8 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg hover:bg-blue-700 transition">
+                            Enregistrer les modifications
+                        </button>
+                    </div>
+                </form>
             </div>
         </main>
     </div>
+    <script>
+        function openEditModal(btn) {
+            // 1. جلب البيانات من الـ data attributes
+            const id = btn.getAttribute('data-id');
+            const titre = btn.getAttribute('data-titre');
+            const prix = btn.getAttribute('data-prix');
+            const statut = btn.getAttribute('data-statut');
+            const date = btn.getAttribute('data-date');
+            const capacite = btn.getAttribute('data-capacite');
+            const etapes = JSON.parse(btn.getAttribute('data-etapes'));
+
+            // 2. تعمير الخانات الأساسية
+            document.getElementById('edit_id').value = id;
+            document.getElementById('edit_titre').value = titre;
+            document.getElementById('edit_prix').value = prix;
+            document.getElementById('edit_statut').value = statut;
+            document.getElementById('edit_date').value = date;
+            document.getElementById('edit_capacite').value = capacite;
+
+            // 3. تعمير المراحل
+            const container = document.getElementById('edit-etapes-container');
+            container.innerHTML = ''; // تنظيف الحاوية
+
+            etapes.forEach((etape, index) => {
+                renderEtapeRow(etape.id, etape.titre, etape.desc, index + 1);
+            });
+
+            // إظهار الـ Modal
+            const modal = document.getElementById('updateModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function renderEtapeRow(id, titre, desc, index) {
+            const container = document.getElementById('edit-etapes-container');
+            const html = `
+        <div class="etape-item p-4 border rounded-xl bg-white shadow-sm flex flex-col gap-2">
+            <div class="flex justify-between items-center">
+                <span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-bold">Étape ${index}</span>
+                <input type="hidden" name="etape_id[]" value="${id}">
+                <button type="button" onclick="this.parentElement.parentElement.remove()" class="text-red-500 hover:scale-110 transition">
+                    <span class="material-symbols-outlined">delete</span>
+                </button>
+            </div>
+            <input type="text" name="etape_titre[]" value="${titre}" placeholder="Titre" class="w-full px-3 py-2 border rounded-lg text-sm">
+            <textarea name="etape_desc[]" placeholder="Description" class="w-full px-3 py-2 border rounded-lg text-sm h-20">${desc}</textarea>
+        </div>
+    `;
+            container.insertAdjacentHTML('beforeend', html);
+        }
+
+        function ajouterEtapeRow() {
+            const count = document.querySelectorAll('.etape-item').length + 1;
+            renderEtapeRow('new', '', '', count);
+        }
+
+        function closeModal() {
+            document.getElementById('updateModal').classList.add('hidden');
+            document.getElementById('updateModal').classList.remove('flex');
+        }
+    </script>
 </body>
 
 </html>

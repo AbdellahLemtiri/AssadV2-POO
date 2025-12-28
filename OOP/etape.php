@@ -1,114 +1,210 @@
+
 <?php
 
-require_once 'Connexion.php';
-
-
-
-class Reservation
+class Etape
 {
-    private int $id_reservation;
-    private DateTime $date_reservation;
-    private int $nombre_personnes;
-    private int $id_visiteur;
-    private int $id_visite;
+    private $idEtape;
+    private $titreEtape;
+    private $descriptionEtape;
+    private $ordreEtape;
+    private $idVisite;
 
     public function __construct() {}
 
-    public function getIdReservation(): int
+    public function getIdEtape()
     {
-        return $this->id_reservation;
+        return $this->idEtape;
     }
-    public function getDateReservation(): DateTime
+    public function getTitreEtape()
     {
-        return $this->date_reservation;
+        return $this->titreEtape;
     }
-    public function getNombrePersonnes(): int
+    public function getDescriptionEtape()
     {
-        return $this->nombre_personnes;
+        return $this->descriptionEtape;
     }
-
-    public function getIdVisiteur(): int
+    public function getOrdreEtape()
     {
-        return $this->id_visiteur;
+        return $this->ordreEtape;
     }
-    public function getIdVisite(): int
+    public function getIdVisite()
     {
-        return $this->id_visite;
-    }
-
-    public function setNombrePersonnes(int $nombre_personnes)
-    {
-        if ($nombre_personnes > 0) {
-            $this->nombre_personnes = $nombre_personnes;
-        }
-    }
-    public function setIdVisiteur(int $id_visiteur)
-    {
-        if ($id_visiteur > 0) {
-            $this->id_visiteur = $id_visiteur;
-        }
-    }
-    public function setIdVisite(int $id_visite)
-    {
-
-        if ($id_visite > 0) {
-            $this->id_visite = $id_visite;
-        }
-    }
-    public function setIdReservation(int $id_reservation)
-    {
-        if ($id_reservation > 0) {
-            $this->id_reservation = $id_reservation;
-        }
-    }
-    public function __toString()
-    {
-        return "id_reservation :" . $this->getIdReservation() . " date_reservation :" . $this->getDateReservation()->format('Y-m-d H:i:s') . " nombre_personnes :" . $this->getNombrePersonnes() . " id_visiteur :" . $this->getIdVisiteur() . " id_visite :" . $this->getIdVisite();
+        return $this->idVisite;
     }
 
-    public function reserver(): bool
+    public function setTitreEtape($titreEtape)
+    {
+
+        if (strlen($titreEtape) >= 1 and strlen($titreEtape) <= 500) {
+            $this->titreEtape = $titreEtape;
+            return true;
+        }
+        return false;
+    }
+    public function setDescriptionEtape($descriptionEtape)
+    {
+        if (strlen($descriptionEtape) >= 1 and strlen($descriptionEtape) <= 500) {
+            $this->descriptionEtape = $descriptionEtape;
+            return true;
+        }
+        return false;
+    }
+
+    public function setOrdreEtape($ordreEtape)
+    {
+        if ($ordreEtape >= 0) {
+            $this->ordreEtape = $ordreEtape;
+            return true;
+        }
+        return false;
+    }
+    public function setIdVisite($idVisite)
+    {
+        if ($idVisite > 0) {
+            $this->idVisite = $idVisite;
+            return true;
+        }
+        return false;
+    }
+    public function toString()
+    {
+        return "idEtape=" . $this->idEtape .
+            ", titreEtape='" . $this->titreEtape . "'" .
+            ", descriptionEtape='" . $this->descriptionEtape . "'" .
+            ", ordreEtape=" . $this->ordreEtape .
+            ", idVisite=" . $this->idVisite;
+    }
+
+    public function ajouterEtape(): bool
     {
         $conn = (new Connexion())->connect();
-        $sql = "INSERT INTO reservations ( nb_personnes, id_utilisateur, id_visite) VALUES ( :nombre_personnes, :id_visiteur, :id_visite)";
+        $sql = "INSERT INTO etapesvisite (titre_etape, description_etape, ordre_etape, id_visite) VALUES (:titre_etape, :description_etape, :ordre_etape, :id_visite)";
         try {
             $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':titre_etape', $this->titreEtape);
+            $stmt->bindParam(':description_etape', $this->descriptionEtape);
+            $stmt->bindParam(':ordre_etape', $this->ordreEtape);
+            $stmt->bindParam(':id_visite', $this->idVisite);
+            return $stmt->execute();
         } catch (Exception $e) {
             return false;
         }
-        $stmt->bindParam(':nombre_personnes', $this->nombre_personnes);
-        $stmt->bindParam(':id_visiteur', $this->id_visiteur);
-        $stmt->bindParam(':id_visite', $this->id_visite);
-        if ($stmt->execute())
-        {
-            return true;
-        } else
-        {
-            return false;
-        }
     }
-    public function getResrvation()
+    public function AjouterEtapes(array $etapes): bool
+    {
+        if ($etapes)
+            foreach ($etapes as $etape)
+                $etp = new Etape();
+
+        if (
+            $etp->setTitreEtape($etape['titre']) &&
+            $etp->setDescriptionEtape($etape['desc']) &&
+            $etp->setOrdreEtape($etape['ordre_etape'])
+            && $etp->setIdVisite($etape['id_visite'])
+            && $etp->ajouterEtape()
+        )
+            return true;
+        return false;
+    }
+
+    public function supprimerEtape(): bool
     {
         $conn = (new Connexion())->connect();
-        $sql = "SELECT * FROM reservations WHERE id_reservations = :id_reservation";
-        try 
-        {
+        $sql = "DELETE FROM etapesvisite WHERE id_etape = :id";
+        try {
             $stmt = $conn->prepare($sql);
-        } catch (Exception $e)
-        {
+            $stmt->bindParam(':id', $this->idEtape, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (Exception $e) {
             return false;
         }
-        $stmt->bindParam(':id_reservation', $this->id_reservation);
-        $stmt->execute();
-        $reservation = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($reservation)       
-        {
-            return $reservation;
-        } 
-        else
-        {
+    }
+    public function supprimerEtapesViste(int $id_visite): bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "DELETE FROM etapesvisite WHERE id_visite = :id_visite";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id_visite', $id_visite, PDO::PARAM_INT);
+            $stmt->execute();
+            return true;
+        } catch (Exception $e) {
             return false;
         }
+    }
+    public function getEtape(int $id_etape): bool|Etape
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM etapesvisite WHERE id_etape = :id";
 
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id', $id_etape, PDO::PARAM_INT);
+            $stmt->execute();
 
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($row) {
+                if (
+                    $this->setTitreEtape($row['titre_etape']) &&
+                    $this->setDescriptionEtape($row['description_etape']) &&
+                    $this->setOrdreEtape((int)$row['ordre_etape']) &&
+                    $this->setIdVisite((int)$row['id_visite']) &&
+                    $this->idEtape = (int)$row['id_etape']
+                ) {
+
+                    return $this;
+                }
+            }
+            return false;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public static function getEtapesByViste(int $id_visite): array|bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "SELECT * FROM etapesvisite WHERE id_visite = :id_visite ORDER BY ordre_etape ASC";
+
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id_visite', $id_visite, PDO::PARAM_INT);
+            $stmt->execute();
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $etapes = [];
+            foreach ($rows as $row) {
+                $etape = new Etape();
+                if (
+                    $etape->setTitreEtape($row['titre_etape']) &&
+                    $etape->setDescriptionEtape($row['description_etape']) &&
+                    $etape->setOrdreEtape((int)$row['ordre_etape']) &&
+                    $etape->setIdVisite((int)$row['id_visite']) &&
+                    $etape->idEtape = (int)$row['id_etape']
+                ) {
+                    $etapes[] = $etape;
+                }
+            }
+            return $etapes;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+    public function modifierEtape(): bool
+    {
+        $conn = (new Connexion())->connect();
+        $sql = "UPDATE etapesvisite SET titre_etape = :titre, description_etape = :desc, ordre_etape = :ordre WHERE id_etape = :id";
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':titre', $this->titreEtape);
+            $stmt->bindParam(':desc', $this->descriptionEtape);
+            $stmt->bindParam(':ordre', $this->ordreEtape);
+            $stmt->bindParam(':id', $this->idEtape, PDO::PARAM_INT);
+            return $stmt->execute();
+        } catch (Exception $e) {
+            return false;
+        }
     }
 }
+
+?>
