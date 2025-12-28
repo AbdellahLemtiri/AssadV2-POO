@@ -184,11 +184,9 @@ $habitats = habitat::getAllHabitats();
                                                 data-pays="<?= $animal->getPaysOrigine() ?>"
                                                 data-image="<?= $animal->getImageUrl() ?>"
                                                 data-habitat="<?= $animal->getIdHabitat() ?>"
-                                                data-description="<?= $animal->getDescriptionAnimal() ?>"
-                                                >
+                                                data-description="<?= $animal->getDescriptionAnimal() ?>" >
                                                 <span class="material-symbols-outlined">edit</span>
                                             </button>
-
                                             <a href="fx/delete.php?id=<?= $animal->getIdAnimal() ?>" class="p-2 text-red-500">
                                                 <span class="material-symbols-outlined">delete</span>
                                             </a>
@@ -204,7 +202,7 @@ $habitats = habitat::getAllHabitats();
 
         <div id="modal_add_animal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
             <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" data-close-add></div>
-            <form method="POST" action="" class="relative bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden">
+            <form method="POST" action="fx/addAnim.php" class="relative bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden">
                 <input type="hidden" name="action" value="add">
                 <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
                     <h2 class="text-xl font-bold">Ajouter un animal</h2>
