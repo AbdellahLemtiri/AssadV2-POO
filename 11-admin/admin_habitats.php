@@ -129,8 +129,9 @@ $habitats = (new habitat())->getAllHabitats();
                     <h1 class="text-3xl font-black">Gestion des Habitats</h1>
                     <p class="text-slate-500 text-sm italic">Surveillance des zones virtuelles</p>
                 </div>
-                <button onclick="openModal('add')" class="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-lg font-bold transition-all">
-                    <span class="material-symbols-outlined">add_location_alt</span> Ajouter Nouvel Habitat
+                <button onclick="openAddModal()" class="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow-lg font-bold transition-all">
+                    <span class="material-symbols-outlined">add_location_alt</span>
+                    Ajouter Nouvel Habitat
                 </button>
             </div>
         </header>
@@ -162,22 +163,22 @@ $habitats = (new habitat())->getAllHabitats();
                                 </td>
                                 <td class="px-6 py-4">
                                     <span class="px-2 py-1 bg-blue-50 dark:bg-blue-500/10 text-blue-600 rounded-md text-xs font-semibold">
-<?= $hab->getTypeClimat() ?>
+                                        <?= $hab->getTypeClimat() ?>
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 text-center font-bold text-lg"><?= (new habitat)->getNbrAnimaux($hab->getIdHabitat()) ?></td>
                                 <td class="px-6 py-4 text-right">
                                     <div class="flex justify-end gap-2">
-                                 <button 
-    data-open-edit-habitat
-    data-id="<?= $hab->getIdHabitat() ?>"
-    data-nom="<?=   ($hab->getNomHabitat()) ?>"
-    data-climat="<?=   ($hab->getTypeClimat()) ?>"
-    data-zone="<?=   ($hab->getZoneZoo() ) ?>"
-    data-desc="<?=   ($hab->getDescriptionHabitat() ) ?>"
-    class="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors">
-    <span class="material-symbols-outlined">edit</span>
-</button>
+                                        <button
+                                            data-open-edit-habitat
+                                            data-id="<?= $hab->getIdHabitat() ?>"
+                                            data-nom="<?= ($hab->getNomHabitat()) ?>"
+                                            data-climat="<?= ($hab->getTypeClimat()) ?>"
+                                            data-zone="<?= ($hab->getZoneZoo()) ?>"
+                                            data-desc="<?= ($hab->getDescriptionHabitat()) ?>"
+                                            class="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors">
+                                            <span class="material-symbols-outlined">edit</span>
+                                        </button>
                                         <a href="fx/delet_hab.php?id=<?= $hab->getIdHabitat() ?>" onclick="return confirm('Supprimer cet habitat ?')" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
                                             <span class="material-symbols-outlined">delete</span>
                                         </a>
@@ -190,83 +191,113 @@ $habitats = (new habitat())->getAllHabitats();
             </div>
         </div>
 
-        <div id="modalHabitat" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
-            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
-            <form id="habitatForm" method="POST" class="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
-                <input type="hidden" name="action" id="formAction" value="add">
-                <input type="hidden" name="id" id="habitatId">
-
+        <div id="modalAddHabitat" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeAddModal()"></div>
+            <form action="fx/addHabitat.php" method="POST" class="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
                 <div class="p-6 border-b dark:border-slate-800 flex justify-between items-center">
-                    <h2 id="modalTitle" class="text-xl font-bold">Ajouter un Habitat</h2>
-                    <button type="button" onclick="closeModal()" class="material-symbols-outlined">close</button>
+                    <h2 class="text-xl font-bold text-emerald-600">Ajouter un Habitat</h2>
+                    <button type="button" onclick="closeAddModal()" class="material-symbols-outlined">close</button>
                 </div>
-
                 <div class="p-6 space-y-4">
                     <div>
                         <label class="block text-sm font-bold mb-1">Nom de l'habitat *</label>
-                        <input type="text" name="nom" id="formNom" required class="w-full rounded-xl border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+                        <input type="text" name="nom" required class="w-full rounded-xl border-slate-200 dark:bg-slate-800 dark:border-slate-700">
                     </div>
                     <div>
                         <label class="block text-sm font-bold mb-1">Type de climat</label>
-                        <input type="text" name="type_climat" id="formClimat" placeholder="Ex: Tropical, Sec..." class="w-full rounded-xl border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+                        <input type="text" name="type_climat" class="w-full rounded-xl border-slate-200 dark:bg-slate-800 dark:border-slate-700">
                     </div>
                     <div>
                         <label class="block text-sm font-bold mb-1">Zone du Zoo</label>
-                        <input type="text" name="zone_zoo" id="formZone" placeholder="Ex: Zone Nord" class="w-full rounded-xl border-slate-200 dark:bg-slate-800 dark:border-slate-700">
+                        <input type="text" name="zone_zoo" class="w-full rounded-xl border-slate-200 dark:bg-slate-800 dark:border-slate-700">
                     </div>
                     <div>
                         <label class="block text-sm font-bold mb-1">Description</label>
-                        <textarea name="description" id="formDesc" rows="3" class="w-full rounded-xl border-slate-200 dark:bg-slate-800 dark:border-slate-700"></textarea>
+                        <textarea name="description" rows="3" class="w-full rounded-xl border-slate-200 dark:bg-slate-800 dark:border-slate-700"></textarea>
                     </div>
                 </div>
-
                 <div class="p-6 bg-gray-50 dark:bg-slate-800/50 flex justify-end gap-3">
-                    <button type="button" onclick="closeModal()" class="px-4 py-2 font-bold text-slate-500">Annuler</button>
-                    <button type="submit" class="px-6 py-2 bg-emerald-600 text-white rounded-xl font-bold shadow-lg hover:bg-emerald-700 transition-all">Enregistrer</button>
+                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 font-bold text-slate-500">Annuler</button>
+                    <button type="submit" class="px-6 py-2 bg-emerald-600 text-white rounded-xl font-bold shadow-lg">Créer l'habitat</button>
+                </div>
+            </form>
+        </div>
+        <div id="modalEditHabitat" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeEditModal()"></div>
+            <form action="fx/editHabitat.php" method="POST" class="relative bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
+                <input type="hidden" name="id" id="edit_habitat_id">
+
+                <div class="p-6 border-b dark:border-slate-800 flex justify-between items-center">
+                    <h2 class="text-xl font-bold text-blue-600">Modifier l'Habitat</h2>
+                    <button type="button" onclick="closeEditModal()" class="material-symbols-outlined">close</button>
+                </div>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-bold mb-1">Nom de l'habitat</label>
+                        <input type="text" name="nom" id="edit_nom" required class="w-full rounded-xl border-slate-200 dark:bg-slate-800">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">Type de climat</label>
+                        <input type="text" name="type_climat" id="edit_climat" class="w-full rounded-xl border-slate-200 dark:bg-slate-800">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">Zone du Zoo</label>
+                        <input type="text" name="zone_zoo" id="edit_zone" class="w-full rounded-xl border-slate-200 dark:bg-slate-800">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-bold mb-1">Description</label>
+                        <textarea name="description" id="edit_desc" rows="3" class="w-full rounded-xl border-slate-200 dark:bg-slate-800"></textarea>
+                    </div>
+                </div>
+                <div class="p-6 bg-gray-50 dark:bg-slate-800/50 flex justify-end gap-3">
+                    <button type="button" onclick="closeEditModal()" class="px-4 py-2 font-bold text-slate-500">Annuler</button>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-xl font-bold shadow-lg">Mettre à jour</button>
                 </div>
             </form>
         </div>
     </main>
 
     <script>
- const modal = document.getElementById('modalHabitat');
-const form = document.getElementById('habitatForm');
+        // القواميس (Selectors)
+        const addModal = document.getElementById('modalAddHabitat');
+        const editModal = document.getElementById('modalEditHabitat');
 
-// FONCTION POUR FERMER
-function closeModal() {
-    modal.classList.add('hidden');
-    form.reset();
-}
+        // 1. وظائف الإضافة
+        function openAddModal() {
+            addModal.classList.remove('hidden');
+        }
 
-// GESTION DE L'AJOUT (Bouton en haut de page)
-// On garde ta fonction openModal('add') appelée par onclick="openModal('add')"
-function openModal(mode) {
-    if (mode === 'add') {
-        document.getElementById('modalTitle').innerText = "Ajouter un Habitat";
-        document.getElementById('formAction').value = "add";
-        document.getElementById('habitatId').value = "";
-        form.reset();
-        modal.classList.remove('hidden');
-    }
-}
+        function closeAddModal() {
+            addModal.classList.add('hidden');
+        }
 
-// GESTION DE LA MODIFICATION (Boutons dans le tableau)
-document.querySelectorAll('[data-open-edit-habitat]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.getElementById('modalTitle').innerText = "Modifier l'Habitat";
-        document.getElementById('formAction').value = "edit";
-        
-        // On remplit les champs avec les DATA du bouton
-        document.getElementById('habitatId').value = btn.dataset.id;
-        document.getElementById('formNom').value = btn.dataset.nom;
-        document.getElementById('formClimat').value = btn.dataset.climat;
-        document.getElementById('formZone').value = btn.dataset.zone;
-        document.getElementById('formDesc').value = btn.dataset.desc;
-        
-        // Affichage
-        modal.classList.remove('hidden');
-    });
-});
+        // 2. وظائف التعديل
+        function closeEditModal() {
+            editModal.classList.add('hidden');
+        }
+
+        // 3. التقاط أزرار التعديل في الجدول
+        document.querySelectorAll('[data-open-edit-habitat]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                // تعمير البيانات في المودال ديال التعديل
+                document.getElementById('edit_habitat_id').value = btn.dataset.id;
+                document.getElementById('edit_nom').value = btn.dataset.nom;
+                document.getElementById('edit_climat').value = btn.dataset.climat;
+                document.getElementById('edit_zone').value = btn.dataset.zone;
+                document.getElementById('edit_desc').value = btn.dataset.desc;
+
+                // إظهار المودال
+                editModal.classList.remove('hidden');
+            });
+        });
+
+        // 4. إغلاق المودالات بـ ESC
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAddModal();
+                closeEditModal();
+            }
+        });
     </script>
 </body>
 

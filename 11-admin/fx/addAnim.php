@@ -3,12 +3,12 @@ require_once "../../OOP/animaux.php";
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add') {
     
     $id_animal    = (int)$_POST['animal_id'];
-    $nom          =    ($_POST['nom']);
-    $espece       =    ($_POST['espece']);
-    $image        =    ($_POST['image']);
+    $nom     =    ($_POST['nom']);
+    $espece   =    ($_POST['espece']);
+    $image  =    ($_POST['image']);
     $alimentation =    ($_POST['alimentation']);
     $id_habitat   = (int)$_POST['id_habitat'];
-    $desc        = $_POST['description_courte'];
+    $desc   = $_POST['description_courte'];
     $pays = ($_POST['pays_origine']);
     $obj = new Animal();
     $obj->setIdAnimal($id_animal);
@@ -19,12 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
     $obj->setTypeAlimentation($alimentation);
     $obj->setIdHabitat($id_habitat);
     $obj->setPaysOrigine($pays);
- if($obj->) {
-        header("Location: ../admin_animaux.php?msg=success");
+ if($obj->ajouterAnimal()) {
+        header("Location: ../admin_animaux.php?add=success");
      exit();   
     } else {
-         header("Location: ../admin_animaux.php?msg=Erreur");
-     exit();  
-    
+         header("Location: ../admin_animaux.php?add=Erreur");
+     exit();
     }
 }

@@ -199,7 +199,8 @@ class Animal
         $stmt->bindParam(':id_habitat', $this->id_habitat);
 
         return $stmt->execute();
-    } catch (Exception $e) {
+    } 
+    catch (Exception $e) {
         return false;
     }
 }

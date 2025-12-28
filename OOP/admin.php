@@ -115,7 +115,7 @@ class Admin extends Utilisateur
     public function afficherToutUtilisatdeurs(): array|bool
     {
         $conn = (new Connexion())->connect();
-        $sql = "SELECT * FROM utilisateurs";
+        $sql = "SELECT * FROM utilisateurs where role != 'admin'";
         try 
         {
             $stmt = $conn->prepare($sql);

@@ -187,7 +187,7 @@ $habitats = habitat::getAllHabitats();
                                                 data-description="<?= $animal->getDescriptionAnimal() ?>" >
                                                 <span class="material-symbols-outlined">edit</span>
                                             </button>
-                                            <a href="fx/delete.php?id=<?= $animal->getIdAnimal() ?>" class="p-2 text-red-500">
+                                            <a  onclick="return confirm('tu vraiment suppremer <?= $animal->getNomAnimal()?> ')" href="fx/deleteAnim.php?id=<?= $animal->getIdAnimal() ?>" class="p-2 text-red-500">
                                                 <span class="material-symbols-outlined">delete</span>
                                             </a>
                                         </div>

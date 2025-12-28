@@ -39,7 +39,7 @@ class habitat
     }
     public function setDescriptionHabitat(string $description_habitat)
     {
-        if (strlen($description_habitat) >= 10 && strlen($description_habitat) <= 500) {
+        if (strlen($description_habitat) >= 4 && strlen($description_habitat) <= 500) {
             $this->description_habitat = $description_habitat;
             return true;
         }
@@ -112,7 +112,8 @@ class habitat
             return false;
         }
     }
-    public function modifier_habitat(): bool
+
+    public function modifierHabitat(): bool
     {
         $conn = (new Connexion())->connect();
         $sql = "UPDATE habitats SET nom_habitat = :nom_habitat, description_habitat = :description_habitat, zone_zoo = :zone_zoo, type_climat = :type_climat WHERE id_habitat = :id_habitat";
