@@ -216,6 +216,38 @@ class visite {
             return false;
         }
     }
+
+   public static function getVisites(): array 
+{
+    $conn = (new Connexion())->connect();
+    $sql = "SELECT * FROM visitesguidees";
+    
+    try {
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        $visiteList = [];
+        foreach ($results as $row) {
+            $visite = new self();            
+            $visite->setIdVisite($row['id_visite']);
+            $visite->setTitreVisite($row['titre_visite']);
+            $visite->setDescriptionVisite($row['description_visite']);                   
+            $visite->setDateheureVisite($row['dateheure_viste']);
+            $visite->setLangueVisite($row['langue__visite']);
+            $visite->setDureeVisite($row['duree__visite']);           
+            $visite->setCapaciteMaxVisite($row['capacite_max__visite']);
+            $visite->setPrixVisite($row['prix__visite']);
+            $visite->setStatutVisite($row['statut__visite']);
+            $visite->setIdGuide($row['id_guide']);
+            
+            $visiteList[] = $visite;
+        }
+        return $visiteList;
+    } catch (Exception $e) {
+        return [];
+    }
+}
 }
 
 

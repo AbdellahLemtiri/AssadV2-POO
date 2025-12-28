@@ -179,7 +179,7 @@ $habitats = (new habitat())->getAllHabitats();
                                             class="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors">
                                             <span class="material-symbols-outlined">edit</span>
                                         </button>
-                                        <a href="fx/delet_hab.php?id=<?= $hab->getIdHabitat() ?>" onclick="return confirm('Supprimer cet habitat ?')" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+                                        <a href="fx/deletHab.php?id=<?= $hab->getIdHabitat() ?>" onclick="return confirm('Supprimer cet habitat ?')" class="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
                                             <span class="material-symbols-outlined">delete</span>
                                         </a>
                                     </div>

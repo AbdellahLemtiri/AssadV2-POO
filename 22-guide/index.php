@@ -1,22 +1,5 @@
-<!-- 
-CREATE TABLE visites_guidees (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  titre VARCHAR(150) NOT NULL,
-  date_heure DATETIME,
-  langue VARCHAR(50),
-  capacite_max INT,
-  statut ENUM('ouverte', 'annulee', 'terminee') DEFAULT 'ouverte',
-  duree INT,
-  prix DECIMAL(8,2)
-); -->
 
 <?php
-
-require_once "../Fonctionalite_php/auth_check.php";
-protect_page('guide'); 
-       $id_utilisateur =  ($_SESSION['id']) ;
-        $nom_utilisateur =  ($_SESSION['nom']);
-        $role_utilisateur =  ($_SESSION['role']);
 
 require_once "../Fonctionalite_php/connect.php";
 
