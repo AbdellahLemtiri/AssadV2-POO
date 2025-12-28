@@ -2,33 +2,15 @@
 
 
 require_once "../Fonctionalite_php/connect.php";
+require_once "../OOP/visite.php";
 
-$id = isset($_GET['id']) ? intval($_GET['id']) : null;
-
-if ($id) {
-    $sql = "SELECT * FROM visites_guidees WHERE id = $id";
-    $res = $connect->query($sql);
-
-    $visite = null;
-    if ($res && $res->num_rows > 0) {
-        $visite = $res->fetch_assoc();
-    }
-
-    $sql2 = "SELECT * FROM etapes_visite WHERE id_visite = $id ORDER BY ordre_etape ASC";
-    $res2 = $connect->query($sql2);
-
-    $les_etapes = [];
-    if ($res2) {
-        $les_etapes = $res2->fetch_all(MYSQLI_ASSOC);
-    }
-
-    $les_utl = [];
-    $sql3 = "SELECT * FROM utilisateurs ut inner join reservations r on r.id_visite = $id WHERE ut.id = r.id_utilisateur ORDER BY ut.nom ";
-    $res = $connect->query($sql3);
-    if ($res) {
-        $les_utl = $res->fetch_all(MYSQLI_ASSOC);
-    }
+if (isset($_GET['id'])) {
+    $id = (int) $_GET['id'];
+    $obj = new visite();
+    $visite = $obj->getVisite($id);
 }
+
+
 ?>
 <!DOCTYPE html>
 
@@ -37,7 +19,7 @@ if ($id) {
 <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Détails : <?=  ($tour['title']) ?> - ASSAD</title>
+    <title>Détails : <?= ($tour['title']) ?> - ASSAD</title>
     <link href="https://fonts.googleapis.com" rel="preconnect" />
     <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet" />
@@ -120,7 +102,7 @@ if ($id) {
 
 <body class="bg-background-light dark:bg-background-dark min-h-screen text-text-main-light dark:text-text-main-dark transition-colors duration-200">
     <div class="flex h-screen w-full overflow-hidden">
-     <?php
+          <?php
 
             $current_page = basename($_SERVER['PHP_SELF']);
             ?>
@@ -169,6 +151,9 @@ if ($id) {
                 </div>
             </div>
         </aside>
+        <?php
+
+        ?>
         <main class="flex-1 flex flex-col h-full overflow-y-auto overflow-x-hidden bg-background-light dark:bg-background-dark">
             <div class="p-6 md:p-10 max-w-7xl mx-auto w-full flex flex-col gap-8">
 
@@ -179,20 +164,11 @@ if ($id) {
 
                 <div class="flex flex-wrap justify-between items-start gap-4 pb-4 border-b border-border-light dark:border-border-dark">
                     <div class="flex flex-col gap-1">
-                        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-text-light dark:text-text-dark">Titre de la Visite</h2>
-                        <p class="text-text-secondary-light dark:text-text-secondary-dark text-lg">Détails et gestion de la Visite id = <?= $visite['id'] ?></p>
+                        <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-text-light dark:text-text-dark"><?= $visite->getTitreVisite() ?></h2>
+                        <p class="text-text-secondary-light dark:text-text-secondary-dark text-lg">Détails et gestion de la Visite id = <?= $visite->getIdVisite() ?></p>
                     </div>
 
-                    <div class="flex flex-wrap gap-3">
-                        <button class="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-lg font-bold shadow-lg transition-all transform hover:scale-105">
-                            <span class="material-symbols-outlined text-[20px]">videocam</span>
-                            <span>Démarrer la Visite</span>
-                        </button>
-                        <button class="flex items-center gap-2 px-5 py-2.5 rounded-lg border border-primary text-primary font-semibold hover:bg-primary/10 transition-colors">
-                            <span class="material-symbols-outlined text-[20px]">edit</span>
-                            <span>Modifier</span>
-                        </button>
-                    </div>
+
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -202,7 +178,7 @@ if ($id) {
                             <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                             <div class="m-3 absolute top-0 left-0 inline-flex px-3 py-1 bg-primary text-white text-xs font-bold rounded-full items-center gap-1 shadow-lg">
                                 <span class="material-symbols-outlined text-[14px]">stars</span>
-                                STATUT_ICI
+                                <?= $visite->getStatutVisite() ? 1 : 'ouverte'  ?>
                             </div>
                         </div>
 
@@ -214,15 +190,19 @@ if ($id) {
                             <ul class="space-y-4">
                                 <li class="flex flex-col gap-1">
                                     <span class="text-xs text-text-secondary-light dark:text-text-secondary-dark font-bold uppercase tracking-wider">Date & Heure</span>
-                                    <span class="text-sm font-semibold"><?= $visite['date_heure'] ?></span>
+                                    <span class="text-sm font-semibold">
+                                        <?= $visite->getDateheureViste()->format('d/m/Y H:i') ?>
+                                    </span>
                                 </li>
                                 <li class="flex flex-col gap-1">
                                     <span class="text-xs text-text-secondary-light dark:text-text-secondary-dark font-bold uppercase tracking-wider">Durée & Langue</span>
-                                    <span class="text-sm font-semibold"><?= $visite['duree'] . "min | " . $visite['langue']   ?></span>
+                                    <span class="text-sm font-semibold">
+                                        <?= $visite->getDureeVisite()->format('i') . " min | " . htmlspecialchars($visite->getLangueVisite()) ?>
+                                    </span>
                                 </li>
                                 <li class="flex flex-col gap-1">
                                     <span class="text-xs text-text-secondary-light dark:text-text-secondary-dark font-bold uppercase tracking-wider">Prix de la séance</span>
-                                    <span class="text-sm font-bold text-accent"><?= $visite['prix'] . " dh" ?></span>
+                                    <span class="text-sm font-bold text-accent"><?= $visite->getPrixVisite() . " dh" ?></span>
                                 </li>
                             </ul>
                         </div>
@@ -231,18 +211,12 @@ if ($id) {
                     <div class="lg:col-span-2 flex flex-col gap-6">
 
                         <div class="grid grid-cols-3 gap-4">
+
                             <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-2xl border border-border-light dark:border-border-dark text-center">
-                                <p class="text-2xl font-black text-primary">00</p>
-                                <p class="text-[10px] uppercase font-bold opacity-60">Confirmés</p>
-                            </div>
-                            <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-2xl border border-border-light dark:border-border-dark text-center">
-                                <p class="text-2xl font-black text-accent"><?= $visite['capacite_max'] ?></p>
+                                <p class="text-2xl font-black text-accent"><?= $visite->getCapaciteMaxVisite() ?></p>
                                 <p class="text-[10px] uppercase font-bold opacity-60">Capacité Max</p>
                             </div>
-                            <div class="bg-surface-light dark:bg-surface-dark p-4 rounded-2xl border border-border-light dark:border-border-dark text-center">
-                                <p class="text-2xl font-black text-blue-500">00</p>
-                                <p class="text-[10px] uppercase font-bold opacity-60">Restants</p>
-                            </div>
+
                         </div>
 
                         <div class="bg-surface-light dark:bg-surface-dark rounded-2xl border border-border-light dark:border-border-dark shadow-sm overflow-hidden">
@@ -258,10 +232,12 @@ if ($id) {
                                         <tr class="text-[11px] uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark border-b border-border-light dark:border-border-dark">
                                             <th class="px-6 py-4 font-bold">Visiteur</th>
                                             <th class="px-6 py-4 font-bold text-center">Places</th>
-                                        
+
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-border-light dark:divide-border-dark">
+
+                                  
                                         <?php foreach ($les_utl as $utl): ?>
                                             <tr class="hover:bg-primary/5 transition-colors">
                                                 <td class="px-6 py-4">
@@ -272,7 +248,7 @@ if ($id) {
                                                     <span class="bg-primary/10 text-primary px-2 py-1 rounded-md text-xs font-bold"><?= $utl['nb_personnes'] ?></span>
                                                 </td>
                                                 <td class="px-6 py-4 text-right">
-                                                  
+
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -286,15 +262,20 @@ if ($id) {
                                 <span class="material-symbols-outlined text-primary">format_list_numbered</span>
                                 Étapes de la Visite
                             </h3>
+                            <?php
+                            require_once "../OOP/etape.php";
+                            $les_etapes = (new Etape())->getEtapesByViste($visite->getIdVisite());
+
+                            ?>
                             <?php foreach ($les_etapes as $etp) : ?>
                                 <div class="space-y-4 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-300 before:to-transparent">
                                     <div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
                                         <div class="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-100 dark:bg-surface-dark text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2">
-                                            <?= $etp['ordre_etape'] ?>
+                                            <?= $etp->getOrdreEtape() ?>
                                         </div>
                                         <div class="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-4 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-surface-dark shadow-sm">
-                                            <div class="font-bold text-primary"><?= $etp['titre_etape'] ?></div>
-                                            <div class="text-xs opacity-70"><?= $etp['description_etape'] ?></div>
+                                            <div class="font-bold text-primary"><?= $etp->getTitreEtape() ?></div>
+                                            <div class="text-xs opacity-70"><?= $etp->getDescriptionEtape() ?></div>
                                         </div>
                                     </div>
                                 </div>
@@ -304,20 +285,7 @@ if ($id) {
                     </div>
                 </div>
 
-                <div class="bg-primary/10 dark:bg-primary/5 border-2 border-dashed border-primary/30 rounded-2xl p-6 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <div class="flex items-center gap-4">
-                        <div class="p-3 bg-primary text-white rounded-xl shadow-lg shadow-primary/20">
-                            <span class="material-symbols-outlined">link</span>
-                        </div>
-                        <div>
-                            <h4 class="font-bold">Lien de la visioconférence</h4>
-                            <p class="text-xs font-mono opacity-60">https://votre-lien-zoom-ou-teams.com/xyz</p>
-                        </div>
-                    </div>
-                    <button class="bg-primary text-white px-6 py-3 rounded-xl font-bold hover:bg-primary-dark transition-all shadow-lg">
-                        Copier le lien
-                    </button>
-                </div>
+              
             </div>
         </main>
     </div>

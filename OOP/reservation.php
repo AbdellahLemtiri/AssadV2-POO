@@ -1,10 +1,10 @@
 <?php
 
 require_once 'Connexion.php';
+require_once "utilisateur.php";
 
 
-
-class Reservation
+class Reservation extends Utilisateur
 {
     private int $id_reservation;
     private DateTime $date_reservation;
@@ -38,7 +38,7 @@ class Reservation
 
     public function setNombrePersonnes(int $nombre_personnes)
     {
-        if ($nombre_personnes > 0) {
+        if ($nombre_personnes >= 0) {
             $this->nombre_personnes = $nombre_personnes;
         }
     }
@@ -61,6 +61,14 @@ class Reservation
             $this->id_reservation = $id_reservation;
         }
     }
+    public function setDateReservation(string $date_reservation)
+    {
+        if (strtotime($date_reservation) !== false) {
+            $this->date_reservation = new DateTime($date_reservation);
+            return true;
+        }
+        return false;
+    }
     public function __toString()
     {
         return "id_reservation :" . $this->getIdReservation() . " date_reservation :" . $this->getDateReservation()->format('Y-m-d H:i:s') . " nombre_personnes :" . $this->getNombrePersonnes() . " id_visiteur :" . $this->getIdVisiteur() . " id_visite :" . $this->getIdVisite();
@@ -78,37 +86,71 @@ class Reservation
         $stmt->bindParam(':nombre_personnes', $this->nombre_personnes);
         $stmt->bindParam(':id_visiteur', $this->id_visiteur);
         $stmt->bindParam(':id_visite', $this->id_visite);
-        if ($stmt->execute())
-        {
+        if ($stmt->execute()) {
             return true;
-        } else
-        {
+        } else {
             return false;
         }
     }
-    public function getResrvation()
+    public function  getResrvation()
     {
         $conn = (new Connexion())->connect();
         $sql = "SELECT * FROM reservations WHERE id_reservations = :id_reservation";
-        try 
-        {
+        try {
             $stmt = $conn->prepare($sql);
-        } catch (Exception $e)
-        {
+        } catch (Exception $e) {
             return false;
         }
         $stmt->bindParam(':id_reservation', $this->id_reservation);
         $stmt->execute();
         $reservation = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($reservation)       
-        {
+        if ($reservation) {
             return $reservation;
-        } 
-        else
-        {
+        } else {
             return false;
         }
-
-
     }
+   public static function getAllResrvation(): array
+{
+    $conn = (new Connexion())->connect();
+    $sql = "SELECT r.*, u.nom_utilisateur FROM reservations r 
+            INNER JOIN utilisateurs u ON u.id_utilisateur = r.id_utilisateur";
+    
+    try {
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+        $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $allRervation = [];
+        if ($resultats) {
+            foreach ($resultats as $resultat) {
+                $reservation = new Reservation();
+                
+                // تنعمروا البيانات بلا شرط حيت الـ Setters مكرجعوش true
+                $reservation->setIdReservation($resultat["id_reservations"]);
+                $reservation->setNombrePersonnes($resultat["nb_personnes"]);
+                $reservation->setIdVisiteur($resultat["id_utilisateur"]);
+                $reservation->setIdVisite($resultat["id_visite"]);
+                $reservation->setDateReservation($resultat["date_reservation"]);
+                
+                // بما أن Reservation كيريث من Utilisateur، هاد الدالة خاص تكون في Utilisateur
+                if (method_exists($reservation, 'setNomUtilisateur')) {
+                    $reservation->setNomUtilisateur($resultat['nom_utilisateur']);
+                }
+
+                $allRervation[] = $reservation;
+            }
+        }
+        return $allRervation;
+    } catch (Exception $e) {
+        return [];
+    }
+}
+
+public function getallUtlisateurvisite($idvisite) : array 
+{
+    $conn = (new Connexion)->connect();
+    $sql = 
+}
+
 }

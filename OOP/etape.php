@@ -107,19 +107,7 @@ class Etape
         return false;
     }
 
-    public function supprimerEtape(): bool
-    {
-        $conn = (new Connexion())->connect();
-        $sql = "DELETE FROM etapesvisite WHERE id_etape = :id";
-        try {
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':id', $this->idEtape, PDO::PARAM_INT);
-            $stmt->execute();
-            return true;
-        } catch (Exception $e) {
-            return false;
-        }
-    }
+
     public function supprimerEtapesViste(int $id_visite): bool
     {
         $conn = (new Connexion())->connect();
@@ -133,35 +121,7 @@ class Etape
             return false;
         }
     }
-    public function getEtape(int $id_etape): bool|Etape
-    {
-        $conn = (new Connexion())->connect();
-        $sql = "SELECT * FROM etapesvisite WHERE id_etape = :id";
 
-        try {
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':id', $id_etape, PDO::PARAM_INT);
-            $stmt->execute();
-
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($row) {
-                if (
-                    $this->setTitreEtape($row['titre_etape']) &&
-                    $this->setDescriptionEtape($row['description_etape']) &&
-                    $this->setOrdreEtape((int)$row['ordre_etape']) &&
-                    $this->setIdVisite((int)$row['id_visite']) &&
-                    $this->idEtape = (int)$row['id_etape']
-                ) {
-
-                    return $this;
-                }
-            }
-            return false;
-        } catch (Exception $e) {
-            return false;
-        }
-    }
     public static function getEtapesByViste(int $id_visite): array|bool
     {
         $conn = (new Connexion())->connect();
@@ -190,21 +150,7 @@ class Etape
             return false;
         }
     }
-    public function modifierEtape(): bool
-    {
-        $conn = (new Connexion())->connect();
-        $sql = "UPDATE etapesvisite SET titre_etape = :titre, description_etape = :desc, ordre_etape = :ordre WHERE id_etape = :id";
-        try {
-            $stmt = $conn->prepare($sql);
-            $stmt->bindParam(':titre', $this->titreEtape);
-            $stmt->bindParam(':desc', $this->descriptionEtape);
-            $stmt->bindParam(':ordre', $this->ordreEtape);
-            $stmt->bindParam(':id', $this->idEtape, PDO::PARAM_INT);
-            return $stmt->execute();
-        } catch (Exception $e) {
-            return false;
-        }
-    }
+
 }
 
 ?>

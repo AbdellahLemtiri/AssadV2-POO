@@ -15,9 +15,9 @@ if (isset($_POST['update_visite'])) {
     $visite->setCapaciteMaxVisite($_POST['capacite_max']);
     $visite->setLangueVisite($_POST['langue']);
     $visite->modifierVisite();
-    $etapeManager = new Etape();
+    $etape= new Etape();
     
-    $etapeManager->supprimerEtapesViste($id_visite);
+    $etape->supprimerEtapesViste($id_visite);
     if (isset($_POST['etape_titre'])) {
         foreach ($_POST['etape_titre'] as $index => $titre) {
             if (!empty($titre)) {

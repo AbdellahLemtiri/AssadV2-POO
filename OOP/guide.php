@@ -52,14 +52,13 @@ class Guide extends Utilisateur
             return false;
         }
     }
-
-    public function ajouterVisite(string $titre_visite, string $description_visite, string $dateheure_viste, string $langue__visite, string $duree__visite, int $nombreMaxParticipants, float $prix, int $status): bool
+    
+    public function ajouterVisite(string $titre_visite, string $dateheure_viste, string $langue__visite, string $duree__visite, int $nombreMaxParticipants, float $prix, int $status): bool
     {
         $Visite = new Visite();
         if (
             $Visite->setIdGuide($this->getIdUtilisateur()) &&
             $Visite->setTitreVisite($titre_visite) &&
-            $Visite->setDescriptionVisite($description_visite) &&
             $Visite->setDateheureVisite($dateheure_viste) &&
             $Visite->setLangueVisite($langue__visite) &&
             $Visite->setDureeVisite($duree__visite) &&
@@ -71,18 +70,13 @@ class Guide extends Utilisateur
             return true;
         return false;
     }
-    public function annulerVisite(int $idVisite): bool
-    {
-        $visite = new Visite();
-        return $visite->supprimerVisite($idVisite);
-    }
+    
     public function modifierVisite(int $idVisite, string $titre_visite, string $description_visite, string $dateheure_viste, string $langue__visite, string $duree__visite, int $nombreMaxParticipants, float $prix, int $status): bool
     {
         $Visite = new Visite();
         if (
             $Visite->setIdGuide($this->getIdUtilisateur()) &&
             $Visite->setTitreVisite($titre_visite) &&
-            $Visite->setDescriptionVisite($description_visite) &&
             $Visite->setDateheureVisite($dateheure_viste) &&
             $Visite->setLangueVisite($langue__visite) &&
             $Visite->setDureeVisite($duree__visite) &&
@@ -95,4 +89,5 @@ class Guide extends Utilisateur
             return true;
         return false;
     }
+    
 }

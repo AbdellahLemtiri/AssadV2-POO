@@ -123,247 +123,107 @@ VALUES (
         'Zone glacée avec bassins d''eau froide.',
         'Zone C'
     );
+INSERT INTO habitats (nom_habitat, type_climat, description_habitat, zone_zoo) VALUES
+('Savane Africaine', 'Tropical Sec', 'Plaines herbeuses vastes pour les grands mammifères.', 'Zone Afrique'),
+('Forêt Tropicale', 'Humide', 'Environnement dense avec une humidité élevée et beaucoup de végétation.', 'Zone Amazonie'),
+('Banquise Arctique', 'Polaire', 'Zone réfrigérée avec bassins d’eau glacée pour ours et pingouins.', 'Zone Nord'),
+('Désert du Sahara', 'Aride', 'Sable chaud et rocailles pour les espèces nocturnes et reptiles.', 'Zone Afrique'),
+('Montagnes Rocheuses', 'Tempéré', 'Escarpements rocheux pour les chèvres de montagne et pumas.', 'Zone Amérique'),
+('Marais de Floride', 'Marécageux', 'Eaux peu profondes et végétation dense pour les alligators.', 'Zone Amérique'),
+('Plaines d’Australie', 'Semi-aride', 'Espaces ouverts pour les kangourous et émeus.', 'Zone Océanie'),
+('Forêt de Bambous', 'Tempéré Humide', 'Habitat spécifique pour les pandas géants.', 'Zone Asie'),
+('Récif Corallien', 'Aquatique', 'Aquarium géant simulant les fonds marins tropicaux.', 'Zone Aquatique'),
+('La Volière Royale', 'Aérien', 'Filet de protection géant permettant le vol libre des oiseaux.', 'Zone Oiseaux'),
+('Serpentarium Central', 'Contrôlé', 'Vivariums avec température et humidité régulées.', 'Zone Reptiles'),
+('Sous-bois Européen', 'Tempéré', 'Forêt de feuillus pour les cerfs et les loups.', 'Zone Europe'),
+('Île des Primates', 'Tropical', 'Îlot entouré d’eau pour les chimpanzés et gorilles.', 'Zone Afrique'),
+('Steppes de Mongolie', 'Continental', 'Climat rude pour les chevaux de Przewalski.', 'Zone Asie'),
+('Bassin des Otaries', 'Marin', 'Grand bassin avec gradins pour les spectacles.', 'Zone Aquatique');
+INSERT INTO utilisateurs (nom_utilisateur, email, role, motpasse_hash, pays_utilisateur) VALUES
+('Ahmed Alami', 'ahmed@zoo.com', 'admin', 'hash_admin_1', 'Maroc'),
+('Sarah Martin', 'sarah.guide@zoo.com', 'guide', 'hash_guide_1', 'France'),
+('John Doe', 'john.visitor@mail.com', 'visiteur', 'hash_pass_1', 'USA'),
+('Yassine Benani', 'yassine.guide@zoo.com', 'guide', 'hash_guide_2', 'Maroc'),
+('Elena Rodriguez', 'elena@mail.es', 'visiteur', 'hash_pass_2', 'Espagne'),
+('Amine Slimani', 'amine.guide@zoo.com', 'guide', 'hash_guide_3', 'Maroc'),
+('Sophie Lefebvre', 'sophie@zoo.com', 'admin', 'hash_admin_2', 'Belgique'),
+('Kenji Tanaka', 'kenji@mail.jp', 'visiteur', 'hash_pass_3', 'Japon'),
+('Layla Toumi', 'layla.guide@zoo.com', 'guide', 'hash_guide_4', 'Tunisie'),
+('Marc Dupont', 'marc@mail.fr', 'visiteur', 'hash_pass_4', 'France'),
+('Fatima Zahra', 'fatima.guide@zoo.com', 'guide', 'hash_guide_5', 'Maroc'),
+('Hans Müller', 'hans@mail.de', 'visiteur', 'hash_pass_5', 'Allemagne'),
+('Omar Khayam', 'omar@zoo.com', 'admin', 'hash_admin_3', 'Maroc'),
+('Chloé Bernard', 'chloe.guide@zoo.com', 'guide', 'hash_guide_6', 'France'),
+('Paolo Rossi', 'paolo@mail.it', 'visiteur', 'hash_pass_6', 'Italie');
 
-INSERT INTO
-    animaux (
-        nom_animal,
-        espece,
-        alimentation_animal,
-        image_url,
-        pays_origine,
-        description_animal,
-        id_habitat
-    )
-VALUES (
-        'ASSAD',
-        'Lion d''Afrique',
-        'Carnivore',
-        'https://exemple.com/lion.jpg',
-        'Kenya',
-        'Le roi de la savane.',
-        1
-    ),
-    (
-        'Kaa',
-        'Python',
-        'Carnivore',
-        'https://exemple.com/python.jpg',
-        'Brésil',
-        'Grand serpent constricteur.',
-        2
-    ),
-    (
-        'Nanook',
-        'Ours Polaire',
-        'Carnivore',
-        'https://exemple.com/ours.jpg',
-        'Canada',
-        'Grand prédateur des glaces.',
-        3
-    );
+INSERT INTO animaux (nom_animal, espece, alimentation_animal, image_url, pays_origine, description_animal, id_habitat) VALUES
+('Simba', 'Lion d’Afrique', 'Carnivore', 'lion.jpg', 'Kenya', 'Le roi de la savane.', 1),
+('Bambou', 'Panda Géant', 'Herbivore', 'panda.jpg', 'Chine', 'Grand mangeur de bambou.', 8),
+('Flipper', 'Grand Dauphin', 'Piscivore', 'dauphin.jpg', 'Océan Atlantique', 'Animal très intelligent.', 15),
+('Polaire', 'Ours Blanc', 'Carnivore', 'ours.jpg', 'Groenland', 'Maître de la banquise.', 3),
+('George', 'Tortue Géante', 'Herbivore', 'tortue.jpg', 'Galapagos', 'Vivre plus de 100 ans.', 11),
+('Kiko', 'Girafe', 'Herbivore', 'girafe.jpg', 'Tanzanie', 'Cou immense pour atteindre les feuilles.', 1),
+('Abu', 'Chimpanzé', 'Omnivore', 'singe.jpg', 'Congo', 'Très proche de l’homme.', 13),
+('Snappy', 'Alligator', 'Carnivore', 'alligator.jpg', 'USA', 'Prédateur redoutable des marais.', 6),
+('Skippy', 'Kangourou Roux', 'Herbivore', 'kangourou.jpg', 'Australie', 'Champion du saut.', 7),
+('Nemo', 'Poisson Clown', 'Omnivore', 'nemo.jpg', 'Indonésie', 'Petit poisson coloré.', 9),
+('Igor', 'Loup Gris', 'Carnivore', 'loup.jpg', 'Russie', 'Vit et chasse en meute.', 12),
+('Zaza', 'Zèbre', 'Herbivore', 'zebre.jpg', 'Afrique du Sud', 'Rayures uniques pour chaque individu.', 1),
+('Dumbo', 'Éléphant d’Asie', 'Herbivore', 'elephant.jpg', 'Inde', 'Le plus grand mammifère terrestre.', 14),
+('Rio', 'Ara Bleu', 'Frugivore', 'ara.jpg', 'Brésil', 'Oiseau aux couleurs éclatantes.', 10),
+('Cobra', 'Cobra Royal', 'Carnivore', 'cobra.jpg', 'Thaïlande', 'Serpent venimeux impressionnant.', 11);
 
-UPDATE animaux
-SET
-    image_url = "https://lh3.googleusercontent.com/aida-public/AB6AXuDhOo2vgmSKCtghxbM1wkQ836nE_VEodYny-oa3mt9ZCr-0eM6M4sq0FRahDpRHnj-663RckkSIEWmDrLBVhgTT-38j9Dl-pndbzUKChybETsjfYriuOLvudOlLNhMpWZyW1fXrvEJYGGuQgYMfU6k14CK40NjAIgHtvKc91yE9QaONWfrWMuD1tWn_tRl9k5eUsOGCkzggGNY--rMGijQLb0Hh6uH7IUKmHLdv8l6Rww0dG6FM3yduMA77Kdcemn28laAts06ZMO3w"
-WHERE
-    id_animal BETWEEN 5 and 100;
+INSERT INTO visitesguidees (titre_visite, description_visite, dateheure_viste, langue__visite, capacite_max__visite, duree__visite, prix__visite, id_guide) VALUES
+('Safari Matinal', 'Découvrez les lions au réveil.', '2024-05-10 09:00:00', 'Français', 20, '02:00:00', 50, 2),
+('Mystères d’Amazonie', 'Plongée au cœur de la jungle.', '2024-05-10 11:00:00', 'Anglais', 15, '01:30:00', 40, 4),
+('Le Monde Glacé', 'Visite spéciale zone polaire.', '2024-05-11 10:00:00', 'Français', 10, '01:00:00', 60, 6),
+('Secrets des Reptiles', 'Frissons garantis avec nos serpents.', '2024-05-11 14:00:00', 'Arabe', 12, '01:15:00', 30, 9),
+('Le Vol des Oiseaux', 'Spectacle de fauconnerie inclus.', '2024-05-12 15:30:00', 'Français', 30, '02:00:00', 45, 11),
+('Nocturne au Zoo', 'Observez les animaux de nuit.', '2024-05-12 21:00:00', 'Anglais', 10, '03:00:00', 100, 14),
+('Éveil de l’Océan', 'Nourrissage des otaries.', '2024-05-13 10:00:00', 'Français', 25, '01:00:00', 35, 2),
+('Géants d’Asie', 'Rencontre avec les éléphants.', '2024-05-13 14:00:00', 'Anglais', 15, '01:45:00', 55, 4),
+('Safari VIP', 'Tour en jeep privée.', '2024-05-14 09:00:00', 'Français', 5, '04:00:00', 250, 6),
+('Atelier Enfants', 'Apprendre à soigner les lapins.', '2024-05-14 11:00:00', 'Arabe', 10, '01:00:00', 20, 9),
+('Trésors d’Australie', 'Focus sur les marsupiaux.', '2024-05-15 10:00:00', 'Français', 15, '01:30:00', 40, 11),
+('Immersion Marine', 'Tunnel sous l’aquarium.', '2024-05-15 16:00:00', 'Anglais', 20, '01:00:00', 50, 14),
+('Primates et Cie', 'Comportement des singes.', '2024-05-16 10:00:00', 'Français', 15, '02:00:00', 45, 2),
+('Flore du Monde', 'Découverte des plantes rares.', '2024-05-16 14:00:00', 'Arabe', 20, '01:30:00', 30, 4),
+('Grand Tour du Zoo', 'La totale en une journée.', '2024-05-17 09:00:00', 'Français', 25, '06:00:00', 120, 6);
 
-INSERT INTO
-    utilisateurs (
-        nom_utilisateur,
-        email,
-        role,
-        motpasse_hash,
-        pays_utilisateur
-    )
-VALUES (
-        'Alice Admin',
-        'admin@zoo.com',
-        'admin',
-        'hash_admin_99',
-        'Belgique'
-    );
+INSERT INTO etapesvisite (titre_etape, description_etape, ordre_etape, id_visite) VALUES
+('Entrée Savane', 'Briefing de sécurité.', 1, 1),
+('Le Rocher des Lions', 'Observation du mâle alpha.', 2, 1),
+('Le point d’eau', 'Voir les zèbres boire.', 3, 1),
+('Entrée Jungle', 'Distribution de répulsif.', 1, 2),
+('Pont Suspendu', 'Vue panoramique.', 2, 2),
+('La Grotte Humide', 'Recherche des jaguars.', 3, 2),
+('Sas de Froid', 'Mise des manteaux.', 1, 3),
+('Bassin des Manchots', 'Spectacle de nage.', 2, 3),
+('Terrarium Python', 'Explication sur le venin.', 1, 4),
+('Arrivée Volière', 'Entrée silencieuse.', 1, 5),
+('Départ Jeep', 'Vérification ceintures.', 1, 9),
+('Bassin Tactile', 'Toucher les raies.', 1, 12),
+('Observation Chimpanzés', 'Jeux des petits.', 1, 13),
+('Jardin Botanique', 'Les fleurs exotiques.', 1, 14),
+('Final Boutique', 'Temps libre souvenirs.', 5, 15);
 
-INSERT INTO
-    visitesguidees (
-        titre_visite,
-        description_visite,
-        dateheure_viste,
-        langue__visite,
-        capacite_max__visite,
-        duree__visite,
-        prix__visite,
-        id_guide
-    )
-VALUES (
-        'Safari Nocturne',
-        'Découvrez les prédateurs la nuit.',
-        '2026-06-15 20:00:00',
-        'Français',
-        15,
-        '02:00:00',
-        25,
-        1
-    ),
-    (
-        'Les secrets de la Jungle',
-        'Exploration de la serre tropicale.',
-        '2025-06-16 10:30:00',
-        'Anglais',
-        10,
-        '01:30:00',
-        15,
-        1
-    );
-
-INSERT INTO
-    etapesvisite (
-        titre_etape,
-        description_etape,
-        ordre_etape,
-        id_visite
-    )
-VALUES (
-        'Enclos des Lions',
-        'Observation du repas des lions.',
-        1,
-        1
-    ),
-    (
-        'Terrarium des serpents',
-        'Passage dans la zone des reptiles.',
-        2,
-        1
-    ),
-    (
-        'La Grande Serre',
-        'Entrée dans le dôme tropical.',
-        1,
-        2
-    );
-
-INSERT INTO
-    reservations (
-        id_visite,
-        id_utilisateur,
-        nb_personnes
-    )
-VALUES (1, 1, 2),
-    (1, 1, 1);
-
-INSERT INTO
-    commentaires (
-        id_visite,
-        id_utilisateur,
-        note,
-        texte
-    )
-VALUES (
-        1,
-        1,
-        5,
-        'Une expérience incroyable, le guide était passionnant !'
-    ),
-    (
-        1,
-        1,
-        4,
-        'Très instructif, mais un peu court.'
-    );
-
-SELECT *
-FROM animaux a
-    INNER JOIN habitats h on a.id_habitat = h.id_habitat;
-
-SELECT c.note
-FROM
-    visitesguidees v
-    INNER JOIN commentaires c on c.id_visite = c.id_visite
-    and v.id_guide = 2;
-
-SELECT *
-FROM
-    reservations r
-    INNER JOIN visitesguidees v on r.id_visite = v.id_visite
-    and r.id_utilisateur = 3;
-
-SELECT c.note, v.id_guide
-FROM
-    visitesguidees v
-    INNER JOIN commentaires c on c.id_visite = c.id_visite
-    and v.dateheure_viste;
-
-UPDATE visitesguidees
-set
-    dateheure_viste = "2025-12-19 20:00:00"
-WHERE
-    id_visite = 1;
-
-UPDATE visitesguidees
-set
-    dateheure_viste = "2025-06-20 20:00:00"
-WHERE
-    id_visite = 2;
-
-SELECT * FROM visitesguidees where id_guide = 1;
--- and dateheure_viste >= NOW() order by  dateheure_viste asc limit 1;
-
-SELECT * FROM etapesvisite;
-
-select *
-from
-    utilisateurs u
-    inner join reservations r on r.id_utilisateur = u.id_utilisateur
-    inner join visitesguidees v on v.id_visite = r.id_visite;
-
-SELECT * FROM utilisateurs where email = "admin@admin";
-
-SELECT role, COUNT(*)
-FROM utilisateurs
-GROUP BY
-    role
-HAVING
-    role != "admin"
-ORDER BY role desc;
-
-UPDATE utilisateurs SET role = "admin" WHERE id_utilisateur = 16;
-
-SELECT h.nom_habitat, COUNT(*) as count
-from animaux a
-    inner JOIN habitats h on a.id_habitat = h.id_habitat
-GROUP BY
-    h.id_habitat
-ORDER BY h.id_habitat asc;
-
-SELECT COUNT(*) as count FROM visitesguidees;
-
-SELECT COUNT(*) as count FROM reservations;
-
-SELECT * FROM habitats;
-
-SELECT * FROM utilisateurs;
-
-UPDATE utilisateurs
-SET
-    statut_utilisateur = 0
-WHERE
-    id_utilisateur = 9;
-
-UPDATE utilisateurs
-set role = "admin"
-WHERE
-    email = "jaka@gmail.com";
-
-UPDATE utilisateurs
-set
-    email = "admin@admin.com"
-WHERE
-    id_utilisateur = 13;
-
-SELECT COUNT(*) from visitesguidees;
-
-SELECT * from utilisateurs;
-UPDATE utilisateurs 
-SET motpasse_hash = '$2y$10$8S8GfS2C.hR7G.RjR.vX/eXyR0Hl0p1v2.3.4.5.6.7.8.9.0' 
-WHERE email = 'admin@zooassad.com';
-ALTER TABLE utilisateurs DROP COLUMN 
+INSERT INTO reservations (id_visite, id_utilisateur, nb_personnes) VALUES
+(1, 3, 2), (1, 5, 4), (2, 8, 1), (2, 10, 3), (3, 12, 2),
+(4, 15, 5), (5, 3, 2), (6, 5, 1), (7, 8, 4), (8, 10, 2),
+(9, 12, 2), (10, 15, 3), (11, 3, 1), (12, 5, 2), (13, 8, 2);
+INSERT INTO commentaires (id_visite, id_utilisateur, note, texte) VALUES
+(1, 3, 5, 'Magnifique expérience avec les lions !'),
+(1, 5, 4, 'Très instructif mais un peu chaud.'),
+(2, 8, 5, 'Le guide était passionné.'),
+(3, 12, 3, 'Un peu trop court pour le prix.'),
+(4, 15, 5, 'Mes enfants ont adoré les serpents.'),
+(5, 3, 4, 'Les oiseaux sont superbes.'),
+(6, 5, 5, 'La visite de nuit est magique.'),
+(7, 8, 2, 'Les otaries dormaient, dommage.'),
+(8, 10, 4, 'Éléphants impressionnants.'),
+(9, 12, 5, 'Le prix en vaut la peine pour la jeep.'),
+(10, 15, 5, 'Génial pour les petits.'),
+(11, 3, 4, 'Kangourous très mignons.'),
+(12, 5, 5, 'L aquarium est géant !'),
+(13, 8, 4, 'Singes très drôles.'),
+(15, 15, 5, 'La meilleure journée de ma vie !');
