@@ -213,45 +213,48 @@ class visite
         }
     }
 
-    public static function getVisites(string $searchQuery = ""): array
+  public static function getVisites(string $search ): array
+{
+    $conn = (new Connexion())->connect();
+    $sql = "SELECT * FROM visitesguidees";
+    
+    if (!empty($search))
     {
-        $conn = (new Connexion())->connect();
-        $sql = "SELECT * FROM visitesguidees";
-        if (!empty($searchQuery)) {
-            $sql .= " WHERE titre_visite LIKE :search OR langue__visite LIKE :search";
-        }
-
-        try {
-            $stmt = $conn->prepare($sql);
-
-            if (!empty($searchQuery)) {
-                $stmt->execute(['search' => '%' . $searchQuery . '%']);
-            } else {
-                $stmt->execute();
-            }
-
-            $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            $visiteList = [];
-            foreach ($results as $row) {
-                $visite = new self();
-                $visite->setIdVisite($row['id_visite']);
-                $visite->setTitreVisite($row['titre_visite']);
-                $visite->setDateheureVisite($row['dateheure_viste']);
-                $visite->setLangueVisite($row['langue__visite']);
-                $visite->setDureeVisite($row['duree__visite']);
-                $visite->setCapaciteMaxVisite($row['capacite_max__visite']);
-                $visite->setPrixVisite($row['prix__visite']);
-                $visite->setStatutVisite($row['statut__visite']);
-                $visite->setIdGuide($row['id_guide']);
-
-                $visiteList[] = $visite;
-            }
-            return $visiteList;
-        } catch (Exception $e) {
-            return [];
-        }
+        $sql .= " WHERE titre_visite LIKE :search";
     }
+
+    try {
+        $stmt = $conn->prepare($sql);
+
+        if (!empty($search)) {
+           
+            $searchTerm = "%".$search."%";
+            $stmt->bindParam(":search", $searchTerm);
+        }
+        $stmt->execute();
+
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $visiteList = [];
+
+        foreach ($results as $row) {
+            $visite = new self();
+            $visite->setIdVisite($row['id_visite']);
+            $visite->setTitreVisite($row['titre_visite']);
+            $visite->setDateheureVisite($row['dateheure_viste']);
+            $visite->setLangueVisite($row['langue__visite']);
+            $visite->setDureeVisite($row['duree__visite']);
+            $visite->setCapaciteMaxVisite($row['capacite_max__visite']);
+            $visite->setPrixVisite($row['prix__visite']);
+            $visite->setStatutVisite($row['statut__visite']);
+            $visite->setIdGuide($row['id_guide']);
+
+            $visiteList[] = $visite;
+        }
+        return $visiteList;
+    } catch (Exception $e) {
+        return [];
+    }
+}
     public function getVisite(int $id_visite): bool|self
     {
         $conn = (new Connexion())->connect();

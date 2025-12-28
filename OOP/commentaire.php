@@ -135,20 +135,21 @@ class Commentaire
             return false;
         }
     }
-    static function getAllCommentaires() : array
+    static function getAllCommentaires($id_visite) : array
     {
         $conn = (new Connexion())->connect();
-        $sql = "SELECT * FROM commentaires  ";
+        $sql = "SELECT * FROM commentaires WHERE id_visite = :id ";
         try {
             $stmt = $conn->prepare($sql);
+            $stmt->bindParam(':id',$id_visite);
         } catch (Exception $e) {
             return  [];
         }
-        if ($stmt->execute()) {
+        if ($stmt->execute()) 
+            {
             $resultats = $stmt->fetchAll(PDO::FETCH_ASSOC);
             $allCommantaire = [];
                 $commentaire = new Commentaire();
-
                 foreach ($resultats as $result) {
                     $commentaire->setIdCommentaire($result['id_commentaire']);
                     $commentaire->setContenuCommentaire($result['texte']);
@@ -159,12 +160,10 @@ class Commentaire
                 }
     
             return $allCommantaire;
-        } else {
+        } 
+        else 
+        {
             return [];
         }
     }
 }
-
-
-$comm = Commentaire::getAllCommentaires();
-// print_r($comm);

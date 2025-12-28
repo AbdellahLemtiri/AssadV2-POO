@@ -65,6 +65,7 @@ class Reservation extends Utilisateur
         }
         return false;
     }
+
     public function setDateReservation(string $date_reservation)
     {
         if (strtotime($date_reservation) !== false) {
@@ -90,30 +91,15 @@ class Reservation extends Utilisateur
         $stmt->bindParam(':nombre_personnes', $this->nombre_personnes);
         $stmt->bindParam(':id_visiteur', $this->id_visiteur);
         $stmt->bindParam(':id_visite', $this->id_visite);
-        if ($stmt->execute()) {
+        if ($stmt->execute()) 
+        {
             return true;
-        } else {
+        } else 
+        {
             return false;
         }
     }
-    public function  getResrvation()
-    {
-        $conn = (new Connexion())->connect();
-        $sql = "SELECT * FROM reservations WHERE id_reservations = :id_reservation";
-        try {
-            $stmt = $conn->prepare($sql);
-        } catch (Exception $e) {
-            return false;
-        }
-        $stmt->bindParam(':id_reservation', $this->id_reservation);
-        $stmt->execute();
-        $reservation = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($reservation) {
-            return $reservation;
-        } else {
-            return false;
-        }
-    }
+  
 
     public static function getAllResrvation(): array
     {
@@ -175,7 +161,7 @@ class Reservation extends Utilisateur
             return [];
         }
     }
-    public function getNumbreVisiteur($id_visite)
+    public function getNumbreVisiteur($id_visite)  : int 
     {
         $conn = (new Connexion)->connect();
         $sql = "SELECT SUM(nb_personnes) as total FROM reservations WHERE id_visite = :id";

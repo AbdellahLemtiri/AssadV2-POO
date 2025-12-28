@@ -4,20 +4,23 @@ require_once "../OOP/utilisateur.php";
 require_once "../OOP/reservation.php";
 require_once  "../connexion/authinification.php";
 checkRole("visiteur");
-
-
-if (isset($_GET['search']) ) {
+if (isset($_GET['search'])) {
     $ser = $_GET['search'];
     $array_visites = Visite::getVisites($ser);
-} else {
+} 
+else {
     $ser = "";
-    $array_visites = Visite::getVisites();
+    $array_visites = Visite::getVisites($ser);
 }
 
+if (isset($_GET['id'])) {
+    $id = (int) $_GET['id'];
+    $obj = new visite();
+    $visite = $obj->getVisite($id);
+}
 $id_utilisateur = $_SESSION['id_utilisateur'];
 $nom_utilisateur =  $_SESSION['nom_utilisateur'];
 $role_utilisateur =  $_SESSION['role_utilisateur'];
-$array_visites = visite::getVisites();
 $reser = (new Reservation);
 
 ?>
@@ -131,30 +134,27 @@ $reser = (new Reservation);
             </div>
         </div>
     </header>
-   <div class="max-w-xl mx-auto my-10 px-4">
-    <form method="GET" action="" class="flex items-center gap-2">
-        <div class="relative flex-grow">
-            <span class="absolute inset-y-0 left-4 flex items-center text-gray-400">
-                <span class="material-symbols-outlined text-[20px]">search</span>
-            </span>
-            <input type="text" 
-                   name="search" 
-                   value="<?= ($ser ?? '') ?>" 
-                   placeholder="Trouver une visite..." 
-                   class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all outline-none text-gray-700 shadow-sm">
-        </div>
+    <div class="max-w-xl mx-auto my-10 px-4">
+        <form method="GET" action="" class="flex items-center gap-2">
+            <div class="relative flex-grow">
+                <span class="absolute inset-y-0 left-4 flex items-center text-gray-400">
+                    <span class="material-symbols-outlined text-[20px]">search</span>
+                </span>
+                <input type="text"
+                    name="search"
+                    placeholder="Trouver une visite..."
+                    class="w-full pl-11 pr-4 py-3 bg-gray-50 border border-transparent rounded-xl focus:bg-white focus:border-primary focus:ring-4 focus:ring-primary/5 transition-all outline-none text-gray-700 shadow-sm">
+            </div>
 
-        <button type="submit" 
+            <button type="submit"
                 class="bg-primary hover:bg-orange-600 text-white p-3 rounded-xl transition-all shadow-md active:scale-95 flex items-center justify-center">
-            <span class="material-symbols-outlined">arrow_forward</span>
-        </button>
-    </form>
-</div>
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </button>
+        </form>
+    </div>
     <?php foreach ($array_visites as $visit) :
         $date_visite = $visit->getDateheureViste()->getTimestamp();
         $maintenant = time();
-
-
         $places_restantes = (int)$visit->getCapaciteMaxVisite();
         $is_full = $places_restantes - (int)$reser->getNumbreVisiteur($visit->getIdVisite());
 

@@ -134,6 +134,4 @@ class Utilisateur
 // $user->setMotPasse("admin");
 // $user->setIdUtilisateur(1);
 // $user->setNomUtilisateur("administrateur");
-// $user->setPaysUtilisateur("Maroc");
-
 // echo  $user;

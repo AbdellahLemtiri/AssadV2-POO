@@ -1,7 +1,7 @@
 <?php
 
 
-require_once "../Fonctionalite_php/connect.php";
+
 require_once "../OOP/visite.php";
 require_once "../OOP/reservation.php";
 if (isset($_GET['id'])) {

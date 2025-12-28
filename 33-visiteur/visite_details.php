@@ -8,12 +8,12 @@ $id_utilisateur = $_SESSION['id_utilisateur'];
 $nom_utilisateur =  $_SESSION['nom_utilisateur'];
 $role_utilisateur =  $_SESSION['role_utilisateur'];
 
+
 if (isset($_GET['id'])) {
     $id = (int) $_GET['id'];
     $obj = new visite();
     $visite = $obj->getVisite($id);
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -256,6 +256,8 @@ if (isset($_GET['id'])) {
 
 
                     </div>
+
+                    
         </main>
     </div>
 
