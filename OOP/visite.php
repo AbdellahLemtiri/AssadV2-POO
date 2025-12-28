@@ -3,17 +3,20 @@ require_once "connexion.php";
 class visite
 {
 
-    private int $id_visite;
-    private string $titre_visite;
-    private DateTime $dateheure_viste;
-    private string $langue__visite;
-    private DateTime $duree__visite;
-    private int $capacite_max__visite;
-    private float $prix__visite;
-    private int $statut__visite;
-    private int $id_guide;
 
-    public function __construct() {}
+    private int $id_visite = 0;
+    private string $titre_visite = "";
+    private string $langue__visite = "";
+    private int $capacite_max__visite = 0;
+    private float $prix__visite = 0.0;
+    private int $statut__visite = 1; 
+    private int $id_guide = 1; 
+    private ?DateTime $dateheure_viste = null;
+    private ?DateTime $duree__visite = null;
+    public function __construct()
+    {
+        $this->duree__visite = new DateTime('00:00:00');
+    }
 
     public function getIdVisite(): int
     {
@@ -70,7 +73,7 @@ class visite
         }
         return false;
     }
-  
+
     public function setDateheureVisite(string $dateheure_viste)
     {
         if (strtotime($dateheure_viste) !== false) {
@@ -81,11 +84,14 @@ class visite
     }
     public function setLangueVisite(string $langue__visite): bool
     {
-        $regix = "/^[a-zA-Z\s'-]{2,50}$/";
+
+        $regix = "/^[\p{L}\s'-]{2,50}$/u";
+
         if (preg_match($regix, $langue__visite)) {
             $this->langue__visite = $langue__visite;
             return true;
         }
+
         return false;
     }
     public function setDureeVisite(string $duree__visite)
@@ -145,7 +151,7 @@ class visite
             return $e->getMessage();
         }
         $stmt->bindParam(':titre_visite', $this->titre_visite);
-       
+
         $stmt->bindValue(':dateheure_viste', $this->dateheure_viste->format('Y-m-d H:i:s'), PDO::PARAM_STR);
         $stmt->bindParam(':langue__visite', $this->langue__visite);
         $stmt->bindValue(':duree__visite', $this->duree__visite->format('H:i:s'));
@@ -187,12 +193,14 @@ class visite
         } catch (Exception $e) {
             return false;
         }
+        $duree_str = ($this->duree__visite instanceof DateTime)
+            ? $this->duree__visite->format('H:i:s')
+            : '01:00:00';
+        $stmt->bindValue(':duree__visite', $duree_str);
         $stmt->bindParam(':id_visite', $this->id_visite);
         $stmt->bindParam(':titre_visite', $this->titre_visite);
-   
         $stmt->bindValue(':dateheure_viste', $this->dateheure_viste->format('Y-m-d H:i:s'), PDO::PARAM_STR);
         $stmt->bindParam(':langue__visite', $this->langue__visite);
-        $stmt->bindValue(':duree__visite', $this->duree__visite->format('H:i:s'));
         $stmt->bindParam(':capacite_max__visite', $this->capacite_max__visite);
         $stmt->bindParam(':prix__visite', $this->prix__visite);
         $stmt->bindParam(':statut__visite', $this->statut__visite);

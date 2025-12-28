@@ -151,25 +151,15 @@ require_once "../OOP/etape.php";
                         <h2 class="text-3xl md:text-5xl font-black tracking-tight text-text-light dark:text-text-dark">Mes Visites</h2>
                         <p class="text-text-secondary-light dark:text-text-secondary-dark text-lg max-w-2xl">Liste complète et gestion de toutes vos visites virtuelles.</p>
                     </div>
-                    <a href="fx/add_visite.php"
-                        class="flex items-center gap-2 bg-primary hover:bg-primary-dark text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-primary/20 transition-all transform hover:scale-105 active:scale-95">
+                    <button onclick="toggleAddModal(true)"
+                        class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold shadow-xl shadow-blue-200 transition-all transform hover:scale-105 active:scale-95">
                         <span class="material-symbols-outlined text-[24px]">add_circle</span>
                         <span>Créer une nouvelle visite</span>
-                    </a>
+                    </button>
                 </div>
 
                 <div class="flex flex-col gap-6">
-                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                        <h3 class="text-xl font-bold flex items-center gap-2">
-                            <span class="w-2 h-8 bg-primary rounded-full"></span>
-                            Vos Sessions
-                        </h3>
-                        <div class="flex flex-wrap gap-2 text-sm bg-surface-light dark:bg-surface-dark p-1 rounded-xl border border-border-light dark:border-border-dark shadow-sm">
-                            <span class="px-5 py-2 bg-primary text-white rounded-lg font-bold cursor-pointer shadow-md">Tous</span>
-                            <span class="px-5 py-2 hover:bg-primary/10 text-text-sec-light dark:text-text-sec-dark rounded-lg font-semibold transition-colors cursor-pointer">À venir (2)</span>
-                            <span class="px-5 py-2 hover:bg-primary/10 text-text-sec-light dark:text-text-sec-dark rounded-lg font-semibold transition-colors cursor-pointer">Brouillons (1)</span>
-                        </div>
-                    </div>
+
 
                     <div class="grid grid-cols-1 gap-6">
                         <?php
@@ -204,7 +194,7 @@ require_once "../OOP/etape.php";
                                         <div>
                                             <div class="flex justify-between items-start">
                                                 <h4 class="text-2xl font-extrabold text-text-light dark:text-text-dark group-hover:text-primary transition-colors">
-                                                    <?= htmlspecialchars($visite->getTitreVisite()) ?>
+                                                    <?= ($visite->getTitreVisite()) ?>
                                                 </h4>
                                                 <span class="text-lg font-black text-primary"><?= number_format($visite->getPrixVisite(), 2) ?> DH</span>
                                             </div>
@@ -231,10 +221,10 @@ require_once "../OOP/etape.php";
                                                     <span class="material-symbols-outlined text-[18px]">visibility</span> Détails
                                                 </a>
                                                 <?php
-                                           
+
                                                 $etapesObj = Etape::getEtapesByViste($visite->getIdVisite());
 
-                                              
+
                                                 $etapesFormatted = [];
                                                 if ($etapesObj) {
                                                     foreach ($etapesObj as $e) {
@@ -246,19 +236,21 @@ require_once "../OOP/etape.php";
                                                     }
                                                 }
 
-                                                
+
                                                 $etapesJson = htmlspecialchars(json_encode($etapesFormatted), ENT_QUOTES, 'UTF-8');
                                                 ?>
 
                                                 <button
                                                     onclick="openEditModal(this)"
+
                                                     data-id="<?= $visite->getIdVisite() ?>"
-                                                    data-titre="<?= htmlspecialchars($visite->getTitreVisite()) ?>"
+                                                    data-titre="<?= ($visite->getTitreVisite()) ?>"
                                                     data-prix="<?= $visite->getPrixVisite() ?>"
                                                     data-statut="<?= $visite->getStatutVisite() ?>"
                                                     data-date="<?= $visite->getDateheureViste()->format('Y-m-d\TH:i') ?>"
                                                     data-duree="<?= $visite->getDureeVisite()->format('i') ?>"
                                                     data-capacite="<?= $visite->getCapaciteMaxVisite() ?>"
+                                                    data-langue="<?= ($visite->getLangueVisite()) ?>"
                                                     data-etapes='<?= $etapesJson ?>'
                                                     class="flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-bold hover:bg-slate-100 transition-colors">
                                                     <span class="material-symbols-outlined text-[18px]">edit</span> Modifier
@@ -306,9 +298,18 @@ require_once "../OOP/etape.php";
                         <input type="hidden" name="id" id="edit_id">
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="md:col-span-2">
+                            <div class="md:col-span-1">
                                 <label class="block text-sm font-bold mb-2">Titre de la Visite</label>
                                 <input type="text" name="titre" id="edit_titre" class="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50">
+                            </div>
+                            <div class="md:col-span-1">
+                                <label class="block text-sm font-bold mb-2">Langue de la Visite</label>
+                                <select name="langue" id="edit_langue" class="w-full px-4 py-3 border rounded-xl bg-gray-50">
+                                    <option value="Français">Français</option>
+                                    <option value="Arabe">Arabe</option>
+                                    <option value="Anglais">Anglais</option>
+                                    <option value="Espagnol">Espagnol</option>
+                                </select>
                             </div>
                             <div>
                                 <label class="block text-sm font-bold mb-2">Statut</label>
@@ -354,7 +355,67 @@ require_once "../OOP/etape.php";
                         </button>
                     </div>
                 </form>
-            </div>
+             
+            </div>   <div id="addVisiteModal" class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden flex flex-col">
+
+                        <div class="p-6 border-b flex justify-between items-center bg-blue-600 text-white">
+                            <h3 class="text-xl font-bold flex items-center gap-2">
+                                <span class="material-symbols-outlined">add_location_alt</span> Nouvelle Visite
+                            </h3>
+                            <button onclick="toggleAddModal(false)" class="hover:rotate-90 transition-transform">
+                                <span class="material-symbols-outlined">close</span>
+                            </button>
+                        </div>
+
+                        <form action="fx/add_visite.php" method="POST" class="p-8 overflow-y-auto flex-1">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-bold mb-2">Titre de la Visite</label>
+                                    <input type="text" name="titre" required class="w-full px-4 py-3 rounded-xl border bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold mb-2">Langue</label>
+                                    <select name="langue" class="w-full px-4 py-3 rounded-xl border bg-gray-50">
+                                        <option value="Français">Français</option>
+                                        <option value="Arabe">Arabe</option>
+                                        <option value="Anglais">Anglais</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold mb-2">Prix (DH)</label>
+                                    <input type="number" name="prix" step="0.01" required class="w-full px-4 py-3 rounded-xl border bg-gray-50">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold mb-2">Date et Heure</label>
+                                    <input type="datetime-local" name="date_heure" required class="w-full px-4 py-3 rounded-xl border bg-gray-50">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-bold mb-2">Capacité Max</label>
+                                    <input type="number" name="capacite_max" required class="w-full px-4 py-3 rounded-xl border bg-gray-50">
+                                </div>
+                            </div>
+
+                            <div class="border-t pt-6">
+                                <div class="flex justify-between items-center mb-4">
+                                    <h4 class="font-bold text-blue-600 flex items-center gap-2">
+                                        <span class="material-symbols-outlined">route</span> Étapes du parcours
+                                    </h4>
+                                    <button type="button" onclick="addNewEtapeInAdd()" class="text-sm bg-blue-50 text-blue-600 px-3 py-1 rounded-lg font-bold hover:bg-blue-100">+ Ajouter</button>
+                                </div>
+                                <div id="add-etapes-container" class="space-y-4">
+                                </div>
+                            </div>
+
+                            <div class="mt-8 pt-6 border-t flex justify-end gap-3">
+                                <button type="button" onclick="toggleAddModal(false)" class="px-6 py-3 font-bold text-gray-400">Annuler</button>
+                                <button type="submit" name="ajouter_visite" class="px-10 py-3 bg-blue-600 text-white rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all">
+                                    Enregistrer la Visite
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
         </main>
     </div>
     <script>
@@ -367,7 +428,7 @@ require_once "../OOP/etape.php";
             const date = btn.getAttribute('data-date');
             const capacite = btn.getAttribute('data-capacite');
             const etapes = JSON.parse(btn.getAttribute('data-etapes'));
-
+            const langue = btn.getAttribute('data-langue');
             // 2. تعمير الخانات الأساسية
             document.getElementById('edit_id').value = id;
             document.getElementById('edit_titre').value = titre;
@@ -375,7 +436,7 @@ require_once "../OOP/etape.php";
             document.getElementById('edit_statut').value = statut;
             document.getElementById('edit_date').value = date;
             document.getElementById('edit_capacite').value = capacite;
-
+            document.getElementById('edit_langue').value = langue;
             // 3. تعمير المراحل
             const container = document.getElementById('edit-etapes-container');
             container.innerHTML = ''; // تنظيف الحاوية
@@ -417,6 +478,35 @@ require_once "../OOP/etape.php";
             document.getElementById('updateModal').classList.add('hidden');
             document.getElementById('updateModal').classList.remove('flex');
         }
+
+   function toggleAddModal(show) {
+    const modal = document.getElementById('addVisiteModal');
+    if (show) {
+        modal.classList.remove('hidden');
+        // زيد مرحلة أولى أوتوماتيكيا فاش يفتح المودال
+        if (document.getElementById('add-etapes-container').innerHTML.trim() === "") {
+            addNewEtapeInAdd();
+        }
+    } else {
+        modal.classList.add('hidden');
+    }
+}
+
+function addNewEtapeInAdd() {
+    const container = document.getElementById('add-etapes-container');
+    const count = container.children.length + 1;
+    const html = `
+        <div class="p-4 border rounded-xl bg-gray-50 relative animate-fade-in">
+            <button type="button" onclick="this.parentElement.remove()" class="absolute top-2 right-2 text-red-400 hover:text-red-600">
+                <span class="material-symbols-outlined text-sm">delete</span>
+            </button>
+            <p class="text-[10px] font-bold text-gray-400 mb-2 uppercase">Étape ${count}</p>
+            <input type="text" name="etape_titre[]" placeholder="Titre de l'étape" class="w-full mb-2 p-2 border-b bg-transparent outline-none focus:border-blue-500 text-sm">
+            <textarea name="etape_desc[]" placeholder="Description..." class="w-full p-2 bg-white rounded-lg border text-sm h-16"></textarea>
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+}
     </script>
 </body>
 

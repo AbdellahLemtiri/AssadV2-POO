@@ -104,7 +104,7 @@ if ($res) {
 
 <body class="bg-background-light dark:bg-background-dark min-h-screen text-text-main-light dark:text-text-main-dark transition-colors duration-200">
         <div class="flex h-screen w-full overflow-hidden">
-     <?php
+          <?php
 
             $current_page = basename($_SERVER['PHP_SELF']);
             ?>

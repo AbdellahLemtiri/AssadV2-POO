@@ -13,7 +13,7 @@ if (isset($_POST['update_visite'])) {
     $visite->setStatutVisite($_POST['statut']);
     $visite->setDateheureVisite($_POST['date_heure']);
     $visite->setCapaciteMaxVisite($_POST['capacite_max']);
-    
+    $visite->setLangueVisite($_POST['langue']);
     $visite->modifierVisite();
     $etapeManager = new Etape();
     
