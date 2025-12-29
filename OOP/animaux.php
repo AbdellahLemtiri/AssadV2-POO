@@ -246,7 +246,7 @@ class Animal
   public static function getAnimalById($id): ?self
     {
         $conn = (new Connexion())->connect();
-        // On récupère l'animal et le nom de son habitat via une jointure
+      
         $sql = "SELECT a.*, h.nom_habitat 
                 FROM animaux a 
                 LEFT JOIN habitats h ON a.id_habitat = h.id_habitat 
@@ -259,12 +259,11 @@ class Animal
 
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            // Si aucun animal n'est trouvé, on retourne null
+          
             if (!$row) {
                 return null;
             }
-
-            // Création de l'objet animal (Mappage)
+ 
             $animal = new self();
             $animal->setIdAnimal($row['id_animal']);
             $animal->setNomAnimal($row['nom_animal']);
