@@ -19,15 +19,15 @@ if (
         exit();
     }
     if($user->seconnecter()==="guide"){
-      header('location: ../22-guide/');
+      header('location: ../guide/');
       exit();
     }
     if($user->seconnecter()==="admin"){
-      header('location: ../11-admin/index.php');
+      header('location: ../admin/index.php');
       exit();
     }
     if($user->seconnecter()==="visiteur"){
-      header('location: ../33-visiteur/');
+      header('location: ../visiteur/');
       exit();
     }
     if($user->seconnecter()==="notApproved"){

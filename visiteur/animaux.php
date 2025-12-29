@@ -296,7 +296,7 @@ $habitats = Habitat::getAllHabitats();
                                     <span class="material-symbols-outlined text-[16px] text-gray-400">location_on</span>
                                     <?= $anm->getPaysOrigine() ?>
                                 </div>
-                                <a href="#" class="text-primary text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
+                                <a href="animal_detail.php" class="text-primary text-sm font-bold flex items-center gap-1 group-hover:gap-2 transition-all">
                                     Détails
                                     <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                                 </a>

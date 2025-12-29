@@ -81,10 +81,7 @@ $habitats = habitat::getAllHabitats();
                         <span class="text-sm font-semibold">Vue d'ensemble</span>
                     </a>
 
-                    <a href="admin_animaux.php" class="<?= nav_item('admin_animaux.php', 'pets', 'Gestion Animaux', $current_page) ?>">
-                        <span class="material-symbols-outlined text-[22px]">pets</span>
-                        <span class="text-sm font-semibold">Gestion Animaux</span>
-                    </a>
+                
 
                     <a href="admin_habitats.php" class="<?= nav_item('admin_habitats.php', 'forest', 'Habitats', $current_page) ?>">
                         <span class="material-symbols-outlined text-[22px]">forest</span>
@@ -136,7 +133,6 @@ $habitats = habitat::getAllHabitats();
                 </button>
             </div>
         </header>
-
         <div class="flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-slate-950">
             <div class="max-w-7xl mx-auto bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-800 overflow-hidden">
                 <table class="w-full text-left text-sm">

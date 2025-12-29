@@ -148,10 +148,7 @@ function nav_item($href, $icon, $label, $current_page) {
                     <span class="text-sm font-semibold">Vue d'ensemble</span>
                 </a>
 
-                <a href="admin_animaux.php" class="<?= nav_item('admin_animaux.php', 'pets', 'Gestion Animaux', $current_page) ?>">
-                    <span class="material-symbols-outlined text-[22px]">pets</span>
-                    <span class="text-sm font-semibold">Gestion Animaux</span>
-                </a>
+                
 
                 <a href="admin_habitats.php" class="<?= nav_item('admin_habitats.php', 'forest', 'Habitats', $current_page) ?>">
                     <span class="material-symbols-outlined text-[22px]">forest</span>

@@ -8,6 +8,7 @@ if (isset($_GET['search'])) {
     $ser = $_GET['search'];
     $array_visites = Visite::getVisites($ser);
 } 
+
 else {
     $ser = "";
     $array_visites = Visite::getVisites($ser);
