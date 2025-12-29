@@ -227,3 +227,18 @@ INSERT INTO commentaires (id_visite, id_utilisateur, note, texte) VALUES
 (12, 5, 5, 'L aquarium est géant !'),
 (13, 8, 4, 'Singes très drôles.'),
 (15, 15, 5, 'La meilleure journée de ma vie !');
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Simba';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1564349683136-77e08bef1ef1?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Bambou';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1607153333879-c174d265f1d2?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Flipper';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1589656966895-2f33e7653819?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Polaire';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1518467166778-b88f373ffec7?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'George';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1526202707242-79d39d7dd82d?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Kiko';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1540573133985-87b6da6d54a9?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Abu';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1610471167440-276906a59929?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Snappy';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1591153510212-ac5bb70564aa?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Skippy';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1524704659698-1f6e11240b03?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Nemo';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Igor';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1501705388883-4ed8a543392c?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Zaza';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1557008075-7f2c5efa4cfd?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Dumbo';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1552728089-57bdde30eba3?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Rio';
+UPDATE animaux SET image_url = 'https://images.unsplash.com/photo-1531386151447-ad762e755d47?auto=format&fit=crop&w=800&q=80' WHERE nom_animal = 'Cobra';
