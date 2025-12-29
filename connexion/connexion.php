@@ -4,7 +4,8 @@
 if (
     $_SERVER['REQUEST_METHOD'] === "POST" &&
     isset($_POST['email'], $_POST['password'])
-) {
+) 
+{
     
     $email = trim($_POST['email']);
     $password = $_POST['password'];
@@ -22,7 +23,7 @@ if (
       exit();
     }
     if($user->seconnecter()==="admin"){
-      header('location: ../11-admin/');
+      header('location: ../11-admin/index.php');
       exit();
     }
     if($user->seconnecter()==="visiteur"){
@@ -33,8 +34,7 @@ if (
       header('location: booking.php');
       exit();
     }
-
-
+ 
 }  else{
       header('location : booking.php');
       exit();

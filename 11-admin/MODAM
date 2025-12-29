@@ -1,51 +1,65 @@
-  <tbody class="divide-y divide-slate-100 dark:divide-slate-800">
-                        <?php if (empty($animaux)): ?>
-                            <tr>
-                                <td colspan="5" class="text-center py-4">Aucun animal trouvé.</td>
-                            </tr>
-                        <?php else: ?>
-                            <?php foreach ($animaux as $animal): ?>
-                                <tr class="hover:bg-slate-50 transition-colors">
-                                    <td class="px-6 py-4 flex items-center gap-4">
-                                        <img src="<?= $animal->getImageUrl() ?>" class="h-12 w-12 rounded-lg object-cover" onerror="this.src='https://via.placeholder.com/100'">
-                                        <div>
-                                            <p class="font-bold"><?= $animal->getNomAnimal() ?></p>
-                                            <p class="text-xs text-slate-400">ID: #<?= $animal->getIdAnimal() ?></p>
-                                        </div>
-                                    </td>
+      <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 my-10 animate-fade-in">
+                    <!-- Card 1: Total Animaux -->
+                    <div class="relative overflow-hidden rounded-3xl bg-surface-light/70 dark:bg-surface-dark/80 backdrop-blur-2xl border border-primary-light/30 dark:border-primary/40 
+         shadow-2xl shadow-primary/20 transition-all duration-700 hover:shadow-primary-light/50 hover:shadow-4xl hover:scale-105 hover:-translate-y-3 group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary-light/5 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-700"></div>
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-primary-light/20 rounded-full blur-3xl group-hover:blur-4xl transition-all"></div>
 
-                                    <td class="px-6 py-4 italic text-slate-500">
-                                        <?= $animal->getEspeceAnimal() ?>
-                                    </td>
 
-                                    <td class="px-6 py-4">
-                                        <?= $animal->nom_habitat ?? 'Non défini' ?>
-                                    </td>
+                        <!-- Card 2: Animaux en Savane -->
+                        <div class="relative overflow-hidden rounded-3xl bg-surface-light/70 dark:bg-surface-dark/80 backdrop-blur-2xl border border-primary-light/30 dark:border-primary/40 
+         shadow-2xl shadow-primary/20 transition-all duration-700 hover:shadow-primary-light/50 hover:shadow-4xl hover:scale-105 hover:-translate-y-3 group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary-light/5 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-700"></div>
+                            <div class="absolute top-0 left-0 w-40 h-40 bg-primary/20 rounded-full blur-3xl group-hover:blur-4xl transition-all"></div>
 
-                                    <td class="px-6 py-4">
-                                        <?= $animal->getTypeAlimentation() ?>
-                                    </td>
+                            <div class="relative z-10 p-8 flex flex-col items-start">
+                                <span class="material-symbols-outlined text-6xl text-primary-light mb-6 group-hover:text-primary group-hover:scale-110 transition-all duration-500">landscape</span>
+                                <h3 class="text-5xl font-extrabold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
+                                    <?= 2 ?>
+                                </h3>
+                                <p class="text-xl font-semibold text-text-secondary-light dark:text-text-secondary-dark mt-4 group-hover:text-primary-light transition-colors">
+                                    Animaux en Savane Africaine
+                                </p>
+                            </div>
 
-                                    <td class="px-6 py-4 text-right">
-                                        <div class="flex justify-end gap-2">
-                                            <button class="p-2 text-blue-600"
-                                                data-open-edit
-                                                data-id="<?= $animal->getIdAnimal() ?>"
-                                                data-nom="<?= $animal->getNomAnimal() ?>"
-                                                data-espece="<?= $animal->getEspeceAnimal() ?>"
-                                                data-alimentation="<?= $animal->getTypeAlimentation() ?>"
-                                                data-pays="<?= $animal->getPaysOrigine() ?>"
-                                                data-image="<?= $animal->getImageUrl() ?>"
-                                                data-habitat="<?= $animal->getIdHabitat() ?>">
-                                                <span class="material-symbols-outlined">edit</span>
-                                            </button>
+                            <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary to-primary-light scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 origin-left"></div>
+                        </div>
 
-                                            <a href="fx/delete.php?id=<?= $animal->getIdAnimal() ?>" class="p-2 text-red-500">
-                                                <span class="material-symbols-outlined">delete</span>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
-                    </tbody>
+                        <!-- Card 3: Animaux en Jungle -->
+                        <div class="relative overflow-hidden rounded-3xl bg-surface-light/70 dark:bg-surface-dark/80 backdrop-blur-2xl border border-primary-light/30 dark:border-primary/40 
+         shadow-2xl shadow-primary/20 transition-all duration-700 hover:shadow-primary-light/50 hover:shadow-4xl hover:scale-105 hover:-translate-y-3 group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary-light/5 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-700"></div>
+                            <div class="absolute bottom-0 right-0 w-36 h-36 bg-primary-light/30 rounded-full blur-3xl group-hover:blur-4xl transition-all"></div>
+
+                            <div class="relative z-10 p-8 flex flex-col items-start">
+                                <span class="material-symbols-outlined text-6xl text-primary-light mb-6 group-hover:text-primary group-hover:scale-110 transition-all duration-500">forest</span>
+                                <h3 class="text-5xl font-extrabold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
+                                    <?= 22 ?>
+                                </h3>
+                                <p class="text-xl font-semibold text-text-secondary-light dark:text-text-secondary-dark mt-4 group-hover:text-primary-light transition-colors">
+                                    Animaux en Jungle
+                                </p>
+                            </div>
+
+                            <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary to-primary-light scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 origin-left"></div>
+                        </div>
+
+                        <!-- Card 4: Animaux en Soins -->
+                        <div class="relative overflow-hidden rounded-3xl bg-surface-light/70 dark:bg-surface-dark/80 backdrop-blur-2xl border border-primary-light/30 dark:border-primary/40 
+         shadow-2xl shadow-primary/20 transition-all duration-700 hover:shadow-primary-light/50 hover:shadow-4xl hover:scale-105 hover:-translate-y-3 group">
+                            <div class="absolute inset-0 bg-gradient-to-br from-primary/10 via-primary-light/5 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-700"></div>
+                            <div class="absolute bottom-0 left-0 w-32 h-32 bg-primary/25 rounded-full blur-3xl group-hover:blur-4xl transition-all"></div>
+
+                            <div class="relative z-10 p-8 flex flex-col items-start">
+                                <span class="material-symbols-outlined text-6xl text-primary-light mb-6 group-hover:text-primary group-hover:scale-110 transition-all duration-500">water_drop</span>
+                                <h3 class="text-5xl font-extrabold bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
+                                    <?= 22 ?>
+                                </h3>
+                                <p class="text-xl font-semibold text-text-secondary-light dark:text-text-secondary-dark mt-4 group-hover:text-primary-light transition-colors">
+                                    Animaux Herbivore
+                                </p>
+                            </div>
+
+                            <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-gradient-to-r from-primary to-primary-light scale-x-0 group-hover:scale-x-100 transition-transform duration-1000 origin-left"></div>
+                        </div>
+                </section>
